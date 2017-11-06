@@ -42,6 +42,7 @@ contract ExpertyToken {
   uint256 tgeDuration = 4 weeks;
   uint256 public tgeEnd = tgeStart + tgeDuration;
   address contractManager;
+  uint256 hardcap = 30500 ether;
 
   // tokens distribution summary in percents
   uint256 public crowdsaleTokens = 33;
@@ -97,7 +98,6 @@ contract ExpertyToken {
   // }
 
   // function tokenFallback() public {
-
   // }
 
 
@@ -117,6 +117,9 @@ contract ExpertyToken {
   // -100 = -10%
   // -200 = -20%
   function contribute(int256 bonus) public payable duringTGE {
+    // throw contributions above hardcap
+    require(this.balance + msg.value <= hardcap);
+
     uint256 exyTokens = uint256(int256(standardRate) + bonus) * msg.value;
     contributions[msg.sender] += exyTokens;
     // total supply can be increasexd right now
