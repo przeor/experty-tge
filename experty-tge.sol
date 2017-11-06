@@ -171,6 +171,8 @@ contract ExpertyToken {
     claim(msg.sender);
   }
 
+  // this function allows to withdraw ETH using
+  // special multisig contract
   function withdraw(address addr, uint256 amount) public onlyMultisig afterTGE {
     addr.transfer(amount);
   }
