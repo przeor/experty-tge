@@ -82,9 +82,9 @@ contract ExpertyToken {
     contributions[0x37Fe339B8b46463489222654b0100db03D7cB19e] = seedRate * 403389017000000000;
     contributions[0xCf83184B69fc79D46De78A9a2221F8B11dd70698] = seedRate * 140000000000000000;
     contributions[0x081aF29ee22c5B902BC6e9c3CE7FA9DE77ce8266] = seedRate * 2500000000000000000000;
-    IncreaseTotalSupply(contributions[0x37Fe339B8b46463489222654b0100db03D7cB19e]);
-    IncreaseTotalSupply(contributions[0xCf83184B69fc79D46De78A9a2221F8B11dd70698]);
-    IncreaseTotalSupply(contributions[0x081aF29ee22c5B902BC6e9c3CE7FA9DE77ce8266]);
+    increaseTotalSupply(contributions[0x37Fe339B8b46463489222654b0100db03D7cB19e]);
+    increaseTotalSupply(contributions[0xCf83184B69fc79D46De78A9a2221F8B11dd70698]);
+    increaseTotalSupply(contributions[0x081aF29ee22c5B902BC6e9c3CE7FA9DE77ce8266]);
 
     // manager who will be adding presale contributions
     contractManager = 0x123;
@@ -93,7 +93,7 @@ contract ExpertyToken {
     multisigContract = 0x123;
   }
 
-  function IncreaseTotalSupply(uint256 generatedTokens) internal {
+  function increaseTotalSupply(uint256 generatedTokens) private {
     totalSupply += generatedTokens * allTokens / crowdsaleTokens;
   }
 
@@ -127,7 +127,7 @@ contract ExpertyToken {
     uint256 exyTokens = uint256(int256(standardRate) + bonus) * msg.value;
     contributions[msg.sender] += exyTokens;
     // total supply can be increasexd right now
-    IncreaseTotalSupply(exyTokens);
+    increaseTotalSupply(exyTokens);
   }
 
   // claim tokens from given address
