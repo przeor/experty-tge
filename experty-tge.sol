@@ -42,6 +42,7 @@ contract ExpertyToken {
   uint256 tgeDuration = 4 weeks;
   uint256 public tgeEnd = tgeStart + tgeDuration;
   address contractManager;
+  address multisigContract;
   uint256 hardcap = 30500 ether;
 
   // tokens distribution summary in percents
@@ -87,6 +88,9 @@ contract ExpertyToken {
 
     // manager who will be adding presale contributions
     contractManager = 0x123;
+
+    // withdraw of ether tokens can be done only by multisignature wallet
+    multisigContract = 0x123;
   }
 
   function IncreaseTotalSupply(uint256 generatedTokens) internal {
@@ -167,6 +171,10 @@ contract ExpertyToken {
     claim(msg.sender);
   }
 
+  function withdraw(address addr, uint256 amount) public onlyMultisig afterTGE {
+    addr.transfer(amount);
+  }
+
 
   // Modifiers:
 
@@ -191,6 +199,12 @@ contract ExpertyToken {
   // this can be ran only after TGE
   modifier afterTGE() {
     require(tgeEnd < block.timestamp);
+    _;
+  }
+
+  // only multisig contract can call this
+  modifier onlyMultisig() {
+    require(tx.origin == contractManager);
     _;
   }
 
