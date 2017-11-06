@@ -106,13 +106,19 @@ contract ExpertyToken {
 
 
   // allow menager to add all presale contributors before actual TGE
-  function addContribution(address addr, uint256 fractionEXY, uint8 periods, uint8 months) public onlyManager beforeTGE {
+  function addPartnersAllocation(address addr, uint256 fractionEXY, uint8 periods, uint8 months) public onlyManager beforeTGE {
     lockedContributions[addr] = lockedContribution({
       fractionEXY: fractionEXY,
       periods: periods,
       claimedPeriods: 0,
       periodDuration: months
     });
+  }
+
+  //
+  function addContribution(address addr, uint256 amountEXY) public onlyManager beforeTGE {
+    contributions[addr] += amountEXY;
+    increaseTotalSupply(amountEXY);
   }
 
   // create contributors data structure
@@ -145,7 +151,10 @@ contract ExpertyToken {
       // ignore claim after all periods were claimed
       require(lockedContributions[addr].claimedPeriods < lockedContributions[addr].periods);
 
+      // lastPayout is a timestamp, it tells you what was period of your last payout
+      // this is mostly used for company tokens which are vested for 3 years (please reference to the whitepaper)
       uint256 lastPayout = tgeEnd + (lockedContributions[addr].claimedPeriods + 1) * uint256(lockedContributions[addr].periodDuration) * 1 years / 12;
+
       // require lastPayout timestamp was before actual timestamp
       require(lastPayout < block.timestamp);
 
