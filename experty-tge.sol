@@ -126,7 +126,7 @@ contract ExpertyToken {
   // claim tokens from given address
   // tokens can be claimed only after TGE
   function claim(address addr) public afterTGE {
-    uint256 amount;
+    uint256 amount = 0;
 
     // if there was a standard contribution, send all tokens
     if (0 < contributions[addr]) {
@@ -138,7 +138,7 @@ contract ExpertyToken {
       // ignore claim after all periods were claimed
       require(lockedContributions[addr].claimedPeriods < lockedContributions[addr].periods);
 
-      uint256 lastPayout = tgeEnd + lockedContributions[addr].claimedPeriods * uint256(lockedContributions[addr].periodDuration) * 1 years / 12;
+      uint256 lastPayout = tgeEnd + (lockedContributions[addr].claimedPeriods + 1) * uint256(lockedContributions[addr].periodDuration) * 1 years / 12;
       // require lastPayout timestamp was before actual timestamp
       require(lastPayout < block.timestamp);
 
