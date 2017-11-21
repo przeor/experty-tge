@@ -97,13 +97,6 @@ contract ExpertyToken {
     totalSupply += generatedTokens * allTokens / crowdsaleTokens;
   }
 
-  // function for other contributions
-  // function() public payable {
-  // }
-
-  // function tokenFallback() public {
-  // }
-
 
   // allow menager to add all presale contributors before actual TGE
   function addPartnersAllocation(address addr, uint256 fractionEXY, uint8 periods, uint8 months) public onlyManager beforeTGE {
@@ -115,7 +108,18 @@ contract ExpertyToken {
     });
   }
 
-  //
+  // allow multisig to split partner allocation after TGE
+  function splitPartnersAllocation(address addr, uint256 fractionEXY) public onlyMultisig afterTGE {
+    
+    lockedContributions[addr] = lockedContribution({
+      fractionEXY: fractionEXY,
+      periods: periods,
+      claimedPeriods: 0,
+      periodDuration: months
+    });
+  }
+
+  // add standard contribution before TGE
   function addContribution(address addr, uint256 amountEXY) public onlyManager beforeTGE {
     contributions[addr] += amountEXY;
     increaseTotalSupply(amountEXY);
@@ -139,6 +143,9 @@ contract ExpertyToken {
   // claim tokens from given address
   // tokens can be claimed only after TGE
   function claim(address addr) public afterTGE {
+    // // dont allow to burn tokens accidently
+    // require(addr != 0x0);
+
     uint256 amount = 0;
 
     // if there was a standard contribution, send all tokens
