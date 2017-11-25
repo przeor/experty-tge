@@ -42,7 +42,8 @@ contract ExpertyToken {
   uint256 tgeDuration = 4 weeks;
   uint256 public tgeEnd = tgeStart + tgeDuration;
   address contractManager;
-  address multisigContract;
+  address ethMultisigContract;
+  address exyMultisigContract;
   uint256 hardcap = 30500 ether;
 
   // tokens distribution summary in percents
@@ -90,7 +91,8 @@ contract ExpertyToken {
     contractManager = 0x123;
 
     // withdraw of ether tokens can be done only by multisignature wallet
-    multisigContract = 0x123;
+    ethMultisigContract = 0x123;
+    exyMultisigContract = 0x123;
   }
 
   function increaseTotalSupply(uint256 generatedTokens) private {
@@ -109,8 +111,9 @@ contract ExpertyToken {
   }
 
   // allow multisig to split partner allocation after TGE
-  function splitPartnersAllocation(address addr, uint256 fractionEXY) public onlyMultisig afterTGE {
+  function splitPartnersAllocation(address addr, uint256 fractionEXY) public onlyExyMultisig afterTGE {
     
+
     lockedContributions[addr] = lockedContribution({
       fractionEXY: fractionEXY,
       periods: periods,
@@ -143,8 +146,10 @@ contract ExpertyToken {
   // claim tokens from given address
   // tokens can be claimed only after TGE
   function claim(address addr) public afterTGE {
-    // // dont allow to burn tokens accidently
-    // require(addr != 0x0);
+    // dont allow to burn tokens accidently
+    // locked contributions with 0x0 address or
+    // 0x1 address can be splitted yet
+    require(addr != 0x0 && addr != 0x1);
 
     uint256 amount = 0;
 
@@ -189,7 +194,7 @@ contract ExpertyToken {
 
   // this function allows to withdraw ETH using
   // special multisig contract
-  function withdraw(address addr, uint256 amount) public onlyMultisig afterTGE {
+  function withdraw(address addr, uint256 amount) public onlyEthMultisig afterTGE {
     addr.transfer(amount);
   }
 
@@ -221,8 +226,14 @@ contract ExpertyToken {
   }
 
   // only multisig contract can call this
-  modifier onlyMultisig() {
-    require(tx.origin == contractManager);
+  modifier onlyEthMultisig() {
+    require(tx.origin == ethMultisigContract);
+    _;
+  }
+
+  // only multisig contract can call this
+  modifier onlyExyMultisig() {
+    require(tx.origin == exyMultisigContract);
     _;
   }
 

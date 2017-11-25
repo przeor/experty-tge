@@ -1,0 +1,24 @@
+{
+  "name": "experty-tge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkucmierz/experty-tge.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gkucmierz/experty-tge/issues"
+  },
+  "homepage": "https://github.com/gkucmierz/experty-tge#readme",
+  "dependencies": {
+    "eth-lib": "^0.2.5",
+    "ethereumjs-util": "^5.1.2",
+    "web3": "^1.0.0-beta.26"
+  }
+}
