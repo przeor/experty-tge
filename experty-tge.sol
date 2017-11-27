@@ -138,7 +138,11 @@ contract ExpertyToken {
   // 100 = +10%
   // -100 = -10%
   // -200 = -20%
-  function contribute(int256 bonus) public payable duringTGE {
+  function contribute(int256 bonus, address contributor, uint8 _v, bytes32 _r, bytes32 _s) public payable duringTGE {
+    // check if bonus was signed with specified bonus
+    // for given contribution address by contract manager
+    require(ecrecover(sha3('Experty.io TGE:', bonus, contributor), _v, _r, _s) == contractManager);
+
     // throw contributions above hardcap
     require(this.balance + msg.value <= hardcap);
 
@@ -146,6 +150,11 @@ contract ExpertyToken {
     contributions[msg.sender] += exyTokens;
     // total supply can be increasexd right now
     increaseTotalSupply(exyTokens);
+  }
+
+  // if contributor was not set use msg.sender by default
+  function contribute(int256 bonus, uint8 _v, bytes32 _r, bytes32 _s) public {
+    contribute(bonus, msg.sender, _v, _r, _s);
   }
 
   // claim tokens from given address
@@ -193,7 +202,7 @@ contract ExpertyToken {
   }
 
   // claim your tokens
-  function claim() public afterTGE {
+  function claim() public {
     claim(msg.sender);
   }
 
