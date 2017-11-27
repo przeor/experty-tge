@@ -111,15 +111,20 @@ contract ExpertyToken {
   }
 
   // allow multisig to split partner allocation after TGE
-  function splitPartnersAllocation(address addr, uint256 fractionEXY) public onlyExyMultisig afterTGE {
-    
+  function splitPartnersAllocation(address unlockedAddr, address addr, uint256 fractionEXY) public onlyExyMultisig afterTGE {
+    // cant split more EXY than left in unlocked allocation
+    require(fractionEXY <= lockedContributions[unlockedAddr].fractionEXY);
 
+    // add splitted locked contribution
     lockedContributions[addr] = lockedContribution({
       fractionEXY: fractionEXY,
-      periods: periods,
+      periods: lockedContributions[unlockedAddr].periods,
       claimedPeriods: 0,
-      periodDuration: months
+      periodDuration: lockedContributions[unlockedAddr].periodDuration
     });
+
+    // substract fractionEXY from rest locked pool
+    lockedContributions[unlockedAddr].fractionEXY -= fractionEXY;
   }
 
   // add standard contribution before TGE

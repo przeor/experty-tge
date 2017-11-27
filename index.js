@@ -40,3 +40,9 @@ console.log(msg);
 let addr = getSignMessageAuthor(msg.messageHash, msg.signature);
 
 console.log(addr);
+
+// "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658", "0x1c", "0x274c0aed0c2957d5ccc95eaeebe438888599eada9874663d456b46fd343c798d", "0x5fd8d04fa272d0570800fba63c48a0c756972e6ae5992c5bed632c4f27ae2e7d"
+
+
+
+console.log('TEST: ', Web3.utils.sha3(Web3.utils.toHex(40)));
