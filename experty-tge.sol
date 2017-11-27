@@ -141,7 +141,7 @@ contract ExpertyToken {
   function contribute(int256 bonus, address contributor, uint8 _v, bytes32 _r, bytes32 _s) public payable duringTGE {
     // check if bonus was signed with specified bonus
     // for given contribution address by contract manager
-    require(ecrecover(sha3('Experty.io TGE:', bonus, contributor), _v, _r, _s) == contractManager);
+    require(ecrecover(keccak256('Experty.io TGE:', bonus, contributor), _v, _r, _s) == contractManager);
 
     // throw contributions above hardcap
     require(this.balance + msg.value <= hardcap);
