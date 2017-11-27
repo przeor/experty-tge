@@ -2,7 +2,7 @@ pragma solidity ^0.4.11;
 
 // experty token contract
 contract ExpertyToken {
-  function splitPartnersAllocation(address addr, uint256 fractionEXY) public;
+  function splitPartnersAllocation(address unlockedAddr, address addr, uint256 fractionEXY) public;
 }
 
 // multisignature contract, that is able to control
@@ -20,6 +20,7 @@ contract MultisigExpertyEthControl {
   uint8 requiredSignatures;
 
   struct Tx {
+    address unlockedAddr;
     address addr;
     uint256 fractionEXY;
     address creator;
@@ -53,8 +54,9 @@ contract MultisigExpertyEthControl {
   }
 
   // propose tx transaction from experty token contract
-  function proposeTx(address addr, uint256 fractionEXY) public onlySignatory {
+  function proposeTx(address unlockedAddr, address addr, uint256 fractionEXY) public onlySignatory {
     txs.push(Tx({
+      unlockedAddr: unlockedAddr,
       addr: addr,
       fractionEXY: fractionEXY,
       creator: msg.sender,
@@ -90,7 +92,7 @@ contract MultisigExpertyEthControl {
     require(requiredSignatures <= txs[txIdx].signatures);
 
     ExpertyToken experty = ExpertyToken(expertyTokenAddr);
-    experty.splitPartnersAllocation(txs[txIdx].addr, txs[txIdx].fractionEXY);
+    experty.splitPartnersAllocation(txs[txIdx].unlockedAddr, txs[txIdx].addr, txs[txIdx].fractionEXY);
   }
 
   // only signatory can call this
