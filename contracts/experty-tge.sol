@@ -45,6 +45,7 @@ contract ExpertyToken {
   address ethMultisigContract;
   address exyMultisigContract;
   uint256 hardcap = 30500 ether;
+  address presaleContract;
 
   // tokens distribution summary in percents
   uint256 public crowdsaleTokens = 33;
@@ -93,6 +94,14 @@ contract ExpertyToken {
     // withdraw of ether tokens can be done only by multisignature wallet
     ethMultisigContract = 0x123;
     exyMultisigContract = 0x123;
+
+    // presale contract address
+    presaleContract = 0x123;
+  }
+
+  // posibility to move ethers from pre-sale phase
+  function() payable {
+    require(tx.origin == presaleContract);
   }
 
   function increaseTotalSupply(uint256 generatedTokens) private {
