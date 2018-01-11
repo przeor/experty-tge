@@ -83,6 +83,9 @@ contract ERC223Token {
 contract ExpertyToken is ERC223Token {
   uint256 public circulatingSupply;
 
+  address contractManager;
+  address ethMultisigContract;
+  address exyMultisigContract;
 
   // set basic info in constructor
   function ExpertyToken() public {
@@ -92,26 +95,38 @@ contract ExpertyToken is ERC223Token {
     totalSupply = 0;
     circulatingSupply = 0;
 
-    // // seed contributions are hardcoded here
-    // // presale contributions will be added after contract deploy
-    // uint256 seedRate = standardRate + seedBonus;
-    // contributions[0x37Fe339B8b46463489222654b0100db03D7cB19e] = seedRate * 403389017000000000;
-    // contributions[0xCf83184B69fc79D46De78A9a2221F8B11dd70698] = seedRate * 140000000000000000;
-    // contributions[0x081aF29ee22c5B902BC6e9c3CE7FA9DE77ce8266] = seedRate * 2500000000000000000000;
-    // increaseTotalSupply(contributions[0x37Fe339B8b46463489222654b0100db03D7cB19e]);
-    // increaseTotalSupply(contributions[0xCf83184B69fc79D46De78A9a2221F8B11dd70698]);
-    // increaseTotalSupply(contributions[0x081aF29ee22c5B902BC6e9c3CE7FA9DE77ce8266]);
+    // manager who will be adding presale contributions
+    contractManager = 0x123;
 
-    // // manager who will be adding presale contributions
-    // contractManager = 0x123;
-
-    // // withdraw of ether tokens can be done only by multisignature wallet
-    // ethMultisigContract = 0x123;
-    // exyMultisigContract = 0x123;
-
-    // // presale contract address
-    // presaleContract = 0x123;
+    // withdraw of ether tokens can be done only by multisignature wallet
+    ethMultisigContract = 0x123;
+    exyMultisigContract = 0x123;
   }
 
+  // this function allows to withdraw ETH using
+  // special multisig contract
+  function withdraw(address addr, uint256 amount) public onlyEthMultisig {
+    addr.transfer(amount);
+  }
+
+  // Modifiers:
+
+  // only manager can call this
+  modifier onlyManager() {
+    require(msg.sender == contractManager);
+    _;
+  }
+
+  // only multisig contract can call this
+  modifier onlyEthMultisig() {
+    require(tx.origin == ethMultisigContract);
+    _;
+  }
+
+  // only multisig contract can call this
+  modifier onlyExyMultisig() {
+    require(tx.origin == exyMultisigContract);
+    _;
+  }
 }
 
