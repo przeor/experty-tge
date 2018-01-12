@@ -112,12 +112,7 @@ contract ExpertyToken is ERC223Token {
     totalSupply = 0;
     circulatingSupply = 0;
 
-    // manager who will be adding presale contributions
-    contractManager = 0x123;
-
-    // withdraw of ether tokens can be done only by multisignature wallet
-    ethMultisigContract = 0x123;
-    exyMultisigContract = 0x123;
+    contractManager = msg.sender;
   }
 
   function lockSupply() public onlyManager onlyUnlocked {
@@ -170,7 +165,7 @@ contract ExpertyToken is ERC223Token {
       claimedAmount = lockedContributions[addr].exyPerPeriod;
     }
 
-    mintToken(addr, claimedAmount);
+    mint(addr, claimedAmount);
   }
 
   // claim your tokens
@@ -185,9 +180,8 @@ contract ExpertyToken is ERC223Token {
     addr.transfer(amount);
   }
 
-
   // mint tokens
-  function mintToken(address to, uint value) private {
+  function mint(address to, uint value) private {
     uint codeLength;
 
     assembly {
@@ -203,9 +197,18 @@ contract ExpertyToken is ERC223Token {
       bytes memory empty;
       receiver.tokenFallback(msg.sender, value, empty);
     }
-    Transfer(msg.sender, to, value, empty);
+    Mint(to, value);
   }
 
+  function initEthMultisigContract(address _ethMultisigContract) public onlyManager {
+    require(ethMultisigContract == 0x0);
+    ethMultisigContract = _ethMultisigContract;
+  }
+
+  function initExyMultisigContract(address _exyMultisigContract) public onlyManager {
+    require(exyMultisigContract == 0x0);
+    exyMultisigContract = _exyMultisigContract;
+  }
 
   // Modifiers:
 
@@ -238,5 +241,7 @@ contract ExpertyToken is ERC223Token {
     require(tx.origin == exyMultisigContract);
     _;
   }
+
+  event Mint(address indexed to, uint value);
 }
 
