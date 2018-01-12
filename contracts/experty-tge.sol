@@ -31,10 +31,10 @@ contract ERC223Token {
   string public name;
   string public symbol;
   uint8 public decimals;
-  uint256 public totalSupply;
+  uint public totalSupply;
 
   // token balances
-  mapping(address => uint256) public balanceOf;
+  mapping(address => uint) public balanceOf;
 
   // Function that is called when a user or another contract wants to transfer funds .
   function transfer(address to, uint value, bytes data) public {
@@ -81,14 +81,14 @@ contract ERC223Token {
 
 
 contract ExpertyToken is ERC223Token {
-  uint256 public circulatingSupply;
+  uint public circulatingSupply;
 
   address contractManager;
   address ethMultisigContract;
   address exyMultisigContract;
 
   // not claimed contributions
-  mapping(address => uint256) public contributions;
+  mapping(address => uint) public contributions;
 
   // all locked tokens for 18 months & vested for 36 months
   // will be saved here
@@ -139,9 +139,28 @@ contract ExpertyToken is ERC223Token {
     totalSupply += periods * exyPerPeriod;
   }
 
+  // allow multisig to split partner allocation
+  function splitPartnersAllocation(address unlockedAddr, address addr, uint exyPerPeriod) public onlyExyMultisig onlyLocked {
+    // cant split more EXY than left in unlocked allocation
+    require(exyPerPeriod <= lockedContributions[unlockedAddr].exyPerPeriod);
+
+    // add splitted locked contribution
+    lockedContributions[addr] = lockedContribution({
+      exyPerPeriod: exyPerPeriod,
+      periods: lockedContributions[unlockedAddr].periods,
+      claimedPeriods: 0,
+      periodDuration: lockedContributions[unlockedAddr].periodDuration
+    });
+
+    // substract EXY from rest locked pool
+    lockedContributions[unlockedAddr].exyPerPeriod -= exyPerPeriod;
+  }
+
   // claim tokens from given address
   // tokens can be claimed only after supply is locked
   function claim(address addr) public onlyLocked {
+    // this two virtual addresses are reserved for locked contributions
+    require(addr != 0x0 && addr != 0x1);
 
     uint claimedAmount = 0;
 
@@ -156,7 +175,7 @@ contract ExpertyToken is ERC223Token {
 
       // lastPayout is a timestamp, it tells you what was period of your last payout
       // this is mostly used for company tokens which are vested for 3 years (please reference to the whitepaper)
-      uint256 lastPayout = initTimestamp + (lockedContributions[addr].claimedPeriods + 1) * uint256(lockedContributions[addr].periodDuration) * 1 years / 12;
+      uint lastPayout = initTimestamp + (lockedContributions[addr].claimedPeriods + 1) * uint256(lockedContributions[addr].periodDuration) * 1 years / 12;
 
       // require lastPayout timestamp was before actual timestamp
       require(lastPayout < block.timestamp);
@@ -177,7 +196,7 @@ contract ExpertyToken is ERC223Token {
 
   // this function allows to withdraw ETH using
   // special multisig contract
-  function withdraw(address addr, uint256 amount) public onlyEthMultisig {
+  function withdraw(address addr, uint amount) public onlyEthMultisig {
     // transfer ETH
     addr.transfer(amount);
   }
