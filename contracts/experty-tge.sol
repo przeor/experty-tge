@@ -117,7 +117,7 @@ contract ExpertyToken is ERC223Token {
 
   function lockSupply() public onlyManager onlyUnlocked {
     locked = true;
-    initTimestamp = block.timestamp
+    initTimestamp = block.timestamp;
   }
 
   function addContribution(address contributor, uint exyTokens) public onlyUnlocked {
