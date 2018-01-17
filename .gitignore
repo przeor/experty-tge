@@ -11,7 +11,7 @@
 Thumbs.db
 
 # build
-/build/*
+build/*
 
 # node packages
 node_modules
