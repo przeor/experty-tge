@@ -1,7 +1,8 @@
-const ExpertyToken = artifacts.require('./ExpertyToken');
+const ExpertyToken = artifacts.require('./contracts/ExpertyToken');
 
-contract('ExpertyToken', function(accounts) {
-  it("should put 10000 ExpertyToken in the first account", function() {
-    ExpertyToken.addContribution(accounts[0], 11).then(() => { return console.log('True')})
+contract('ExpertyToken', accounts => {
+  const instance = ExpertyToken.new();
+  it("should put 1000 ExpertyToken in the first account", async () => {
+    console.log("1");
   });
 });
