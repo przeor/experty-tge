@@ -1,10 +1,8 @@
-// var ConvertLib = artifacts.require("./ConvertLib.sol");
-// var MetaCoin = artifacts.require("./MetaCoin.sol");
-var ExpertyToken = artifacts.require("./ExpertyToken.sol");
+const ERC223Token = artifacts.require('./ERC223Token.sol');
+const ExpertyToken = artifacts.require("./ExpertyToken.sol");
 
 module.exports = function(deployer) {
-  // deployer.deploy(ConvertLib);
-  // deployer.link(ConvertLib, MetaCoin);
-  // deployer.deploy(MetaCoin);
+  deployer.deploy(ERC223Token);
+  deployer.link(ERC223Token, ExpertyToken);
   deployer.deploy(ExpertyToken);
 };
