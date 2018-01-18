@@ -82,7 +82,7 @@ contract ERC223Token {
 contract ExpertyToken is ERC223Token {
   uint public circulatingSupply;
 
-  address contractManager;
+  address public contractManager;
   address ethMultisigContract;
   address exyMultisigContract;
 
@@ -264,4 +264,3 @@ contract ExpertyToken is ERC223Token {
 
   event Mint(address indexed to, uint value);
 }
-
