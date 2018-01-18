@@ -19,15 +19,15 @@ contract('ExpertyToken', accounts => {
     const contractManager = await token.contractManager.call();
     assert.equal(accounts[0], contractManager, 'Contract manager not equal to first account');
     const name = await token.name.call();
-    assert.equal('Experty Token', name, 'Contract name is not equal to ExpertyToken');
+    assert.equal('Experty Token', name, 'Contract name has not been set to Experty Token');
     const symbol = await token.symbol.call();
-    assert.equal('EXY', symbol, 'Contract symbol is not equal to EXY');
+    assert.equal('EXY', symbol, 'Contract symbol has not been set to EXY');
     const decimals = await token.decimals.call();
-    assert.equal(18, decimals, 'Contract decimals is not equal to 18');
+    assert.equal(18, decimals, 'Contract decimals has not been set to 18');
     const totalSupply = await token.totalSupply.call();
-    assert.equal(0, totalSupply, 'Contract totalSupply is not equal to 0');
+    assert.equal(0, totalSupply, 'Contract totalSupply has not been set to 0');
     const circulatingSupply = await token.circulatingSupply.call();
-    assert.equal(0, circulatingSupply, 'Contract circulatingSupply is not equal to 0');
+    assert.equal(0, circulatingSupply, 'Contract circulatingSupply has not been set to 0');
   });
   it("should add contribution, total supply increasing by 1000", async () => {
     const initialSupply = await token.totalSupply.call();
