@@ -3,7 +3,11 @@ pragma solidity ^0.4.11;
 import './ExpertyToken.sol';
 // multisignature contract, that is able to control
 // ethers stored in experty token contract
+<<<<<<< HEAD:contracts/MultisigExpertyLockedControl.sol
 contract MultisigExpertyLockedControl {
+=======
+contract MultisigExpertyExyControl {
+>>>>>>> origin/master:contracts/multisig-experty-locked-exy-control.sol
 
   address expertyTokenAddr;
 
@@ -26,20 +30,14 @@ contract MultisigExpertyLockedControl {
   }
   Tx[] public txs;
 
-  // 4 from 6 multisig wallet
   function MultisigExpertyLockedControl() public {
-    // 6 signatories:
-    // 3 from Bitcoin Suisse:
-    isSignatory[0x123] = true;
-    isSignatory[0x123] = true;
-    isSignatory[0x123] = true;
-    // 3 from Experty AG:
+    // 3 addresses from Experty:
     isSignatory[0x123] = true;
     isSignatory[0x123] = true;
     isSignatory[0x123] = true;
 
     // set required signatures
-    requiredSignatures = 4;
+    requiredSignatures = 2;
   }
 
   // set experty token address after deploying experty token contract
