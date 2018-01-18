@@ -3,11 +3,7 @@ pragma solidity ^0.4.11;
 import './ExpertyToken.sol';
 // multisignature contract, that is able to control
 // ethers stored in experty token contract
-<<<<<<< HEAD:contracts/MultisigExpertyLockedControl.sol
 contract MultisigExpertyLockedControl {
-=======
-contract MultisigExpertyExyControl {
->>>>>>> origin/master:contracts/multisig-experty-locked-exy-control.sol
 
   address expertyTokenAddr;
 
