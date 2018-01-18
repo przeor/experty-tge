@@ -140,6 +140,9 @@ contract ExpertyToken is ERC223Token {
 
   // allow multisig to split partner allocation
   function splitPartnersAllocation(address unlockedAddr, address addr, uint exyPerPeriod) public onlyExyMultisig onlyLocked {
+    // this two virtual addresses are reserved for locked contributions
+    require(unlockedAddr == 0x0 || unlockedAddr == 0x1);
+
     // cant split more EXY than left in unlocked allocation
     require(exyPerPeriod <= lockedContributions[unlockedAddr].exyPerPeriod);
 
