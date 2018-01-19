@@ -22,12 +22,12 @@ contract('SplittableTokenAllocation', accounts => {
     const splitPool = 0x0;
     const destAddr = accounts[0];
     await splittableTokenAllocation.proposeSplit.sendTransaction(splitPool, destAddr, 100);
-    console.log(await splittableTokenAllocation.getSplitId.sendTransaction());
-    await splittableTokenAllocation.approveSplit.sendTransaction(splitId);
 
-    //const split = await splittableTokenAllocation.splits.call(splitId);
+    const lastSplitId = (await splittableTokenAllocation.getLastSplitId.call()).toNumber();
+    await splittableTokenAllocation.approveSplit.sendTransaction(lastSplitId);
 
-    //assert.isTrue(split[IS_APPROVED_FIELD], 'Split is not approved');
+    const split = await splittableTokenAllocation.splits.call(lastSplitId);
+    assert.isTrue(split[IS_APPROVED_FIELD], 'Split is not approved');
   });
 
 });

@@ -21,11 +21,10 @@ contract SplittableTokenAllocation {
       isApproved: false,
       isExecuted: false
     }));
-    return 1;
   }
 
-  function getSplitId() public returns (uint) {
-    return 1;
+  function getLastSplitId() public view returns (uint) {
+    return splits.length - 1;
   }
   
   function approveSplit(uint splitId) public {
