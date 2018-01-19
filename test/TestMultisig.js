@@ -4,7 +4,7 @@ contract('Multisig', accounts => {
   let multisig;
 
   it('should initialize experty multisig', async () => {
-    multisig = await Multisig.new(accounts[4], accounts[1], accounts[2]);
+    multisig = await Multisig.new(accounts[0], accounts[1], accounts[2]);
 
     let isSignatory = await multisig.isSignatory.call(accounts[0]);
     assert.isTrue(isSignatory, 'Accounts[0] is not signatory');
