@@ -1,11 +1,7 @@
-const ExpertyToken = artifacts.require("./ExpertyToken.sol");
-const MultisigExpertyEthControl = artifacts.require('./MultisigExpertyEthControl.sol');
-const MultisigExpertyLockedControl = artifacts.require('./MultisigExpertyLockedControl.sol');
+const Signatures = artifacts.require("./Signatures.sol");
+const ExyToken = artifacts.require('./ExyToken.sol');
 
-module.exports = function(deployer) {
-  deployer.deploy(ExpertyToken);
-  deployer.link(ExpertyToken, MultisigExpertyEthControl);
-  deployer.link(ExpertyToken, MultisigExpertyLockedControl);
-  deployer.deploy(MultisigExpertyEthControl);
-  deployer.deploy(MultisigExpertyLockedControl);
+module.exports = function (deployer) {
+  deployer.deploy(Signatures);
+  deployer.deploy(ExyToken);
 };
