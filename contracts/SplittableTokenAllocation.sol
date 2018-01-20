@@ -43,12 +43,12 @@ contract SplittableTokenAllocation {
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
     remainingTokensPerPeriod = _totalSupply / _periods;
+    virtualAddress = _virtualAddress;
   }
 
   /**
    * Propose split method adds proposal to the splits Array.
    *
-   * @param _parentSplit       - index of object in splits which we want to split
    * @param _dest              - address of the new receiver
    * @param _tokensPerPeriod   - how many tokens we are giving to dest
    */
@@ -68,7 +68,7 @@ contract SplittableTokenAllocation {
     return splits.length - 1;
   }
 
-  function approveSplit(uint splitId, address who) public {
+  function approveSplit(uint splitId) public {
     require(!splits[splitId].isApproved);
     require(splits[splitId].proposalAddress != msg.sender);
     splits[splitId].isApproved = true;
