@@ -1,5 +1,7 @@
 pragma solidity ^0.4.11;
 
+import "./ERC223ReceivingContract.sol";
+
 /**
  * Math operations with safety checks
  */
@@ -15,14 +17,6 @@ library SafeMath {
     return c;
   }
 }
-
- /*
- * Contract that is working with ERC223 tokens
- */
-contract ERC223ReceivingContract {
-  function tokenFallback(address _from, uint _value, bytes _data) public;
-}
-
 
 contract ERC223Token {
   using SafeMath for uint;
