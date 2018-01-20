@@ -1,22 +1,7 @@
 pragma solidity ^0.4.11;
 
 import "./ERC223ReceivingContract.sol";
-
-/**
- * Math operations with safety checks
- */
-library SafeMath {
-  function sub(uint a, uint b) pure internal returns (uint) {
-    assert(b <= a);
-    return a - b;
-  }
-
-  function add(uint a, uint b) pure internal returns (uint) {
-    uint c = a + b;
-    assert(c >= a);
-    return c;
-  }
-}
+import "./SafeMath.sol";
 
 contract ERC223Token {
   using SafeMath for uint;

@@ -1,13 +1,6 @@
 pragma solidity ^0.4.4;
 
-library SafeMath {
-  function min(uint a, uint b) pure internal returns (uint) {
-    if(a > b)
-      return b;
-    else
-      return a;
-  }
-}
+import "./SafeMath.sol";
 
 contract SplittableTokenAllocation {
 
