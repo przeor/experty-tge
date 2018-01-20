@@ -6,8 +6,8 @@ contract ExyToken {
   uint public circulatingSupply;
   Signatures public signatures;
 
-  SplittableTokenAllocation public partnerTokensAllocation;
-  SplittableTokenAllocation public companyTokensAllocation;
+  SplittableTokenAllocation private partnerTokensAllocation;
+  SplittableTokenAllocation private companyTokensAllocation;
   
   /* COMPANY TOKENS */
   uint constant TOTAL_COMPANY_TOKENS = 100;
@@ -45,10 +45,18 @@ contract ExyToken {
     companyTokensAllocation.proposeSplit(_dest, _tokensPerPeriod);
   }
 
-  function approveCompanySplit(uint splitId) public onlySignaturer {
-    companyTokensAllocation.approveSplit(splitId);
+  function approveCompanySplit(address _dest) public onlySignaturer {
+    companyTokensAllocation.approveSplit(_dest);
   }
 
+  function claim() public {
+    claimCompanyTokens();
+    // claimPartnerTokens();
+  }
+
+  function claimCompanyTokens() private {
+    uint tokensToMint = companyTokensAllocation.mint(_dest);
+  }
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;

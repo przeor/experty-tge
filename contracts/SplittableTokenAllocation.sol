@@ -28,24 +28,36 @@ contract SplittableTokenAllocation {
   // Inital timestamp
   uint public initTimestamp;
 
+  // Possible split states: Proposed, Approved, Rejected
+  // Proposed is the initial state.
+  // Both Approved and Rejected are final states.
+  // The only possible transitions are:
+  // Proposed => Approved
+  // Proposed => Rejected
+  enum SplitState {
+    Proposed,
+    Approved,
+    Rejected
+  }
+
   struct SplitT {
-    // To whom we are giving tokens
-    address dest;
     // How many tokens per period we want to pass
     uint tokensPerPeriod;
-    // Was it approved by a signaturer. We use 2 of 3 multisig
-    bool isApproved;
-    // Address of person who proposed this split
+    // By whom was this split proposed. We use 2 of 3 multisig
     address proposalAddress;
     // How many times did we released tokens
     uint claimedPeriods;
+    // State of actual split.
+    SplitState splitState;
   }
 
-  SplitT[] public splits;
+  // For each address we can add exactly one possible split.
+  // If we try to add another proposal on existing address it will be rejected
+  mapping (address => SplitT) public splitOf;
 
   /**
    * SplittableTokenAllocation contructor.
-   * The most important is the remainingTokensPerPeriod variable which represents
+   * RemainingTokensPerPeriod variable which represents
    * the remaining amount of tokens to be distributed
    */
   function SplittableTokenAllocation(address _virtualAddress, uint _totalSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp) public {
@@ -66,66 +78,80 @@ contract SplittableTokenAllocation {
   function proposeSplit(address _dest, uint _tokensPerPeriod) public returns(uint) {
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
 
-    splits.push(SplitT({
-      dest: _dest,
+    splitOf[_dest] = SplitT({
       tokensPerPeriod: _tokensPerPeriod,
-      isApproved: false,
+      splitState: SplitState.Proposed,
       proposalAddress: msg.sender,
       claimedPeriods: 0
-    }));
-  }
-
-  function getLastSplitId() public view returns (uint) {
-    return splits.length - 1;
-  }
-
-  function approveSplit(uint splitId) public {
-    require(!splits[splitId].isApproved);
-    require(splits[splitId].proposalAddress != msg.sender);
-    splits[splitId].isApproved = true;
+    });
+    remainingTokensPerPeriod = remainingTokensPerPeriod - _tokensPerPeriod; // TODO safe-math
   }
 
   /**
-   * Returns how many tokens are available to mint. We need to calculate how many periods
-   * have passed.
+   * Approves the split allocation, so it can be claimed after periods
+   *
+   * @param _address - address for the split
+   */
+  function approveSplit(address _address) public {
+    require(splitOf[_address].splitState == SplitState.Proposed);
+    require(splitOf[_address].proposalAddress != msg.sender);
+    splitOf[_address].splitState = SplitState.Approved;
+  }
+
+ /**
+   * Rejects the split allocation
+   *
+   * @param _address - address for the split to be rejected
+   */
+  function rejectSplit(address _address) public {
+    require(splitOf[_address].splitState == SplitState.Proposed);
+    splitOf[_address].splitState = SplitState.Rejected;
+    remainingTokensPerPeriod = remainingTokensPerPeriod + splitOf[_address].tokensPerPeriod;
+  }
+
+  /**
+   * Returns how many tokens are available to mint.
    *
    * @param _address - address for whom we are counting tokens
    */
-  function howMuchTokensToMint(address _address) public returns (uint) {
-    uint toMint = 0;
-    for (uint i = 0; i < splits.length; i++) {
-      if (splits[i].isApproved && splits[i].dest == _address) {
-        toMint = toMint + _tokensToMint(i);//splits[i].tokensPerPeriod; // TODO count how many are available to be mint based on claimedPeriods
-      }
+  function tokensToMint(address _address) public view returns (uint) {
+    SplitT storage split = splitOf[_address];
+    if (split.splitState == SplitState.Approved) {
+      return _tokensToMint(split);
     }
-    return toMint;
-  }
-  function _tokensToMint(uint splitId) private returns (uint) {
-    // I use math min cause when elapsed periods count is heigher than periods
-    // declareted for one split we have to use subtraction from declarated periods.
-    uint minPeriods = SafeMath.min(_periodsElapsed(), periods);
-    return (minPeriods - splits[splitId].claimedPeriods) * splits[splitId].tokensPerPeriod;
+    return 0;
   }
 
-  function _periodsElapsed() public returns(uint) {
+  /*
+   * _tokensToMint returs the total amount of tokens that are ready to be minted.
+   *  From starting date initTimestamp, after each period the split.tokensPerPeriod
+   *  are available to be mint.
+   *  We calculate numberOfPeriods number from (0..periods) and then multiply it
+   *  by the number of tokens per period
+   */
+  function _tokensToMint(SplitT storage split) private view returns (uint) {
+    // I use math min cause when elapsed periods count is higher than periods
+    // declareted for one split we have to use subtraction from declarated periods.
+    uint numberOfPeriods = SafeMath.min(_periodsElapsed(), periods);
+    return (numberOfPeriods - split.claimedPeriods) * split.tokensPerPeriod;
+  }
+
+  /*
+   * _periodsElapsed returns the amount of periods that passed from initTimestampe
+   */
+  function _periodsElapsed() public view returns(uint) {
     uint periodsElapsed = ((block.timestamp - initTimestamp) / (monthsInPeriod * (1 years / 12) ));
     return periodsElapsed;
   }
   /**
-   * Counting how many tokens should we mint and then updating the splits array where we
-   * update the number of claimed periods
+   * Minting tokens and updating the claimedPeriod value for split
    *
    * @param _address - address for whom we minting
    */
-  function claim(address _address) public returns (uint) {
-    uint toMint = 0;
-    for (uint i = 0; i < splits.length; i++) {
-      if (splits[i].isApproved && splits[i].dest == _address) {
-        toMint = toMint + splits[i].tokensPerPeriod; // TODO
-        splits[i].claimedPeriods = 22; // TODO
-      }
-    }
-    return toMint;
+  function mint(address _address) public returns (uint) {
+    uint tokens = _tokensToMint(splitOf[_address]);
+    splitOf[_address].claimedPeriods = _periodsElapsed();
+    return tokens;
   }
 
 }
