@@ -1,5 +1,13 @@
 pragma solidity ^0.4.4;
 
+library SafeMath {
+  function min(uint a, uint b) pure internal returns (uint) {
+    if(a > b)
+      return b;
+    else
+      return a;
+  }
+}
 
 contract SplittableTokenAllocation {
 
@@ -93,7 +101,10 @@ contract SplittableTokenAllocation {
     return toMint;
   }
   function _tokensToMint(uint splitId) private returns (uint) {
-    return (_periodsElapsed() - splits[splitId].claimedPeriods) * splits[splitId].tokensPerPeriod;
+    // I use math min cause when elapsed periods count is heigher than periods
+    // declareted for one split we have to use subtraction from declarated periods.
+    uint minPeriods = SafeMath.min(_periodsElapsed(), periods);
+    return (minPeriods - splits[splitId].claimedPeriods) * splits[splitId].tokensPerPeriod;
   }
 
   function _periodsElapsed() public returns(uint) {
