@@ -60,11 +60,11 @@ contract SplittableTokenAllocation {
    * RemainingTokensPerPeriod variable which represents
    * the remaining amount of tokens to be distributed
    */
-  function SplittableTokenAllocation(address _virtualAddress, uint _totalSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp) public {
-    totalSupply = _totalSupply;
+  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp) public {
+    totalSupply = _allocationSupply;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
-    remainingTokensPerPeriod = _totalSupply / _periods;
+    remainingTokensPerPeriod = _allocationSupply / _periods;
     virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
   }
