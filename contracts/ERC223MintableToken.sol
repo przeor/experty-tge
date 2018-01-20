@@ -6,7 +6,7 @@ import "./SafeMath.sol";
 
 contract ERC223MintableToken is ERC223Token {
   using SafeMath for uint;
-
+  uint internal circulatingSupply;
   function mint(address to, uint value) internal {
     uint codeLength;
 
