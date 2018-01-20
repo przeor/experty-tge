@@ -48,7 +48,7 @@ contract('SplittableTokenAllocation', accounts => {
 
     const split = await partnerTokenAllocation.splits.call(lastSplitId);
     assert.isTrue(split[IS_APPROVED_FIELD], 'Split is not approved');
-    assert.equal(tokensPerPeriod, split[TOKENS_PER_PERIOD_FIELD], ' tokens per period has not been set correctly')
+    assert.equal(tokensPerPeriod, split[TOKENS_PER_PERIOD_FIELD], ' tokens per period has not been set correctly');
   });
 
   it('sholud count claimed tokens value before period has passed', async () => {
@@ -93,7 +93,7 @@ contract('SplittableTokenAllocation', accounts => {
     assert.equal(expectedTokensToMint, howMuchTokensToMint, 'Tokens to mint has not been count correctly');
   });
 
-  it('sholud count claimed tokens value after period has passed and add second split', async () => {
+  it('sholud count claimed tokens value after period has passed and add second split has been approved', async () => {
     // test partner allocation with locked tokens for 18 months
     const MOCK_INIT_TIMESTAMP = moment().subtract(20, 'months').unix();
     const partnerTokenAllocation = await SplittableTokenAllocation.new(0x0, 1000, 1, 18, MOCK_INIT_TIMESTAMP);
@@ -143,6 +143,36 @@ contract('SplittableTokenAllocation', accounts => {
     assert.isTrue(split[IS_APPROVED_FIELD], 'Split is not approved');
     const howMuchTokensToMint = (await partnerTokenAllocation.howMuchTokensToMint.call(destAddr)).toNumber();
     assert.equal(expectedTokensToMint, howMuchTokensToMint, 'Tokens to mint has not been count correctly');
+  });
+
+  it('sholud count claimed tokens value after period has passed and add second split has not been approved', async () => {
+    // test partner allocation with locked tokens for 18 months
+    const MOCK_INIT_TIMESTAMP = moment().subtract(20, 'months').unix();
+    const partnerTokenAllocation = await SplittableTokenAllocation.new(0x0, 1000, 1, 18, MOCK_INIT_TIMESTAMP);
+    const destAddr = accounts[1];
+    const transactionConfig = {
+      from: accounts[1]
+    }
+    // 1st count tokens
+    await partnerTokenAllocation.proposeSplit.sendTransaction(destAddr, 100, transactionConfig);
+
+    const lastSplitId = (await partnerTokenAllocation.getLastSplitId.call()).toNumber();
+    await partnerTokenAllocation.approveSplit.sendTransaction(lastSplitId);
+
+    const split = await partnerTokenAllocation.splits.call(lastSplitId);
+    const expectedTokensToMint = 100; // = 1 [periods] * 100 [tokensPerPeriod]
+    assert.isTrue(split[IS_APPROVED_FIELD], 'Split is not approved');
+    const howMuchTokensToMint = (await partnerTokenAllocation.howMuchTokensToMint.call(destAddr)).toNumber();
+    assert.equal(expectedTokensToMint, howMuchTokensToMint, 'Tokens to mint has not been count correctly');
+    // 2nd count tokens (not approved)
+    await partnerTokenAllocation.proposeSplit.sendTransaction(destAddr, 100, transactionConfig);
+    const lastSplitIdAfterSecondClaim = (await partnerTokenAllocation.getLastSplitId.call()).toNumber();
+
+    const secondSplit = await partnerTokenAllocation.splits.call(lastSplitIdAfterSecondClaim);
+    const expectedTokensToMintAfterSecond = 100; // = 1 [periods] * 100 [tokensPerPeriod]
+    assert.isFalse(secondSplit[IS_APPROVED_FIELD], 'Split is approved');
+    const howMuchTokensToMintSecond = (await partnerTokenAllocation.howMuchTokensToMint.call(destAddr)).toNumber();
+    assert.equal(expectedTokensToMintAfterSecond, howMuchTokensToMintSecond, 'Tokens to mint has not been count correctly');
   });
 
 
