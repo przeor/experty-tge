@@ -3,33 +3,64 @@ pragma solidity ^0.4.4;
 
 contract SplittableTokenAllocation {
 
-  struct SplitT {
-    address source;
-    address dest;
-    uint tokens;
-    bool isApproved;
-    bool isExecuted;
-  }
+  // This contract describes how the tokens are being released in time
+  // At the begining we have all tokens on the virtual address
+  // We assume the we cannot withdraw money from this vierual adress
 
-  uint public exyPerPeriod;
+  // How many distributions periods there are
   uint public periods;
-  uint public months;
+  // How long is one interval
+  uint public monthsInPeriod;
+  // Virtual address were we keep the initial tokens
+  address public virtualAddress;
+  // Total amount of remaining tokens to be distributed
+  uint public remainingTokensPerPeriod;
+  // Total amount of all tokens
+  uint public totalSupply;
+
+  struct SplitT {
+    // To whom we are giving tokens
+    address dest;
+    // How many tokens per period we want to pass
+    uint tokensPerPeriod;
+    // Was it approved by a signaturer. We use 2 of 3 multisig
+    bool isApproved;
+    // Address of person who proposed this split
+    address proposalAddress;
+    // How many times did we released tokens
+    uint claimedPeriods;
+  }
 
   SplitT[] public splits;
 
-  function SplittableTokenAllocation(uint _exyPerPeriod, uint _periods, uint _months) {
-    exyPerPeriod = _exyPerPeriod;
+  /**
+   * SplittableTokenAllocation contructor.
+   * The most important is the remainingTokensPerPeriod variable which represents
+   * the remaining amount of tokens to be distributed
+   */
+  function SplittableTokenAllocation(address _virtualAddress, uint _totalSupply, uint _periods, uint _monthsInPeriod) public {
+    totalSupply = _totalSupply;
     periods = _periods;
-    months = _months;
+    monthsInPeriod = _monthsInPeriod;
+    remainingTokensPerPeriod = _totalSupply / _periods;
   }
 
-  function proposeSplit(address splitPool, address dest, uint tokens) public returns(uint) {
+  /**
+   * Propose split method adds proposal to the splits Array.
+   *
+   * @param _parentSplit       - index of object in splits which we want to split
+   * @param _dest              - address of the new receiver
+   * @param _tokensPerPeriod   - how many tokens we are giving to dest
+   */
+  function proposeSplit(address _dest, uint _tokensPerPeriod) public returns(uint) {
+    require(_tokensPerPeriod <= remainingTokensPerPeriod);
+
     splits.push(SplitT({
-      source: splitPool,
-      dest: dest,
-      tokens: tokens,
+      dest: _dest,
+      tokensPerPeriod: _tokensPerPeriod,
       isApproved: false,
-      isExecuted: false
+      proposalAddress: msg.sender,
+      claimedPeriods: 0
     }));
   }
 
@@ -37,8 +68,42 @@ contract SplittableTokenAllocation {
     return splits.length - 1;
   }
 
-  function approveSplit(uint splitId) public {
+  function approveSplit(uint splitId, address who) public {
+    require(!splits[splitId].isApproved);
+    require(splits[splitId].proposalAddress != msg.sender);
     splits[splitId].isApproved = true;
+  }
+
+  /**
+   * Returns how many tokens are available to mint. We need to calculate how many periods
+   * have passed.
+   *
+   * @param _address - address for whom we are counting tokens
+   */
+  function howMuchTokensToMint(address _address) public returns (uint) {
+    uint toMint = 0;
+    for (uint i = 0; i < splits.length; i++) {
+      if (splits[i].isApproved && splits[i].dest == _address) {
+        toMint = toMint + splits[i].tokensPerPeriod; // TODO count how many are available to be mint based on claimedPeriods
+      }
+    }
+    return toMint;
+  }
+  /**
+   * Counting how many tokens should we mint and then updating the splits array where we
+   * update the number of claimed periods
+   *
+   * @param _address - address for whom we minting
+   */
+  function mint(address _address) public returns (uint) {
+    uint toMint = 0;
+    for (uint i = 0; i < splits.length; i++) {
+      if (splits[i].isApproved && splits[i].dest == _address) {
+        toMint = toMint + splits[i].tokensPerPeriod; // TODO
+        splits[i].claimedPeriods = 22; // TODO
+      }
+    }
+    return toMint;
   }
 
 }
