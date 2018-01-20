@@ -1,8 +1,9 @@
 pragma solidity ^0.4.11;
 import "./SplittableTokenAllocation.sol";
 import "./Signatures.sol";
+import "./ERC223Token.sol";
 
-contract ExyToken {
+contract ExyToken is ERC223Token {
   uint public circulatingSupply;
   Signatures public signatures;
 
