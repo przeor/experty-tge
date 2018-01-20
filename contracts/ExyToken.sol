@@ -50,14 +50,14 @@ contract ExyToken is ERC223Token {
     companyTokensAllocation.approveSplit(_dest);
   }
 
-  function claim() public {
-    claimCompanyTokens();
-    // claimPartnerTokens();
-  }
+  // function claim() public {
+  //   // claimCompanyTokens();
+  //   // claimPartnerTokens();
+  // }
 
-  function claimCompanyTokens() private {
-    uint tokensToMint = companyTokensAllocation.mint(_dest);
-  }
+  // function claimCompanyTokens() private {
+  //   uint tokensToMint = companyTokensAllocation.mint(_dest);
+  // }
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;
