@@ -17,6 +17,8 @@ contract SplittableTokenAllocation {
   uint public remainingTokensPerPeriod;
   // Total amount of all tokens
   uint public totalSupply;
+  // Inital timestamp
+  uint public initTimestamp;
 
   struct SplitT {
     // To whom we are giving tokens
@@ -38,12 +40,13 @@ contract SplittableTokenAllocation {
    * The most important is the remainingTokensPerPeriod variable which represents
    * the remaining amount of tokens to be distributed
    */
-  function SplittableTokenAllocation(address _virtualAddress, uint _totalSupply, uint _periods, uint _monthsInPeriod) public {
+  function SplittableTokenAllocation(address _virtualAddress, uint _totalSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp) public {
     totalSupply = _totalSupply;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
     remainingTokensPerPeriod = _totalSupply / _periods;
     virtualAddress = _virtualAddress;
+    initTimestamp = _initalTimestamp;
   }
 
   /**
@@ -84,10 +87,18 @@ contract SplittableTokenAllocation {
     uint toMint = 0;
     for (uint i = 0; i < splits.length; i++) {
       if (splits[i].isApproved && splits[i].dest == _address) {
-        toMint = toMint + splits[i].tokensPerPeriod; // TODO count how many are available to be mint based on claimedPeriods
+        toMint = toMint + _tokensToMint(i);//splits[i].tokensPerPeriod; // TODO count how many are available to be mint based on claimedPeriods
       }
     }
     return toMint;
+  }
+  function _tokensToMint(uint splitId) private returns (uint) {
+    return (_periodsElapsed() - splits[splitId].claimedPeriods) * splits[splitId].tokensPerPeriod;
+  }
+
+  function _periodsElapsed() public returns(uint) {
+    uint periodsElapsed = ((block.timestamp - initTimestamp) / (monthsInPeriod * (1 years / 12) ));
+    return periodsElapsed;
   }
   /**
    * Counting how many tokens should we mint and then updating the splits array where we
@@ -95,7 +106,7 @@ contract SplittableTokenAllocation {
    *
    * @param _address - address for whom we minting
    */
-  function mint(address _address) public returns (uint) {
+  function claim(address _address) public returns (uint) {
     uint toMint = 0;
     for (uint i = 0; i < splits.length; i++) {
       if (splits[i].isApproved && splits[i].dest == _address) {
