@@ -47,7 +47,7 @@ contract('BountyTokenAllocation', accounts => {
     assert.equal(bountyOfAddress2[BountyTFields.bountyStateField], BountyState.proposed, "Should be in proposed state");
   });
 
-  it('should accpet a bounty proposal', async () => {
+  it('should accept a bounty proposal', async () => {
     await bta.approveBountyTransfer.sendTransaction(address2);
     bountyOfAddress2 = await bta.bountyOf.call(address2);
     assert.equal(bountyOfAddress2[BountyTFields.bountyStateField], BountyState.approved, "Should be in proposed state");
