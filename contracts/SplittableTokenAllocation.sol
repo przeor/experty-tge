@@ -1,10 +1,10 @@
 pragma solidity ^0.4.4;
 
 import "./SafeMath.sol";
-
 import "./Ownable.sol";
+import "./AllocationAddressList.sol";
 
-contract SplittableTokenAllocation is Ownable {
+contract SplittableTokenAllocation is Ownable, AllocationAddressList {
 
   // This contract describes how the tokens are being released in time
   // At the begining we have all tokens on the virtual address
@@ -84,6 +84,8 @@ contract SplittableTokenAllocation is Ownable {
       proposalAddress: msg.sender,
       claimedPeriods: 0
     });
+
+    allocationAddressList.push(_dest);
     remainingTokensPerPeriod = remainingTokensPerPeriod - _tokensPerPeriod; // TODO safe-math
   }
 

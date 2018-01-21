@@ -3,7 +3,8 @@ import "./SplittableTokenAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
 
-contract ExyToken is ERC223Token {
+
+contract ExyToken is ERC223MintableToken {
   uint public circulatingSupply;
 
   Signatures private signatures;
@@ -24,6 +25,8 @@ contract ExyToken is ERC223Token {
 
   uint256 public initDate;
 
+  AllocationAddressList private allocationAddressList;
+
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
@@ -42,6 +45,10 @@ contract ExyToken is ERC223Token {
       initDate);
   }
 
+  function getCompanyAllocationListLength() public returns (uint){
+    return 5;
+  }
+
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
     companyTokensAllocation.proposeSplit(_dest, _tokensPerPeriod);
   }
@@ -50,14 +57,6 @@ contract ExyToken is ERC223Token {
     companyTokensAllocation.approveSplit(_dest);
   }
 
-  // function claim() public {
-  //   // claimCompanyTokens();
-  //   // claimPartnerTokens();
-  // }
-
-  // function claimCompanyTokens() private {
-  //   uint tokensToMint = companyTokensAllocation.mint(_dest);
-  // }
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;
