@@ -2,8 +2,9 @@ pragma solidity ^0.4.11;
 import "./SplittableTokenAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
+import "./AllocationAddressList.sol";
 
-contract ExyToken is ERC223MintableToken {
+contract ExyToken is ERC223MintableToken, AllocationAddressList {
   uint public circulatingSupply;
 
   Signatures private signatures;
@@ -24,6 +25,8 @@ contract ExyToken is ERC223MintableToken {
 
   uint256 public initDate;
 
+  AllocationAddressList private allocationAddressList;
+
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
@@ -40,10 +43,13 @@ contract ExyToken is ERC223MintableToken {
       PARTNER_PERIODS,
       MONTHS_IN_PARTNER_PERIOD,
       initDate);
+
+    allocationAddressList = new AllocationAddressList();
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
     companyTokensAllocation.proposeSplit(_dest, _tokensPerPeriod);
+    allocationAddressList.push(_dest);
   }
 
   function approveCompanySplit(address _dest) public onlySignaturer {
@@ -58,7 +64,7 @@ contract ExyToken is ERC223MintableToken {
   // function claimCompanyTokens() private {
   //   uint tokensToMint = companyTokensAllocation.mint(_dest);
   // }
-  
+
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;
