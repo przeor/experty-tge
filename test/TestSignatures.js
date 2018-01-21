@@ -1,5 +1,4 @@
 const Signatures = artifacts.require('Signatures');
-const OwnedBySignaturers = artifacts.require('OwnedBySignaturers');
 
 contract('Signatures', accounts => {
   let signatures;
