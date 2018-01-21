@@ -37,7 +37,7 @@ contract('SplittableTokenAllocation', accounts => {
     from: address4
   }
   it('should initialise splittable allocation token', async () => {
-    // test partner allocation with locked tokens for one period which lasts 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1), address0, address1, address2);
     // check that virtual address is set correctly
     const virtualAddress = await companyTokenAllocation.virtualAddress.call();
@@ -54,7 +54,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('should propose and accept split allocation', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
@@ -67,7 +67,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('sholud count claimed tokens value before period has passed', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(3), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
@@ -83,7 +83,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('sholud count claimed tokens value after period has passed', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(31), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
@@ -99,7 +99,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('should not add a second partner proposal for address', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(18), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
@@ -127,7 +127,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('sholud count claimed tokens value after period has passed many times', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(125), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
@@ -146,7 +146,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('sholud reject proposed split', async () => {
-    // test partner allocation with locked tokens for 18 months
+    // test company allocation with locked tokens for 36 periods which lasts 1 month
     const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54), address0, address1, address2);
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
