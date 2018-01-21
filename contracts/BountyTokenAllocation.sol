@@ -1,10 +1,10 @@
 pragma solidity ^0.4.4;
 
-import "./Signatures.sol";
+import "./Ownable.sol";
 
-contract BountyTokenAllocation is OwnedBySignaturers {
+contract BountyTokenAllocation is Ownable {
 
-  // This contract describes how the bounty tokens are allocated
+  // This contract describes how the bounty tokens are allocated.
   // After a bounty allocation was proposed by a signaturer, another
   // signaturer must accept this allocation. And then it can be sent
 
@@ -27,8 +27,7 @@ contract BountyTokenAllocation is OwnedBySignaturers {
 
   address public owner = msg.sender;
 
-  // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
-  function BountyTokenAllocation(int _remainingBountyTokens, address a0, address a1, address a2)  OwnedBySignaturers(a0, a1, a2) public {
+  function BountyTokenAllocation(int _remainingBountyTokens) onlyOwner public {
     remainingBountyTokens = _remainingBountyTokens;
   }
 
@@ -41,7 +40,7 @@ contract BountyTokenAllocation is OwnedBySignaturers {
     BountyState bountyState;
   }
 
-  function proposeBountyTransfer(address _dest, int _amount) public onlyBySignaturers {
+  function proposeBountyTransfer(address _dest, int _amount) public onlyOwner {
     require(_amount > 0);
     require(_amount <= remainingBountyTokens);
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
@@ -54,14 +53,13 @@ contract BountyTokenAllocation is OwnedBySignaturers {
     remainingBountyTokens = remainingBountyTokens - _amount;
   }
 
-  function approveBountyTransfer(address _dest) public onlyBySignaturers {
-    require(bountyOf[_dest].proposalAddress != msg.sender);
+  function approveBountyTransfer(address _dest) public onlyOwner {
     require(bountyOf[_dest].bountyState == BountyState.Proposed);
 
     bountyOf[_dest].bountyState = BountyState.Approved;
   }
 
-  function rejectBountyTransfer(address _dest) public onlyBySignaturers {
+  function rejectBountyTransfer(address _dest) public onlyOwner {
     require(bountyOf[_dest].bountyState == BountyState.Proposed);
 
     bountyOf[_dest].bountyState = BountyState.Rejected;

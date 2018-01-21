@@ -2,9 +2,9 @@ pragma solidity ^0.4.4;
 
 import "./SafeMath.sol";
 
-import "./Signatures.sol";
+import "./Ownable.sol";
 
-contract SplittableTokenAllocation is OwnedBySignaturers {
+contract SplittableTokenAllocation is Ownable {
 
   // This contract describes how the tokens are being released in time
   // At the begining we have all tokens on the virtual address
@@ -56,7 +56,7 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    * the remaining amount of tokens to be distributed
    */
   // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
-  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp, address a0, address a1, address a2)  OwnedBySignaturers(a0, a1, a2) public {
+  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
     totalSupply = _allocationSupply;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
@@ -71,7 +71,7 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    * @param _dest              - address of the new receiver
    * @param _tokensPerPeriod   - how many tokens we are giving to dest
    */
-  function proposeSplit(address _dest, uint _tokensPerPeriod) public onlyBySignaturers {
+  function proposeSplit(address _dest, uint _tokensPerPeriod) public onlyOwner {
     require(_tokensPerPeriod > 0);
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
     // In solidity there is no "exist" method on a map key.
@@ -92,9 +92,8 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    *
    * @param _address - address for the split
    */
-  function approveSplit(address _address) public onlyBySignaturers {
+  function approveSplit(address _address) public onlyOwner {
     require(splitOf[_address].splitState == SplitState.Proposed);
-    require(splitOf[_address].proposalAddress != msg.sender);
     splitOf[_address].splitState = SplitState.Approved;
   }
 
@@ -103,7 +102,7 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    *
    * @param _address - address for the split to be rejected
    */
-  function rejectSplit(address _address) public onlyBySignaturers {
+  function rejectSplit(address _address) public onlyOwner {
     require(splitOf[_address].splitState == SplitState.Proposed);
     splitOf[_address].splitState = SplitState.Rejected;
     remainingTokensPerPeriod = remainingTokensPerPeriod + splitOf[_address].tokensPerPeriod;
@@ -148,7 +147,7 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    *
    * @param _address - address for whom we minting
    */
-  function mint(address _address) public returns (uint) {
+  function mint(address _address) public onlyOwner returns (uint) {
     uint tokens = _tokensToMint(splitOf[_address]);
     splitOf[_address].claimedPeriods = _periodsElapsed();
     return tokens;

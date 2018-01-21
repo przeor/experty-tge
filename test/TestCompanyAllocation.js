@@ -14,7 +14,7 @@ const SplittableTokenAllocation = artifacts.require('SplittableTokenAllocation')
 const SplitTFields = {
   tokensPerField: 0,
   proposalAddress: 1,
-  claimedPeriods:2,
+  claimedPeriods: 2,
   state: 3
 }
 
@@ -27,23 +27,17 @@ const SplitState = {
 const daysAgo = (nrOfDays) =>
   moment().subtract(nrOfDays, 'days').unix();
 
-contract('SplittableTokenAllocation', accounts => {
-  const address0 = accounts[0];
+contract('Test company tokens alloctions', accounts => {
   const address1 = accounts[1];
   const address2 = accounts[2];
   const address3 = accounts[3];
-  const address4 = accounts[4];
-  const address5 = accounts[5];
   // We are adding fromAddress object to the web3 functions (call and sendTransaction) to change the msg.sender
   const fromAddress1 = {
     from: address1
   }
-  const fromAddress4 = {
-    from: address4
-  }
   it('should initialise splittable allocation token', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1));
     // check that virtual address is set correctly
     const virtualAddress = await companyTokenAllocation.virtualAddress.call();
     assert.equal(virtualAddress, 0x0, 'Virtual address has not been set correctly');
@@ -60,10 +54,10 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('should propose and accept split allocation', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(1));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
@@ -73,10 +67,10 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('sholud count claimed tokens value before period has passed', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(3), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(3));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
@@ -89,10 +83,10 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('sholud count claimed tokens value after period has passed', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(31), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(31));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
@@ -105,14 +99,14 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('should not add a second partner proposal for address', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(18), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(18));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+      await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     } catch (error) {
       err = error
     }
@@ -120,7 +114,7 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('should not add a partner proposal when there are not enough tokens to allocate', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 100, 1, 18, daysAgo(20), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 100, 1, 18, daysAgo(20));
     // Testing if an error appears
     let err = null
     try {
@@ -133,10 +127,10 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('sholud count claimed tokens value after period has passed many times', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(125), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(125));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
@@ -152,10 +146,10 @@ contract('SplittableTokenAllocation', accounts => {
 
   it('sholud reject proposed split', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 month
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
-    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod, fromAddress1);
+    await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
     await companyTokenAllocation.rejectSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
@@ -163,22 +157,23 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('should not invoke company approval because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54));
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.approveSplit.sendTransaction(address5, fromAddress4);
+      await companyTokenAllocation.approveSplit.sendTransaction(address5, fromAddress1);
     } catch (error) {
       err = error
     }
     assert.ok(err instanceof Error);
   });
+
   it('should not invoke company reject because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54));
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.rejectSplit.sendTransaction(address5, fromAddress4);
+      await companyTokenAllocation.rejectSplit.sendTransaction(address2, fromAddress1);
     } catch (error) {
       err = error
     }
@@ -186,11 +181,11 @@ contract('SplittableTokenAllocation', accounts => {
   });
 
   it('should not invoke company proposal because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54), address0, address1, address2);
+    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, daysAgo(54));
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.proposeSplit.sendTransaction(address4, 200, fromAddress4);
+      await companyTokenAllocation.proposeSplit.sendTransaction(address3, 200, fromAddress1);
     } catch (error) {
       err = error
     }

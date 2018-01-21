@@ -21,8 +21,4 @@ contract('Signatures', accounts => {
 
   });
 
-  it('should initialize owned by signatures contract', async () => {
-    ownedBySignaturers = await OwnedBySignaturers.new(accounts[0], accounts[1], accounts[2]);
-  });
-
 });
