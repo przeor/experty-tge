@@ -56,11 +56,11 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * the remaining amount of tokens to be distributed
    */
   // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
-  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
-    totalSupply = _allocationSupply;
+  function SplittableTokenAllocation(address _virtualAddress, uint _tokensPerPeriod, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
+    totalSupply = _tokensPerPeriod * _periods;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
-    remainingTokensPerPeriod = _allocationSupply / _periods;
+    remainingTokensPerPeriod = _tokensPerPeriod;
     virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
   }

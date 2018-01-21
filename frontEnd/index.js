@@ -1,16 +1,3 @@
-const Web3 = require('web3');
-const ABI = '';
-const PROVIDER = '';
-const ADDRESS = '';
-// const web3 = new Web3(new Web3.providers.HttpProvider(HTTP_PROVIDER));
-// splittableTokenInstance = new web3.eth.Contract(ABI, ADDRESS);
-
-const SplitTFields = {
-  tokensPerField: 0,
-  proposalAddress: 1,
-  claimedPeriods: 2,
-  state: 3
-}
 
 const mockSplitElement = {
   address: '0x9b4f4e32c9c825b035f127ddcd086e06ddca3f69',
@@ -75,4 +62,13 @@ fullFillSplittableTable('tkn-company-allocation-tbody', mockCompanyAllocationRes
 fullFillSplittableTable('tkn-partner-allocation-tbody', mockPartnerAllocationResponse);
 fullFillBountyTable('tkn-bounty-allocation-tbody', mockBountyResponse);
 
+const Web3 = require('web3');
 
+// const web3 = new Web3(new Web3.providers.HttpProvider(HTTP_PROVIDER));
+// splittableTokenInstance = new web3.eth.Contract(ABI, ADDRESS);
+
+fetch('contracts/ExyToken.json').then(res => {
+  const ABI = res;
+  const PROVIDER = '';
+  const ADDRESS = '';
+});
