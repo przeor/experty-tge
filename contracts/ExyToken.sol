@@ -3,7 +3,7 @@ import "./SplittableTokenAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
 
-contract ExyToken is ERC223Token {
+contract ExyToken is ERC223MintableToken {
   uint public circulatingSupply;
 
   Signatures private signatures;
@@ -58,6 +58,7 @@ contract ExyToken is ERC223Token {
   // function claimCompanyTokens() private {
   //   uint tokensToMint = companyTokensAllocation.mint(_dest);
   // }
+  
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;
