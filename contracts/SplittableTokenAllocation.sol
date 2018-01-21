@@ -2,7 +2,9 @@ pragma solidity ^0.4.4;
 
 import "./SafeMath.sol";
 
-contract SplittableTokenAllocation {
+import "./Signatures.sol";
+
+contract SplittableTokenAllocation is OwnedBySignaturers {
 
   // This contract describes how the tokens are being released in time
   // At the begining we have all tokens on the virtual address
@@ -53,7 +55,8 @@ contract SplittableTokenAllocation {
    * RemainingTokensPerPeriod variable which represents
    * the remaining amount of tokens to be distributed
    */
-  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp) public {
+    // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
+  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp, address a0, address a1, address a2)  OwnedBySignaturers(a0, a1, a2) public {
     totalSupply = _allocationSupply;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
@@ -68,7 +71,7 @@ contract SplittableTokenAllocation {
    * @param _dest              - address of the new receiver
    * @param _tokensPerPeriod   - how many tokens we are giving to dest
    */
-  function proposeSplit(address _dest, uint _tokensPerPeriod) public returns(uint) {
+  function proposeSplit(address _dest, uint _tokensPerPeriod) public onlyBySignaturers {
     require(_tokensPerPeriod > 0);
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
     require(splitOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
@@ -87,7 +90,7 @@ contract SplittableTokenAllocation {
    *
    * @param _address - address for the split
    */
-  function approveSplit(address _address) public {
+  function approveSplit(address _address) public onlyBySignaturers {
     require(splitOf[_address].splitState == SplitState.Proposed);
     require(splitOf[_address].proposalAddress != msg.sender);
     splitOf[_address].splitState = SplitState.Approved;
@@ -98,7 +101,7 @@ contract SplittableTokenAllocation {
    *
    * @param _address - address for the split to be rejected
    */
-  function rejectSplit(address _address) public {
+  function rejectSplit(address _address) public onlyBySignaturers {
     require(splitOf[_address].splitState == SplitState.Proposed);
     splitOf[_address].splitState = SplitState.Rejected;
     remainingTokensPerPeriod = remainingTokensPerPeriod + splitOf[_address].tokensPerPeriod;

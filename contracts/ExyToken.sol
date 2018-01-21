@@ -26,20 +26,28 @@ contract ExyToken is ERC223Token {
 
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
     initDate = block.timestamp;
-    signatures = new Signatures(signaturer0, signaturer1, signaturer2); 
+
     partnerTokensAllocation = new SplittableTokenAllocation(
       COMPANY_TOKENS_VIRTUAL_ADDRESS,
       TOTAL_COMPANY_TOKENS,
       COMPANY_PERIODS,
       MONTHS_IN_COMPPANY_PERIOD,
-      initDate);
+      initDate,
+      signaturer0,
+      signaturer1,
+      signaturer2
+    );
 
     companyTokensAllocation = new SplittableTokenAllocation(
       PARTNER_TOKENS_VIRTUAL_ADDRESS,
       TOTAL_PARTNER_TOKENS,
       PARTNER_PERIODS,
       MONTHS_IN_PARTNER_PERIOD,
-      initDate);
+      initDate,
+      signaturer0,
+      signaturer1,
+      signaturer2
+    );
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
