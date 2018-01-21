@@ -1,4 +1,5 @@
 const Signatures = artifacts.require('Signatures');
+const OwnedBySignaturers = artifacts.require('OwnedBySignaturers');
 
 contract('Signatures', accounts => {
   let signatures;
@@ -18,6 +19,10 @@ contract('Signatures', accounts => {
     existSignature = await signatures.exist.call(accounts[3]);
     assert.isFalse(existSignature, 'accounts[3] should not be a signatory');
 
+  });
+
+  it('should initialize owned by signatures contract', async () => {
+    ownedBySignaturers = await OwnedBySignaturers.new(accounts[0], accounts[1], accounts[2]);
   });
 
 });
