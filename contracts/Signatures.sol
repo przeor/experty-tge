@@ -19,3 +19,14 @@ contract Signatures {
   }
 
 }
+
+contract OwnedBySignaturers {
+  Signatures signatures;
+  function OwnedBySignaturers(address a0, address a1, address a2) public {
+    signatures = new Signatures(a0, a1, a2);
+  }
+  modifier onlyBySignaturers {
+    require(signatures.exist(msg.sender));
+    _;
+  }
+}
