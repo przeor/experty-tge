@@ -30,9 +30,7 @@ contract BountyTokenAllocation {
   }
 
   struct BountyAllocationT {
-    // To whom sent bounty
-    address dest;
-    // How many tokens send him ot her
+    // How many tokens send him or her
     int amount;
     // By whom was this allocation proposed
     address proposalAddress;
@@ -46,7 +44,6 @@ contract BountyTokenAllocation {
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
 
     bountyOf[_dest] = BountyAllocationT({
-      dest: _dest,
       amount: _amount,
       proposalAddress: msg.sender,
       bountyState: BountyState.Proposed

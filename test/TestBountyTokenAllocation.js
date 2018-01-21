@@ -11,10 +11,9 @@ const BountyTokenAllocation = artifacts.require('BountyTokenAllocation');
  */
 
 const BountyTFields = {
-  destField: 0,
-  amountField: 1,
-  proposalAddressField: 2,
-  bountyStateField: 3
+  amountField: 0,
+  proposalAddressField: 1,
+  bountyStateField: 2
 }
 
 const BountyState = {
@@ -42,7 +41,6 @@ contract('BountyTokenAllocation', accounts => {
   it('should add a bounty proposal', async () => {
     await bta.proposeBountyTransfer.sendTransaction(address2, 100);
     let bountyOfAddress2 = await bta.bountyOf.call(address2);
-    assert.equal(bountyOfAddress2[BountyTFields.destField], address2, "Should set bounty receiver address");
     assert.equal(bountyOfAddress2[BountyTFields.amountField], 100, "Should set bounty amount");
     assert.equal(bountyOfAddress2[BountyTFields.proposalAddressField], address0, "Should set bounty proposal address");
     assert.equal(bountyOfAddress2[BountyTFields.bountyStateField], BountyState.proposed, "Should be in proposed state");
