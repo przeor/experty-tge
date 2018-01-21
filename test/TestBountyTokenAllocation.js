@@ -33,9 +33,12 @@ contract('BountyTokenAllocation', accounts => {
   const fromAddress1 = {
     from: address1
   }
+  const fromAddress4 = {
+    from: address4
+  }
   it('should initialize bounty token allocation', async () => {
     const TOTAL_BOUNTY_TOKENS = 300;
-    bta = await BountyTokenAllocation.new(TOTAL_BOUNTY_TOKENS);
+    bta = await BountyTokenAllocation.new(TOTAL_BOUNTY_TOKENS, address0, address1, address2);
   });
 
   it('should add a bounty proposal', async () => {
@@ -85,5 +88,38 @@ contract('BountyTokenAllocation', accounts => {
     await bta.proposeBountyTransfer.sendTransaction(address5, 200);
     const bountyOfAddress5 = await bta.bountyOf.call(address5);
     assert.equal(bountyOfAddress5[BountyTFields.bountyStateField], BountyState.proposed, "Should be in rejected state");
+  });
+
+  it('should not invoke bounty approval because I am not a signaturer', async () => {
+    // Testing if an error appears
+    let err = null
+    try {
+      await bta.approveBountyTransfer.sendTransaction(address5, fromAddress4);
+    } catch (error) {
+      err = error
+    }
+    assert.ok(err instanceof Error);
+  });
+
+  it('should not invoke bounty reject because I am not a signaturer', async () => {
+    // Testing if an error appears
+    let err = null
+    try {
+      await bta.rejectBountyTransfer.sendTransaction(address5, fromAddress4);
+    } catch (error) {
+      err = error
+    }
+    assert.ok(err instanceof Error);
+  });
+
+  it('should not invoke bounty proposal because I am not a signaturer', async () => {
+    // Testing if an error appears
+    let err = null
+    try {
+      await bta.proposeBountyTransfer.sendTransaction(address4, 200, fromAddress4);
+    } catch (error) {
+      err = error
+    }
+    assert.ok(err instanceof Error);
   });
 });

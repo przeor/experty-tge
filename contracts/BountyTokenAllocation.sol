@@ -1,6 +1,8 @@
 pragma solidity ^0.4.4;
 
-contract BountyTokenAllocation {
+import "./Signatures.sol";
+
+contract BountyTokenAllocation is OwnedBySignaturers {
 
   // This contract describes how the bounty tokens are allocated
   // After a bounty allocation was proposed by a signaturer, another
@@ -25,7 +27,8 @@ contract BountyTokenAllocation {
 
   address public owner = msg.sender;
 
-  function BountyTokenAllocation(int _remainingBountyTokens) public {
+  // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
+  function BountyTokenAllocation(int _remainingBountyTokens, address a0, address a1, address a2)  OwnedBySignaturers(a0, a1, a2) public {
     remainingBountyTokens = _remainingBountyTokens;
   }
 
@@ -38,7 +41,7 @@ contract BountyTokenAllocation {
     BountyState bountyState;
   }
 
-  function proposeBountyTransfer(address _dest, int _amount) public {
+  function proposeBountyTransfer(address _dest, int _amount) public onlyBySignaturers {
     require(_amount > 0);
     require(_amount <= remainingBountyTokens);
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
@@ -51,14 +54,14 @@ contract BountyTokenAllocation {
     remainingBountyTokens = remainingBountyTokens - _amount;
   }
 
-  function approveBountyTransfer(address _dest) public {
+  function approveBountyTransfer(address _dest) public onlyBySignaturers {
     require(bountyOf[_dest].proposalAddress != msg.sender);
     require(bountyOf[_dest].bountyState == BountyState.Proposed);
 
     bountyOf[_dest].bountyState = BountyState.Approved;
   }
 
-  function rejectBountyTransfer(address _dest) public {
+  function rejectBountyTransfer(address _dest) public onlyBySignaturers {
     require(bountyOf[_dest].bountyState == BountyState.Proposed);
 
     bountyOf[_dest].bountyState = BountyState.Rejected;
