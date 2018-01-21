@@ -11,12 +11,17 @@ const SplittableTokenAllocation = artifacts.require('SplittableTokenAllocation')
  * }
  */
 
-
 const SplitTFields = {
   tokensPerField: 0,
   proposalAddress: 1,
   claimedPeriods:2,
   state: 3
+}
+
+const SplitState = {
+  proposed: 0,
+  approved: 1,
+  rejected: 2
 }
 
 const daysAgo = (nrOfDays) =>
@@ -62,7 +67,7 @@ contract('SplittableTokenAllocation', accounts => {
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
-    assert.equal(split[SplitTFields.state], 1, 'Split is not approved');
+    assert.equal(split[SplitTFields.state], SplitState.approved, 'Split is not approved');
     assert.equal(tokensPerPeriod, split[SplitTFields.tokensPerField], 'Tokens per period has not been set correctly');
   });
 
@@ -75,7 +80,7 @@ contract('SplittableTokenAllocation', accounts => {
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
-    assert.equal(split[SplitTFields.state], 1, 'Split is not approved');
+    assert.equal(split[SplitTFields.state], SplitState.approved, 'Split is not approved');
     assert.equal(tokensPerPeriod, split[SplitTFields.tokensPerField], 'Tokens per period has not been set correctly');
     const expectedTokensToMint = 0;
     const tokensToMint = (await companyTokenAllocation.tokensToMint.call(destAddr)).toNumber();
@@ -91,7 +96,7 @@ contract('SplittableTokenAllocation', accounts => {
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
-    assert.equal(split[SplitTFields.state], 1, 'Split is not approved');
+    assert.equal(split[SplitTFields.state], SplitState.approved, 'Split is not approved');
     assert.equal(tokensPerPeriod, split[SplitTFields.tokensPerField], 'Tokens per period has not been set correctly');
     const expectedTokensToMint = 100;
     const tokensToMint = (await companyTokenAllocation.tokensToMint.call(destAddr)).toNumber();
@@ -135,7 +140,7 @@ contract('SplittableTokenAllocation', accounts => {
     await companyTokenAllocation.approveSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
-    assert.equal(split[SplitTFields.state], 1, 'Split is not approved');
+    assert.equal(split[SplitTFields.state], SplitState.approved, 'Split is not approved');
     assert.equal(tokensPerPeriod, split[SplitTFields.tokensPerField], 'Tokens per period has not been set correctly');
     // 4 periods passed - 125 days means 4 months and 3 days
     const expectedTokensToMint = 400;
@@ -154,7 +159,7 @@ contract('SplittableTokenAllocation', accounts => {
     await companyTokenAllocation.rejectSplit.sendTransaction(destAddr);
     const split = await companyTokenAllocation.splitOf.call(destAddr);
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
-    assert.equal(split[SplitTFields.state], 2, 'Split is not rejected');
+    assert.equal(split[SplitTFields.state], SplitState.rejected, 'Split is not rejected');
   });
 
   it('should not invoke company approval because I am not a signaturer', async () => {
@@ -162,7 +167,7 @@ contract('SplittableTokenAllocation', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.approveBountyTransfer.sendTransaction(address5, fromAddress4);
+      await companyTokenAllocation.approveSplit.sendTransaction(address5, fromAddress4);
     } catch (error) {
       err = error
     }
@@ -173,7 +178,7 @@ contract('SplittableTokenAllocation', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.rejectBountyTransfer.sendTransaction(address5, fromAddress4);
+      await companyTokenAllocation.rejectSplit.sendTransaction(address5, fromAddress4);
     } catch (error) {
       err = error
     }
@@ -185,7 +190,7 @@ contract('SplittableTokenAllocation', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await companyTokenAllocation.proposeBountyTransfer.sendTransaction(address4, 200, fromAddress4);
+      await companyTokenAllocation.proposeSplit.sendTransaction(address4, 200, fromAddress4);
     } catch (error) {
       err = error
     }

@@ -55,7 +55,7 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
    * RemainingTokensPerPeriod variable which represents
    * the remaining amount of tokens to be distributed
    */
-    // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
+  // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
   function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp, address a0, address a1, address a2)  OwnedBySignaturers(a0, a1, a2) public {
     totalSupply = _allocationSupply;
     periods = _periods;
@@ -74,7 +74,9 @@ contract SplittableTokenAllocation is OwnedBySignaturers {
   function proposeSplit(address _dest, uint _tokensPerPeriod) public onlyBySignaturers {
     require(_tokensPerPeriod > 0);
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
-    require(splitOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
+    // In solidity there is no "exist" method on a map key.
+    // We can't overwrite existing proposal, so we are checking if it is the default value (0x0)
+    require(splitOf[_dest].proposalAddress == 0x0);
 
     splitOf[_dest] = SplitT({
       tokensPerPeriod: _tokensPerPeriod,
