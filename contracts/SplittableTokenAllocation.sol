@@ -69,7 +69,9 @@ contract SplittableTokenAllocation {
    * @param _tokensPerPeriod   - how many tokens we are giving to dest
    */
   function proposeSplit(address _dest, uint _tokensPerPeriod) public returns(uint) {
+    require(_tokensPerPeriod > 0);
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
+    require(splitOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
 
     splitOf[_dest] = SplitT({
       tokensPerPeriod: _tokensPerPeriod,
