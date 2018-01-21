@@ -1,40 +1,32 @@
-table.redTable {
-  border: 2px solid #A40808;
-  background-color: #EEE7DB;
-  width: 100%;
-  text-align: center;
-  border-collapse: collapse;
-}
-table.redTable td, table.redTable th {
-  border: 1px solid #AAAAAA;
-  padding: 3px 2px;
-}
-table.redTable tbody td {
-  font-size: 13px;
-}
-table.redTable tr:nth-child(even) {
-  background: #F5C8BF;
-}
-table.redTable thead {
-  background: #A40808;
-}
-table.redTable thead th {
-  font-size: 19px;
-  font-weight: bold;
-  color: #FFFFFF;
-  text-align: center;
-  border-left: 2px solid #A40808;
-}
-table.redTable thead th:first-child {
-  border-left: none;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: #fafafa;
 }
 
-table.redTable tfoot {
-  font-size: 13px;
-  font-weight: bold;
-  color: #FFFFFF;
-  background: #A40808;
+.tkn-table-wrapper {
+  margin: 3rem 1rem;
 }
-table.redTable tfoot td {
-  font-size: 13px;
+
+.tkn-table-wrapper table {
+  width: 100%;
+  margin: 1rem 0;
+  text-align: center;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.tkn-table-wrapper table tr * {
+  border: .1rem solid #000;
+}
+
+.tkn-table-wrapper table tr *:first-child,
+.tkn-table-wrapper table tr *:last-child {
+  width: 10rem;
+}
+
+.tkn-table-wrapper table tr th {
+  background: #e0e0e0;
+  min-width: 200px;
 }
