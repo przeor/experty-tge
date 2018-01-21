@@ -1,10 +1,10 @@
 pragma solidity ^0.4.4;
 
 import "./SafeMath.sol";
-
 import "./Ownable.sol";
+import "./AllocationAddressList.sol";
 
-contract SplittableTokenAllocation is Ownable {
+contract SplittableTokenAllocation is Ownable, AllocationAddressList {
 
   // This contract describes how the tokens are being released in time
   // At the begining we have all tokens on the virtual address
@@ -50,6 +50,8 @@ contract SplittableTokenAllocation is Ownable {
   // If we try to add another proposal on existing address it will be rejected
   mapping (address => SplitT) public splitOf;
 
+  AllocationAddressList private allocationAddressList;
+
   /**
    * SplittableTokenAllocation contructor.
    * RemainingTokensPerPeriod variable which represents
@@ -63,6 +65,7 @@ contract SplittableTokenAllocation is Ownable {
     remainingTokensPerPeriod = _allocationSupply / _periods;
     virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
+    allocationAddressList = new AllocationAddressList();
   }
 
   /**
@@ -95,6 +98,7 @@ contract SplittableTokenAllocation is Ownable {
   function approveSplit(address _address) public onlyOwner {
     require(splitOf[_address].splitState == SplitState.Proposed);
     splitOf[_address].splitState = SplitState.Approved;
+    allocationAddressList.push(_address);
   }
 
  /**

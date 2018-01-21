@@ -1,8 +1,9 @@
 pragma solidity ^0.4.4;
 
 import "./Ownable.sol";
+import "./AllocationAddressList.sol";
 
-contract BountyTokenAllocation is Ownable {
+contract BountyTokenAllocation is Ownable, AllocationAddressList {
 
   // This contract describes how the bounty tokens are allocated.
   // After a bounty allocation was proposed by a signaturer, another
@@ -27,8 +28,11 @@ contract BountyTokenAllocation is Ownable {
 
   address public owner = msg.sender;
 
+  AllocationAddressList private allocationAddressList;
+
   function BountyTokenAllocation(int _remainingBountyTokens) onlyOwner public {
     remainingBountyTokens = _remainingBountyTokens;
+    allocationAddressList = new AllocationAddressList();
   }
 
   struct BountyAllocationT {
@@ -57,6 +61,7 @@ contract BountyTokenAllocation is Ownable {
     require(bountyOf[_dest].bountyState == BountyState.Proposed);
 
     bountyOf[_dest].bountyState = BountyState.Approved;
+    allocationAddressList.push(_dest);
   }
 
   function rejectBountyTransfer(address _dest) public onlyOwner {
