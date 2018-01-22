@@ -89,6 +89,9 @@ contract ExyToken is ERC223MintableToken {
 
     // minting marketing cost tokens
     mint(MARKETING_COST_ADDRESS, MARKETING_COST_TOKENS);
+
+    // minting ICO tokens
+    mint(ICO_TOKENS_ADDRESS, ICO_TOKENS);
   }
 
   function getCompanyAllocationListLength() public returns (uint) {
