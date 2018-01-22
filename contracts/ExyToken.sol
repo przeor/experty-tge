@@ -11,7 +11,7 @@ contract ExyToken is ERC223MintableToken {
   Signatures private signatures;
   SplittableTokenAllocation private partnerTokensAllocation;
   SplittableTokenAllocation private companyTokensAllocation;
-  
+
   /* COMPANY TOKENS */
   uint constant TOTAL_COMPANY_TOKENS = 100;
   address constant COMPANY_TOKENS_VIRTUAL_ADDRESS = 0x0;

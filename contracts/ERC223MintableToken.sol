@@ -25,6 +25,6 @@ contract ERC223MintableToken is ERC223Token {
     }
     Mint(to, value);
   }
-  
+
   event Mint(address indexed to, uint value);
 }
