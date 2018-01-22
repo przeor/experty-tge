@@ -14,18 +14,56 @@ contract ExyToken is ERC223MintableToken {
   SplittableTokenAllocation private companyTokensAllocation;
   BountyTokenAllocation private bountyTokensAllocation;
 
-  /* COMPANY TOKENS */
-  uint constant COMPANY_TOKENS_PER_PERIOD = 100;
-  uint constant COMPANY_PERIODS = 1;
-  uint constant MINUTES_IN_COMPPANY_PERIOD = 1;
 
-  /* PARTNER TOKENS */
+  /*
+   * ICO TOKENS
+   * 33%
+   *
+   * Ico tokens are sent to the ICO_TOKEN_ADDRESS immediately
+   * after ExyToken initialization
+   */ 
+  uint constant ICO_TOKENS = 1000;
+  address constant ICO_TOKENS_ADDRESS = 0x123;
+
+  /*
+   * COMPANY TOKENS
+   * 33%
+   *
+   * Company tokens are being distrubited in 36 months
+   * Total tokens = COMPANY_TOKENS_PER_PERIOD * COMPANY_PERIODS
+   */
+  uint constant COMPANY_TOKENS_PER_PERIOD = 100;
+  uint constant COMPANY_PERIODS = 36;
+  uint constant MINUTES_IN_COMPANY_PERIOD = 1; //1 years / 12 / 1 minutes;
+
+  /*
+   * PARTNER TOKENS
+   * 30%
+   *
+   * Company tokens are avaialable after 18 months
+   * Total tokens = PARTNER_TOKENS_PER_PERIOD * PARTNER_PERIODS
+   */ 
   uint constant PARTNER_TOKENS_PER_PERIOD = 100;
   uint constant PARTNER_PERIODS = 1;
-  uint constant MINUTES_IN_PARTNER_PERIOD = 1;
+  uint constant MINUTES_IN_PARTNER_PERIOD = 1; //MINUTES_IN_COMPANY_PERIOD * 18;
 
-  /* BOUNTY TOKENS */
+  /*
+   * BOUNTY TOKENS
+   * 30%
+   *
+   * Bounty tokens can be sent immediately after initialization
+   */ 
   uint constant BOUNTY_TOKENS = 1000;
+
+  /*
+   * MARKETING COST TOKENS 
+   * 1%
+   *
+   * Tokens are sent to the MARKETING_COST_ADDRESS immediately
+   * after ExyToken initialization
+   */ 
+  uint constant MARKETING_COST_TOKENS = 10;
+  address constant MARKETING_COST_ADDRESS = 0xdaF3c8d1B8E2d79D4ff7A0B3173Bea847549ED3e;
 
   uint256 public initDate;
 
@@ -37,7 +75,7 @@ contract ExyToken is ERC223MintableToken {
     partnerTokensAllocation = new SplittableTokenAllocation(
       COMPANY_TOKENS_PER_PERIOD,
       COMPANY_PERIODS,
-      MINUTES_IN_COMPPANY_PERIOD,
+      MINUTES_IN_COMPANY_PERIOD,
       initDate);
 
     companyTokensAllocation = new SplittableTokenAllocation(
@@ -49,6 +87,9 @@ contract ExyToken is ERC223MintableToken {
     bountyTokensAllocation = new BountyTokenAllocation(
       BOUNTY_TOKENS
     );
+
+    // minting marketing cost tokens
+    mint(MARKETING_COST_ADDRESS, MARKETING_COST_TOKENS);
   }
 
   function getCompanyAllocationListLength() public returns (uint) {
@@ -73,15 +114,15 @@ contract ExyToken is ERC223MintableToken {
     companyTokensAllocation.approveSplit(msg.sender, _dest);
   }
   function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    partnerTokensAllocation.proposeSplit(_dest, _tokensPerPeriod);
+    partnerTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
   }
   function approvePartnerSplit(address _dest) public onlySignaturer {
-    partnerTokensAllocation.approveSplit(_dest);
+    partnerTokensAllocation.approveSplit(msg.sender, _dest);
   }
-  function proposeBountyTransfer(address _dest, uint _amount) public {
+  function proposeBountyTransfer(address _dest, uint _amount) public onlySignaturer {
     bountyTokensAllocation.proposeBountyTransfer(_dest, _amount);
   }
-  function approveBountyTransfer(address _dest) public {
+  function approveBountyTransfer(address _dest) public onlySignaturer {
     bountyTokensAllocation.approveBountyTransfer(_dest);
   }
 
