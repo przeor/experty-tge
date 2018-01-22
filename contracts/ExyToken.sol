@@ -4,6 +4,7 @@ import "./SplittableTokenAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
 import "./SplitTypes.sol";
+import "./BountyTokenAllocation.sol";
 
 contract ExyToken is ERC223MintableToken {
   uint public circulatingSupply;
@@ -11,6 +12,7 @@ contract ExyToken is ERC223MintableToken {
   Signatures private signatures;
   SplittableTokenAllocation private partnerTokensAllocation;
   SplittableTokenAllocation private companyTokensAllocation;
+  BountyTokenAllocation private bountyTokensAllocation;
 
   /* COMPANY TOKENS */
   uint constant COMPANY_TOKENS_PER_PERIOD = 100;
@@ -21,6 +23,9 @@ contract ExyToken is ERC223MintableToken {
   uint constant PARTNER_TOKENS_PER_PERIOD = 100;
   uint constant PARTNER_PERIODS = 1;
   uint constant MINUTES_IN_PARTNER_PERIOD = 1;
+
+  /* BOUNTY TOKENS */
+  uint constant BOUNTY_TOKENS = 1000;
 
   uint256 public initDate;
 
@@ -40,6 +45,10 @@ contract ExyToken is ERC223MintableToken {
       PARTNER_PERIODS,
       MINUTES_IN_PARTNER_PERIOD,
       initDate);
+
+    bountyTokensAllocation = new BountyTokenAllocation(
+      BOUNTY_TOKENS
+    );
   }
 
   function getCompanyAllocationListLength() public returns (uint) {
@@ -63,6 +72,18 @@ contract ExyToken is ERC223MintableToken {
 
   function approveCompanySplit(address _dest) public onlySignaturer {
     companyTokensAllocation.approveSplit(_dest);
+  }
+  function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    partnerTokensAllocation.proposeSplit(_dest, _tokensPerPeriod);
+  }
+  function approvePartnerSplit(address _dest) public onlySignaturer {
+    partnerTokensAllocation.approveSplit(_dest);
+  }
+  function proposeBountyTransfer(address _dest, uint _amount) public {
+    bountyTokensAllocation.proposeBountyTransfer(_dest, _amount);
+  }
+  function approveBountyTransfer(address _dest) public {
+    bountyTokensAllocation.approveBountyTransfer(_dest);
   }
 
   function mintMeTokens() public {

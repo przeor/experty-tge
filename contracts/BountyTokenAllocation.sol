@@ -9,7 +9,7 @@ contract BountyTokenAllocation is Ownable {
   // signaturer must accept this allocation. And then it can be sent
 
   // Total amount of remaining tokens to be distributed
-  int public remainingBountyTokens;
+  uint public remainingBountyTokens;
 
   // Possible split states: Proposed, Approved, Rejected
   // Proposed is the initial state.
@@ -27,20 +27,20 @@ contract BountyTokenAllocation is Ownable {
 
   address public owner = msg.sender;
 
-  function BountyTokenAllocation(int _remainingBountyTokens) onlyOwner public {
+  function BountyTokenAllocation(uint _remainingBountyTokens) onlyOwner public {
     remainingBountyTokens = _remainingBountyTokens;
   }
 
   struct BountyAllocationT {
     // How many tokens send him or her
-    int amount;
+    uint amount;
     // By whom was this allocation proposed
     address proposalAddress;
     // State of actual split.
     BountyState bountyState;
   }
 
-  function proposeBountyTransfer(address _dest, int _amount) public onlyOwner {
+  function proposeBountyTransfer(address _dest, uint _amount) public onlyOwner {
     require(_amount > 0);
     require(_amount <= remainingBountyTokens);
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
