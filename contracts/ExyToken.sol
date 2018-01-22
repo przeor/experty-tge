@@ -45,8 +45,12 @@ contract ExyToken is ERC223MintableToken {
       initDate);
   }
 
-  function getCompanyAllocationListLength() public returns (uint){
+  function getCompanyAllocationListLength() public returns (uint) {
     return 5;
+  }
+
+  function getCompanyAllocation(uint nr) public returns (uint, string, uint, uint) {
+    return (5, "0x0", 1, 0);
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
