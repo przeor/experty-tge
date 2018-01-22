@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp watch",
+    "flat": "solidity_flattener contracts/ExyToken.sol > ExyFlat.sol",
     "test": "truffle test"
   },
   "repository": {

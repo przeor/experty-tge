@@ -16,3 +16,5 @@ build/*
 # node packages
 node_modules
 frontEnd/contracts
+
+ExyFlat.sol
