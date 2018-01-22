@@ -17,8 +17,8 @@ contract SplitTypes {
   struct SplitT {
     // How many tokens per period we want to pass
     uint tokensPerPeriod;
-    // By whom was this split proposed. We use 2 of 3 multisig
-    address proposalAddress;
+    // By whom was this split proposed. Another signaturer must approve too
+    address proposerAddress;
     // How many times did we released tokens
     uint claimedPeriods;
     // State of actual split.

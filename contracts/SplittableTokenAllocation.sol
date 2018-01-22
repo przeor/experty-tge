@@ -44,17 +44,17 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * @param _dest              - address of the new receiver
    * @param _tokensPerPeriod   - how many tokens we are giving to dest
    */
-  function proposeSplit(address _dest, uint _tokensPerPeriod) public onlyOwner {
+  function proposeSplit(address _proposerAddress, address _dest, uint _tokensPerPeriod) public onlyOwner {
     require(_tokensPerPeriod > 0);
     require(_tokensPerPeriod <= remainingTokensPerPeriod);
     // In solidity there is no "exist" method on a map key.
     // We can't overwrite existing proposal, so we are checking if it is the default value (0x0)
-    require(splitOf[_dest].proposalAddress == 0x0);
+    require(splitOf[_dest].proposerAddress == 0x0);
 
     splitOf[_dest] = SplitTypes.SplitT({
       tokensPerPeriod: _tokensPerPeriod,
       splitState: SplitTypes.SplitState.Proposed,
-      proposalAddress: msg.sender,
+      proposerAddress: _proposerAddress,
       claimedPeriods: 0
     });
 
@@ -67,8 +67,9 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    *
    * @param _address - address for the split
    */
-  function approveSplit(address _address) public onlyOwner {
+  function approveSplit(address _approverAddress, address _address) public onlyOwner {
     require(splitOf[_address].splitState == SplitTypes.SplitState.Proposed);
+    require(splitOf[_address].proposerAddress != _approverAddress);
     splitOf[_address].splitState = SplitTypes.SplitState.Approved;
   }
 
