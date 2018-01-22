@@ -1,3 +1,4 @@
+const SplitTypes = artifacts.require('./SplitTypes.sol');
 const AllocationAddressList = artifacts.require('./AllocationAddressList.sol');
 const BountyTokenAllocation = artifacts.require('./BountyTokenAllocation.sol');
 const ERC223MintableToken = artifacts.require('./ERC223MintableToken.sol');
@@ -18,12 +19,15 @@ module.exports = function (deployer) {
   deployer.deploy(Ownable);
   deployer.deploy(SafeMath);
   deployer.deploy(Signatures);
+  deployer.deploy(SplitTypes);
 
   deployer.link(SafeMath, SplittableTokenAllocation);
   deployer.link(Ownable, SplittableTokenAllocation);
   deployer.link(AllocationAddressList, SplittableTokenAllocation);
+  deployer.link(SplitTypes, SplittableTokenAllocation);
 
   deployer.deploy(SplittableTokenAllocation);
+  deployer.link(SplitTypes, ExyToken);
   deployer.link(AllocationAddressList, ExyToken);
   deployer.link(BountyTokenAllocation, ExyToken);
   deployer.link(ERC223MintableToken, ExyToken);
