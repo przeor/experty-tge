@@ -14,7 +14,6 @@ contract ExyToken is ERC223MintableToken {
   SplittableTokenAllocation private companyTokensAllocation;
   BountyTokenAllocation private bountyTokensAllocation;
 
-
   /*
    * ICO TOKENS
    * 33%
@@ -93,7 +92,7 @@ contract ExyToken is ERC223MintableToken {
   }
 
   function getCompanyAllocationListLength() public returns (uint) {
-    return 5;
+    return companyTokensAllocation.allocationAddressList.length;
   }
 
   function getCompanyAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
@@ -104,6 +103,35 @@ contract ExyToken is ERC223MintableToken {
     SplitTypes.SplitState splitState;
     (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(_address);
     return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
+  }
+
+  function getPartnerAllocationListLength() public returns (uint) {
+    return partnerTokensAllocation.allocationAddressList.length;
+  }
+
+  function getPartnerAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
+    address _address = partnerTokensAllocation.allocationAddressList(nr);
+    uint tokensPerPeriod;
+    address proposalAddress;
+    uint claimedPeriods;
+    SplitTypes.SplitState splitState;
+    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = partnerTokensAllocation.splitOf(_address);
+    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
+  }
+
+  function getBountyAllocationListLength() public returns (uint) {
+    return bountyTokensAllocation.allocationAddressList.length;
+  }
+
+  function getBountyAllocation(uint nr) public returns (uint, address, SplitTypes.BountyT, address) {
+    uint amount;
+    address proposalAddress;
+    SplitTypes.BountyT bountyState;
+
+    address _address = partnerTokensAllocation.allocationAddressList(nr);
+    (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(_address);
+
+    return (amount, proposalAddress, bountyState, _address);
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {

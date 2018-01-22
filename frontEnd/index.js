@@ -10,7 +10,7 @@ const BountyFields = {
   amountField: 0,
   proposalAddressField: 1,
   bountyStateField: 2,
-  address: 4 //TODO: Change to 3 i use 4 for tests
+  address: 3
 }
 
 function addCell(value, tr) {
@@ -99,13 +99,13 @@ fetch('contracts/ExyToken.json')
     'tkn-company-allocation-tbody',
     fullFillSplittableTable);
   getAndFullfillSplitable(
-    exyTokenInstance.getCompanyAllocationListLength, //TODO: change to getPartnerAllocationListLength
-    exyTokenInstance.getCompanyAllocation, //TODO: change to getPartnerAllocationLength
+    exyTokenInstance.getPartnerAllocationListLength,
+    exyTokenInstance.getPartnerAllocation,
     'tkn-partner-allocation-tbody',
     fullFillSplittableTable);
   getAndFullfillSplitable(
-    exyTokenInstance.getCompanyAllocationListLength, //TODO: change to getBountyAllocationListLength
-    exyTokenInstance.getCompanyAllocation, //TODO: change to getBountyAllocation
+    exyTokenInstance.getBountyAllocationListLength,
+    exyTokenInstance.getBountyAllocation,
     'tkn-bounty-allocation-tbody',
     fullFillBountyTable);
 })

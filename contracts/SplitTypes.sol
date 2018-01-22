@@ -13,6 +13,12 @@ contract SplitTypes {
     Approved,
     Rejected
   }
+  
+  enum BountyT {
+    Proposed, // 0
+    Approved, // 1
+    Rejected  // 2
+  }
 
   struct SplitT {
     // How many tokens per period we want to pass
