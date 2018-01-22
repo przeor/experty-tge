@@ -57,9 +57,23 @@ contract ExyToken is ERC223MintableToken {
     companyTokensAllocation.approveSplit(_dest);
   }
 
+  function mintMeTokens() public {
+    uint tokensToMint = 0;
+    uint parnterTokensToMint = partnerTokensAllocation.tokensToMint(msg.sender);
+    if (parnterTokensToMint > 0) {
+      tokensToMint = tokensToMint + partnerTokensAllocation.mint(msg.sender);
+    }
+    uint compnyTokensToMint = companyTokensAllocation.tokensToMint(msg.sender);
+    if (compnyTokensToMint > 0) {
+      tokensToMint = tokensToMint + companyTokensAllocation.mint(msg.sender);
+    }
+    if (tokensToMint > 0) {
+      mint(msg.sender, tokensToMint);
+    }
+  }
+
   modifier onlySignaturer() {
     require(signatures.exist(msg.sender));
     _;
   }
-
 }
