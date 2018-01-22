@@ -9,3 +9,9 @@ npm i
 npm i -g truffle
 truffle deploy
 ```
+
+Run server:
+```
+cd web-app
+./run-server
+```
