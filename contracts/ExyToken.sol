@@ -69,6 +69,10 @@ contract ExyToken is ERC223MintableToken {
   AllocationAddressList private allocationAddressList;
 
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
+    name = 'Experty Token';
+    symbol = 'EXY';
+    decimals = 18;
+
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
     partnerTokensAllocation = new SplittableTokenAllocation(
@@ -94,11 +98,11 @@ contract ExyToken is ERC223MintableToken {
     mint(ICO_TOKENS_ADDRESS, ICO_TOKENS);
   }
 
-  function getCompanyAllocationListLength() public returns (uint) {
+  function getCompanyAllocationListLength() public view returns (uint) {
     return companyTokensAllocation.getAllocationLength();
   }
 
-  function getCompanyAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
+  function getCompanyAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
     address _address = companyTokensAllocation.allocationAddressList(nr);
     uint tokensPerPeriod;
     address proposalAddress;
@@ -108,11 +112,11 @@ contract ExyToken is ERC223MintableToken {
     return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
   }
 
-  function getPartnerAllocationListLength() public returns (uint) {
+  function getPartnerAllocationListLength() public view returns (uint) {
     return partnerTokensAllocation.getAllocationLength();
   }
 
-  function getPartnerAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
+  function getPartnerAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
     address _address = partnerTokensAllocation.allocationAddressList(nr);
     uint tokensPerPeriod;
     address proposalAddress;
@@ -122,11 +126,11 @@ contract ExyToken is ERC223MintableToken {
     return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
   }
 
-  function getBountyAllocationListLength() public returns (uint) {
+  function getBountyAllocationListLength() public view returns (uint) {
     return bountyTokensAllocation.getAllocationLength();
   }
 
-  function getBountyAllocation(uint nr) public returns (uint, address, SplitTypes.BountyState, address) {
+  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
     uint amount;
     address proposalAddress;
     SplitTypes.BountyState bountyState;
