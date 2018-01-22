@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: #fafafa;
+}
+
+.tkn-table-wrapper {
+  margin: 3rem 1rem;
+}
+
+.tkn-table-wrapper table {
+  width: 100%;
+  margin: 1rem 0;
+  text-align: center;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.tkn-table-wrapper table tr * {
+  border: .1rem solid #000;
+}
+
+.tkn-table-wrapper table tr *:first-child,
+.tkn-table-wrapper table tr *:last-child {
+  width: 10rem;
+}
+
+.tkn-table-wrapper table tr th {
+  background: #e0e0e0;
+  min-width: 200px;
+}

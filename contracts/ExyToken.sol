@@ -1,8 +1,9 @@
 pragma solidity ^0.4.11;
+
 import "./SplittableTokenAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
-
+import "./SplitTypes.sol";
 
 contract ExyToken is ERC223MintableToken {
   uint public circulatingSupply;
@@ -45,8 +46,18 @@ contract ExyToken is ERC223MintableToken {
       initDate);
   }
 
-  function getCompanyAllocationListLength() public returns (uint){
+  function getCompanyAllocationListLength() public returns (uint) {
     return 5;
+  }
+
+  function getCompanyAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
+    address _address = companyTokensAllocation.allocationAddressList(nr);
+    uint tokensPerPeriod;
+    address proposalAddress;
+    uint claimedPeriods;
+    SplitTypes.SplitState splitState;
+    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(_address);
+    return (tokensPerPeriod,proposalAddress,claimedPeriods, splitState, _address);
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {

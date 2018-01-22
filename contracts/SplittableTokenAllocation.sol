@@ -3,6 +3,7 @@ pragma solidity ^0.4.4;
 import "./SafeMath.sol";
 import "./Ownable.sol";
 import "./AllocationAddressList.sol";
+import "./SplitTypes.sol";
 
 contract SplittableTokenAllocation is Ownable, AllocationAddressList {
 
@@ -23,32 +24,9 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
   // Inital timestamp
   uint public initTimestamp;
 
-  // Possible split states: Proposed, Approved, Rejected
-  // Proposed is the initial state.
-  // Both Approved and Rejected are final states.
-  // The only possible transitions are:
-  // Proposed => Approved
-  // Proposed => Rejected
-  enum SplitState {
-    Proposed,
-    Approved,
-    Rejected
-  }
-
-  struct SplitT {
-    // How many tokens per period we want to pass
-    uint tokensPerPeriod;
-    // By whom was this split proposed. We use 2 of 3 multisig
-    address proposalAddress;
-    // How many times did we released tokens
-    uint claimedPeriods;
-    // State of actual split.
-    SplitState splitState;
-  }
-
   // For each address we can add exactly one possible split.
   // If we try to add another proposal on existing address it will be rejected
-  mapping (address => SplitT) public splitOf;
+  mapping (address => SplitTypes.SplitT) public splitOf;
 
   /**
    * SplittableTokenAllocation contructor.
@@ -56,11 +34,11 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * the remaining amount of tokens to be distributed
    */
   // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
-  function SplittableTokenAllocation(address _virtualAddress, uint _allocationSupply, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
-    totalSupply = _allocationSupply;
+  function SplittableTokenAllocation(address _virtualAddress, uint _tokensPerPeriod, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
+    totalSupply = _tokensPerPeriod * _periods;
     periods = _periods;
     monthsInPeriod = _monthsInPeriod;
-    remainingTokensPerPeriod = _allocationSupply / _periods;
+    remainingTokensPerPeriod = _tokensPerPeriod;
     virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
   }
@@ -78,9 +56,9 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
     // We can't overwrite existing proposal, so we are checking if it is the default value (0x0)
     require(splitOf[_dest].proposalAddress == 0x0);
 
-    splitOf[_dest] = SplitT({
+    splitOf[_dest] = SplitTypes.SplitT({
       tokensPerPeriod: _tokensPerPeriod,
-      splitState: SplitState.Proposed,
+      splitState: SplitTypes.SplitState.Proposed,
       proposalAddress: msg.sender,
       claimedPeriods: 0
     });
@@ -95,8 +73,8 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * @param _address - address for the split
    */
   function approveSplit(address _address) public onlyOwner {
-    require(splitOf[_address].splitState == SplitState.Proposed);
-    splitOf[_address].splitState = SplitState.Approved;
+    require(splitOf[_address].splitState == SplitTypes.SplitState.Proposed);
+    splitOf[_address].splitState = SplitTypes.SplitState.Approved;
   }
 
  /**
@@ -105,8 +83,8 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * @param _address - address for the split to be rejected
    */
   function rejectSplit(address _address) public onlyOwner {
-    require(splitOf[_address].splitState == SplitState.Proposed);
-    splitOf[_address].splitState = SplitState.Rejected;
+    require(splitOf[_address].splitState == SplitTypes.SplitState.Proposed);
+    splitOf[_address].splitState = SplitTypes.SplitState.Rejected;
     remainingTokensPerPeriod = remainingTokensPerPeriod + splitOf[_address].tokensPerPeriod;
   }
 
@@ -116,8 +94,8 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * @param _address - address for whom we are counting tokens
    */
   function tokensToMint(address _address) public view returns (uint) {
-    SplitT storage split = splitOf[_address];
-    if (split.splitState == SplitState.Approved) {
+    SplitTypes.SplitT storage split = splitOf[_address];
+    if (split.splitState == SplitTypes.SplitState.Approved) {
       return _tokensToMint(split);
     }
     return 0;
@@ -130,7 +108,7 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    *  We calculate numberOfPeriods number from (0..periods) and then multiply it
    *  by the number of tokens per period
    */
-  function _tokensToMint(SplitT storage split) private view returns (uint) {
+  function _tokensToMint(SplitTypes.SplitT storage split) private view returns (uint) {
     // I use math min cause when elapsed periods count is higher than periods
     // declareted for one split we have to use subtraction from declarated periods.
     uint numberOfPeriods = SafeMath.min(_periodsElapsed(), periods);
