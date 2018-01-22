@@ -51,13 +51,14 @@ contract ExyToken is ERC223MintableToken {
   }
 
   function getCompanyAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
-    address _address = companyTokensAllocation.allocationAddressList(nr);
+    address _address =  address(0x0); // companyTokensAllocation.allocationAddressList(nr);
     uint tokensPerPeriod;
     address proposalAddress;
     uint claimedPeriods;
     SplitTypes.SplitState splitState;
     (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(_address);
-    return (tokensPerPeriod,proposalAddress,claimedPeriods, splitState, _address);
+    // return (tokensPerPeriod,proposalAddress,claimedPeriods, splitState, _address);
+    return (100, address(0x0), 1, SplitTypes.SplitState.Approved, address(0x1234567890));
   }
 
   function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
