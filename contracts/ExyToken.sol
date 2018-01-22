@@ -68,9 +68,27 @@ contract ExyToken is ERC223MintableToken {
 
   AllocationAddressList private allocationAddressList;
 
+  /**
+   * ExyToken contructor.
+   *
+   * Exy token contains allocations of:
+   * - partnerTokensAllocation
+   * - companyTokensAllocation
+   * - bountyTokensAllocation
+   *
+   * @param signaturer0 Address of first signaturer.
+   * @param signaturer1 Address of second signaturer.
+   * @param signaturer2 Address of third signaturer.
+   *
+   * Arguments in constructor are only for testing. When deploying
+   * on main net, please hardcode them inside:
+   * address signaturer0 = 0x0;
+   * address signaturer1 = 0x1;
+   * address signaturer2 = 0x2;
+   */
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
-    name = 'Experty Token';
-    symbol = 'EXY';
+    name = "Experty Token";
+    symbol = "EXY";
     decimals = 18;
 
     initDate = block.timestamp;
@@ -98,23 +116,58 @@ contract ExyToken is ERC223MintableToken {
     mint(ICO_TOKENS_ADDRESS, ICO_TOKENS);
   }
 
+  /**
+   * Return number of company allocations
+   * @return Length of company allocations
+   */
   function getCompanyAllocationListLength() public view returns (uint) {
     return companyTokensAllocation.getAllocationLength();
   }
 
+  /**
+   * Given the index of the company allocation in allocationAddressList
+   * we find its reciepent address and return struct with informations
+   * about this allocation
+   *
+   * @param nr Index of allocation in allocationAddressList
+   * @return Information about company alloction
+   */
   function getCompanyAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
-    address _address = companyTokensAllocation.allocationAddressList(nr);
+    address recipientAddress = companyTokensAllocation.allocationAddressList(nr);
     uint tokensPerPeriod;
     address proposalAddress;
     uint claimedPeriods;
     SplitTypes.SplitState splitState;
-    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(_address);
-    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
+    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(recipientAddress);
+    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, recipientAddress);
   }
 
+  /**
+   * Given the index of the company allocation in allocationAddressList
+   * we find its reciepent address and return struct with informations
+   * about this allocation
+   *
+   * @return Information about company alloction
+   */
   function getPartnerAllocationListLength() public view returns (uint) {
     return partnerTokensAllocation.getAllocationLength();
   }
+
+
+  /**
+   * Adds a proposition of a company token split to companyTokensAllocation
+   */
+  function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    companyTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
+  }
+
+  /**
+   * Approves a proposition of a company token split
+   */
+  function approveCompanySplit(address _dest) public onlySignaturer {
+    companyTokensAllocation.approveSplit(msg.sender, _dest);
+  }
+
 
   function getPartnerAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
     address _address = partnerTokensAllocation.allocationAddressList(nr);
@@ -139,14 +192,6 @@ contract ExyToken is ERC223MintableToken {
     (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(_address);
 
     return (amount, proposalAddress, bountyState, _address);
-  }
-
-  function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    companyTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
-  }
-
-  function approveCompanySplit(address _dest) public onlySignaturer {
-    companyTokensAllocation.approveSplit(msg.sender, _dest);
   }
 
   function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
