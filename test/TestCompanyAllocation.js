@@ -24,8 +24,10 @@ const SplitState = {
   rejected: 2
 }
 
-const minutesAgo = (nrOfDays) =>
-  moment().subtract(nrOfDays, 'minutes').unix();
+const minutesInMonth = 60 * 24 * 365 / 12;
+
+const minutesAgo = (nrOfMinutes) =>
+  moment().subtract(nrOfMinutes, 'minutes').unix();
 
 contract('Test company tokens alloctions', accounts => {
   const address1 = accounts[1];
@@ -37,10 +39,7 @@ contract('Test company tokens alloctions', accounts => {
   }
   it('should initialise splittable allocation token', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(1));
-    // check that virtual address is set correctly
-    const virtualAddress = await companyTokenAllocation.virtualAddress.call();
-    assert.equal(virtualAddress, 0x0, 'Virtual address has not been set correctly');
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(1));
     // check that total supply is set correctly
     const totalSupply = await companyTokenAllocation.totalSupply.call();
     assert.equal(totalSupply, 3600, 'Total supply has not been set correctly');
@@ -49,12 +48,12 @@ contract('Test company tokens alloctions', accounts => {
     assert.equal(periods, 36, 'Period has not been set correctly');
     // check that months in period is set corretly for partners
     const minutesInPeriod = await companyTokenAllocation.minutesInPeriod.call();
-    assert.equal(minutesInPeriod, 1, 'Months has not been set correctly');
+    assert.equal(minutesInPeriod, minutesInMonth, 'Months has not been set correctly');
   });
 
   it('should propose and accept split allocation', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(1));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600, 36, minutesInMonth, minutesAgo(1));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -67,7 +66,7 @@ contract('Test company tokens alloctions', accounts => {
 
   it('sholud count claimed tokens value before period has passed', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(3));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600, 36, minutesInMonth, minutesAgo(3));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -83,7 +82,7 @@ contract('Test company tokens alloctions', accounts => {
 
   it('sholud count claimed tokens value after period has passed', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(31));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, 20, minutesAgo(31));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -99,7 +98,7 @@ contract('Test company tokens alloctions', accounts => {
 
   it('should not add a second partner proposal for address', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(18));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(18));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -114,7 +113,7 @@ contract('Test company tokens alloctions', accounts => {
   });
 
   it('should not add a partner proposal when there are not enough tokens to allocate', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 100, 1, 18, minutesAgo(20));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(100, 1, 18 * minutesInMonth, minutesAgo(20));
     // Testing if an error appears
     let err = null
     try {
@@ -127,7 +126,7 @@ contract('Test company tokens alloctions', accounts => {
 
   it('sholud count claimed tokens value after period has passed many times', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(125));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, 26, minutesAgo(125));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -146,7 +145,7 @@ contract('Test company tokens alloctions', accounts => {
 
   it('sholud reject proposed split', async () => {
     // test company allocation with locked tokens for 36 periods which lasts 1 minute
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(54));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(54));
     const destAddr = accounts[1];
     const tokensPerPeriod = 100
     await companyTokenAllocation.proposeSplit.sendTransaction(destAddr, tokensPerPeriod);
@@ -157,7 +156,7 @@ contract('Test company tokens alloctions', accounts => {
   });
 
   it('should not invoke company approval because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(54));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(54));
     // Testing if an error appears
     let err = null
     try {
@@ -169,7 +168,7 @@ contract('Test company tokens alloctions', accounts => {
   });
 
   it('should not invoke company reject because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(54));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(54));
     // Testing if an error appears
     let err = null
     try {
@@ -181,7 +180,7 @@ contract('Test company tokens alloctions', accounts => {
   });
 
   it('should not invoke company proposal because I am not a signaturer', async () => {
-    const companyTokenAllocation = await SplittableTokenAllocation.new(0x0, 3600, 36, 1, minutesAgo(54));
+    const companyTokenAllocation = await SplittableTokenAllocation.new(3600/36, 36, minutesInMonth, minutesAgo(54));
     // Testing if an error appears
     let err = null
     try {

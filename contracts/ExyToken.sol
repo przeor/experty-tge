@@ -13,14 +13,12 @@ contract ExyToken is ERC223MintableToken {
   SplittableTokenAllocation private companyTokensAllocation;
   
   /* COMPANY TOKENS */
-  uint constant TOTAL_COMPANY_TOKENS = 100;
-  address constant COMPANY_TOKENS_VIRTUAL_ADDRESS = 0x0;
+  uint constant COMPANY_TOKENS_PER_PERIOD = 100;
   uint constant COMPANY_PERIODS = 1;
   uint constant MINUTES_IN_COMPPANY_PERIOD = 1;
 
   /* PARTNER TOKENS */
-  uint constant TOTAL_PARTNER_TOKENS = 100;
-  address constant PARTNER_TOKENS_VIRTUAL_ADDRESS = 0x0;
+  uint constant PARTNER_TOKENS_PER_PERIOD = 100;
   uint constant PARTNER_PERIODS = 1;
   uint constant MINUTES_IN_PARTNER_PERIOD = 1;
 
@@ -32,15 +30,13 @@ contract ExyToken is ERC223MintableToken {
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
     partnerTokensAllocation = new SplittableTokenAllocation(
-      COMPANY_TOKENS_VIRTUAL_ADDRESS,
-      TOTAL_COMPANY_TOKENS,
+      COMPANY_TOKENS_PER_PERIOD,
       COMPANY_PERIODS,
       MINUTES_IN_COMPPANY_PERIOD,
       initDate);
 
     companyTokensAllocation = new SplittableTokenAllocation(
-      PARTNER_TOKENS_VIRTUAL_ADDRESS,
-      TOTAL_PARTNER_TOKENS,
+      PARTNER_TOKENS_PER_PERIOD,
       PARTNER_PERIODS,
       MINUTES_IN_PARTNER_PERIOD,
       initDate);

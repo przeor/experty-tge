@@ -8,15 +8,11 @@ import "./SplitTypes.sol";
 contract SplittableTokenAllocation is Ownable, AllocationAddressList {
 
   // This contract describes how the tokens are being released in time
-  // At the begining we have all tokens on the virtual address
-  // We assume the we cannot withdraw money from this vierual adress
 
   // How many distributions periods there are
   uint public periods;
   // How long is one interval
   uint public minutesInPeriod;
-  // Virtual address were we keep the initial tokens
-  address public virtualAddress;
   // Total amount of remaining tokens to be distributed
   uint public remainingTokensPerPeriod;
   // Total amount of all tokens
@@ -34,12 +30,11 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * the remaining amount of tokens to be distributed
    */
   // Invoking parent constructor (OwnedBySignaturers) with signatures addresses
-  function SplittableTokenAllocation(address _virtualAddress, uint _tokensPerPeriod, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
+  function SplittableTokenAllocation(uint _tokensPerPeriod, uint _periods, uint _minutesInPeriod, uint _initalTimestamp)  Ownable() public {
     totalSupply = _tokensPerPeriod * _periods;
     periods = _periods;
-    minutesInPeriod = _monthsInPeriod;
+    minutesInPeriod = _minutesInPeriod;
     remainingTokensPerPeriod = _tokensPerPeriod;
-    virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
   }
 
@@ -119,7 +114,7 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * _periodsElapsed returns the amount of periods that passed from initTimestampe
    */
   function _periodsElapsed() public view returns(uint) {
-    uint periodsElapsed = ((block.timestamp - initTimestamp) / (minutesInPeriod * (1 years / 12) ));
+    uint periodsElapsed = (block.timestamp - initTimestamp) / (minutesInPeriod * 1 minutes);
     return periodsElapsed;
   }
   /**
