@@ -92,7 +92,7 @@ contract ExyToken is ERC223MintableToken {
   }
 
   function getCompanyAllocationListLength() public returns (uint) {
-    return companyTokensAllocation.allocationAddressList.length;
+    return companyTokensAllocation.getAllocationLength();
   }
 
   function getCompanyAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
@@ -106,7 +106,7 @@ contract ExyToken is ERC223MintableToken {
   }
 
   function getPartnerAllocationListLength() public returns (uint) {
-    return partnerTokensAllocation.allocationAddressList.length;
+    return partnerTokensAllocation.getAllocationLength();
   }
 
   function getPartnerAllocation(uint nr) public returns (uint, address, uint, SplitTypes.SplitState, address) {
@@ -120,13 +120,13 @@ contract ExyToken is ERC223MintableToken {
   }
 
   function getBountyAllocationListLength() public returns (uint) {
-    return bountyTokensAllocation.allocationAddressList.length;
+    return bountyTokensAllocation.getAllocationLength();
   }
 
-  function getBountyAllocation(uint nr) public returns (uint, address, SplitTypes.BountyT, address) {
+  function getBountyAllocation(uint nr) public returns (uint, address, SplitTypes.BountyState, address) {
     uint amount;
     address proposalAddress;
-    SplitTypes.BountyT bountyState;
+    SplitTypes.BountyState bountyState;
 
     address _address = partnerTokensAllocation.allocationAddressList(nr);
     (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(_address);
@@ -141,15 +141,19 @@ contract ExyToken is ERC223MintableToken {
   function approveCompanySplit(address _dest) public onlySignaturer {
     companyTokensAllocation.approveSplit(msg.sender, _dest);
   }
+
   function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
     partnerTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
   }
+
   function approvePartnerSplit(address _dest) public onlySignaturer {
     partnerTokensAllocation.approveSplit(msg.sender, _dest);
   }
+
   function proposeBountyTransfer(address _dest, uint _amount) public onlySignaturer {
     bountyTokensAllocation.proposeBountyTransfer(_dest, _amount);
   }
+
   function approveBountyTransfer(address _dest) public onlySignaturer {
     bountyTokensAllocation.approveBountyTransfer(_dest);
   }

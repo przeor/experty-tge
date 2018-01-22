@@ -4,8 +4,7 @@ contract AllocationAddressList {
 
   address[] public allocationAddressList;
 
-  function push(address addr) public {
-    allocationAddressList.push(addr);
+  function getAllocationLength() public view returns (uint) {
+    return allocationAddressList.length;
   }
-  
 }

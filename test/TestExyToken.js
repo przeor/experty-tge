@@ -10,7 +10,7 @@ const SplitState = {
 
 contract('ExyToken', accounts => {
   let exy;
-  let fromAddress1 = {from: accounts[1]};
+  let fromAddress1 = { from: accounts[1] };
   const address0 = accounts[0];
   const address1 = accounts[1];
   const address2 = accounts[2];
@@ -20,12 +20,14 @@ contract('ExyToken', accounts => {
 
   it('should initialize ExyToken', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    assert.equal(await exy.getCompanyAllocationListLength.call(), 5, 'should be mocked value');
+    assert.equal(await exy.getPartnerAllocationListLength.call(), 0, 'should be mocked value');
+    assert.equal(await exy.getCompanyAllocationListLength.call(), 0, 'should be mocked value');
+    assert.equal(await exy.getBountyAllocationListLength.call(), 0, 'should be mocked value');
   });
 
   it('should propose company allocation', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    await exy.proposeCompanySplit.sendTransaction(accounts[3], 100, {from: accounts[0]});
+    await exy.proposeCompanySplit.sendTransaction(accounts[3], 100, { from: accounts[0] });
     await exy.approveCompanySplit.sendTransaction(accounts[3], fromAddress1);
 
     let allocation = await exy.getCompanyAllocation.call(0);
@@ -42,7 +44,7 @@ contract('ExyToken', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await exy.proposeCompanySplit.sendTransaction(address3, 100, {from: address4});
+      await exy.proposeCompanySplit.sendTransaction(address3, 100, { from: address4 });
     } catch (error) {
       err = error
     }
@@ -55,7 +57,7 @@ contract('ExyToken', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await exy.approveCompanySplit.sendTransaction(address5, {from: address3});
+      await exy.approveCompanySplit.sendTransaction(address5, { from: address3 });
     } catch (error) {
       err = error
     }
@@ -67,7 +69,7 @@ contract('ExyToken', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await exy.rejectCompanySplit.sendTransaction(address2, {from: address5});
+      await exy.rejectCompanySplit.sendTransaction(address2, { from: address5 });
     } catch (error) {
       err = error
     }
@@ -89,5 +91,25 @@ contract('ExyToken', accounts => {
     assert.ok(err instanceof Error);
   });
 
+  it('should update company allocation list', async () => {
+    exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
+    assert.equal(await exy.getCompanyAllocationListLength.call(), 0, "List should be empty");
+    await exy.proposeCompanySplit.sendTransaction(accounts[0], 50);
+    assert.equal(await exy.getCompanyAllocationListLength.call(), 1, "We should have one element");
+  });
+
+  it('should update partner allocation list', async () => {
+    exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
+    assert.equal(await exy.getPartnerAllocationListLength.call(), 0, "List should be empty");
+    await exy.proposePartnerSplit.sendTransaction(accounts[0], 50);
+    assert.equal(await exy.getPartnerAllocationListLength.call(), 1, "We should have one element");
+  });
+
+  it('should update bounty allocation list', async () => {
+    exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
+    assert.equal(await exy.getBountyAllocationListLength.call(), 0, "List should be empty");
+    await exy.proposeBountyTransfer.sendTransaction(accounts[0], 50);
+    assert.equal(await exy.getBountyAllocationListLength.call(), 1, "We should have one element");
+  });
 
 });

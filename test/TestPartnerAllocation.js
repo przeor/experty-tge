@@ -151,5 +151,5 @@ contract('Test partner token allocations', accounts => {
     // split state should be equal to 1 cause state accepts (0 - Proposed, 1 - Accepted, 2 - Rejected)
     assert.equal(split[SplitTFields.state], SplitState.rejected, 'Split is not rejected');
   });
-  
+
 });

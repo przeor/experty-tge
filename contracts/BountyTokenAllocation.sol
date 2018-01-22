@@ -1,8 +1,10 @@
 pragma solidity ^0.4.4;
 
 import "./Ownable.sol";
+import "./AllocationAddressList.sol";
+import "./SplitTypes.sol";
 
-contract BountyTokenAllocation is Ownable {
+contract BountyTokenAllocation is Ownable, AllocationAddressList {
 
   // This contract describes how the bounty tokens are allocated.
   // After a bounty allocation was proposed by a signaturer, another
@@ -17,13 +19,9 @@ contract BountyTokenAllocation is Ownable {
   // The only possible transitions are:
   // Proposed => Approved
   // Proposed => Rejected
-  enum BountyState {
-    Proposed, // 0
-    Approved, // 1
-    Rejected  // 2
-  }
 
-  mapping (address => BountyAllocationT) public bountyOf;
+
+  mapping (address => SplitTypes.BountyAllocationT) public bountyOf;
 
   address public owner = msg.sender;
 
@@ -31,38 +29,32 @@ contract BountyTokenAllocation is Ownable {
     remainingBountyTokens = _remainingBountyTokens;
   }
 
-  struct BountyAllocationT {
-    // How many tokens send him or her
-    uint amount;
-    // By whom was this allocation proposed
-    address proposalAddress;
-    // State of actual split.
-    BountyState bountyState;
-  }
+
 
   function proposeBountyTransfer(address _dest, uint _amount) public onlyOwner {
     require(_amount > 0);
     require(_amount <= remainingBountyTokens);
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
 
-    bountyOf[_dest] = BountyAllocationT({
+    bountyOf[_dest] = SplitTypes.BountyAllocationT({
       amount: _amount,
       proposalAddress: msg.sender,
-      bountyState: BountyState.Proposed
+      bountyState: SplitTypes.BountyState.Proposed
     });
+    allocationAddressList.push(_dest);
     remainingBountyTokens = remainingBountyTokens - _amount;
   }
 
   function approveBountyTransfer(address _dest) public onlyOwner {
-    require(bountyOf[_dest].bountyState == BountyState.Proposed);
+    require(bountyOf[_dest].bountyState == SplitTypes.BountyState.Proposed);
 
-    bountyOf[_dest].bountyState = BountyState.Approved;
+    bountyOf[_dest].bountyState = SplitTypes.BountyState.Approved;
   }
 
   function rejectBountyTransfer(address _dest) public onlyOwner {
-    require(bountyOf[_dest].bountyState == BountyState.Proposed);
+    require(bountyOf[_dest].bountyState == SplitTypes.BountyState.Proposed);
 
-    bountyOf[_dest].bountyState = BountyState.Rejected;
+    bountyOf[_dest].bountyState = SplitTypes.BountyState.Rejected;
     remainingBountyTokens = remainingBountyTokens + bountyOf[_dest].amount;
   }
 

@@ -17,7 +17,6 @@ contract('Signatures', accounts => {
 
     existSignature = await signatures.exist.call(accounts[3]);
     assert.isFalse(existSignature, 'accounts[3] should not be a signatory');
-
   });
 
 });
