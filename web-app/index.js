@@ -84,7 +84,7 @@ fetch('contracts/ExyToken.json')
     const SIGNATURER_2 = "0xBEE9b5e75383f56eb103DdC1a4343dcA6124Dfa3"; // Mateusz
     const SIGNATURER_3 = "0xcdD1Db16E83AA757a5B3E6d03482bBC9A27e8D49"; // Albert
 
-    var DEPLOY = true;
+    var DEPLOY = false;
     if (DEPLOY) {
       ExyTokenContract.new(
         {
