@@ -14,7 +14,7 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
   // How many distributions periods there are
   uint public periods;
   // How long is one interval
-  uint public monthsInPeriod;
+  uint public minutesInPeriod;
   // Virtual address were we keep the initial tokens
   address public virtualAddress;
   // Total amount of remaining tokens to be distributed
@@ -37,7 +37,7 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
   function SplittableTokenAllocation(address _virtualAddress, uint _tokensPerPeriod, uint _periods, uint _monthsInPeriod, uint _initalTimestamp)  Ownable() public {
     totalSupply = _tokensPerPeriod * _periods;
     periods = _periods;
-    monthsInPeriod = _monthsInPeriod;
+    minutesInPeriod = _monthsInPeriod;
     remainingTokensPerPeriod = _tokensPerPeriod;
     virtualAddress = _virtualAddress;
     initTimestamp = _initalTimestamp;
@@ -119,7 +119,7 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
    * _periodsElapsed returns the amount of periods that passed from initTimestampe
    */
   function _periodsElapsed() public view returns(uint) {
-    uint periodsElapsed = ((block.timestamp - initTimestamp) / (monthsInPeriod * (1 years / 12) ));
+    uint periodsElapsed = ((block.timestamp - initTimestamp) / (minutesInPeriod * (1 years / 12) ));
     return periodsElapsed;
   }
   /**
