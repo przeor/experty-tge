@@ -63,27 +63,38 @@ fetch('contracts/ExyToken.json')
   .then(res => {
     const ABI = res.abi;
     const BYTECODE = res.bytecode;
+
+    console.log('[Deploy] ABI:');
+    console.log(JSON.stringify(ABI));
+    console.log('[Deploy] BYTECODE:');
+    console.log(JSON.stringify(BYTECODE));
+
     const PROVIDER = 'http://localhost:8545';
-    const ADDRESS = '0xcae968005d178839204bdf0ee19ae1afbeccd8f7';
+    const ADDRESS = '0x357d2fb2346966a7ede0740c620bb865b6b2805f';
     if (typeof web3 !== 'undefined') {
       web3 = new Web3(web3.currentProvider);
     } else {
       web3 = new Web3(new Web3.providers.HttpProvider(PROVIDER));
     }
-    console.log(web3);
+
     web3.eth.defaultAccount = web3.eth.accounts[0];
     const ExyTokenContract = web3.eth.contract(ABI);
 
+    const SIGNATURER_1 = "0xe029b7b51b8c5B71E6C6f3DC66a11DF3CaB6E3B5"; // Grzegorz
+    const SIGNATURER_2 = "0xBEE9b5e75383f56eb103DdC1a4343dcA6124Dfa3"; // Mateusz
+    const SIGNATURER_3 = "0xcdD1Db16E83AA757a5B3E6d03482bBC9A27e8D49"; // Albert
+
     var DEPLOY = true;
     if (DEPLOY) {
-      ExyTokenContract.new({
-        data: '0x' + BYTECODE,
-        from: web3.eth.coinbase,
-        gas: 90000 * 2
-      }, function (err, res) {
-        console.log(err);
-        console.log(res);
-      })
+      ExyTokenContract.new(
+        {
+          data: BYTECODE,
+          arguments: [SIGNATURER_1, SIGNATURER_2, SIGNATURER_3],
+          gas: 1190000 * 2
+        }, function (err, res) {
+          console.log(err);
+          console.log(res);
+        })
     } else {
       const exyTokenInstance = ExyTokenContract.at(ADDRESS);
 
