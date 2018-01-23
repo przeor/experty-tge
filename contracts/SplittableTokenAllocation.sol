@@ -119,14 +119,12 @@ contract SplittableTokenAllocation is Ownable, AllocationAddressList {
     return periodsElapsed;
   }
   /**
-   * Minting tokens and updating the claimedPeriod value for split
+   * Updates number of claimed periods
    *
    * @param _address - address for whom we minting
    */
-  function mint(address _address) public onlyOwner returns (uint) {
-    uint tokens = _tokensToMint(splitOf[_address]);
+  function updateClaimedPeriods(address _address) public onlyOwner {
     splitOf[_address].claimedPeriods = _periodsElapsed();
-    return tokens;
   }
 
 }
