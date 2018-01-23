@@ -117,6 +117,20 @@ contract ExyToken is ERC223MintableToken {
   }
 
   /**
+   * Adds a proposition of a company token split to companyTokensAllocation
+   */
+  function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    companyTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
+  }
+
+  /**
+   * Approves a proposition of a company token split
+   */
+  function approveCompanySplit(address _dest) public onlySignaturer {
+    companyTokensAllocation.approveSplit(msg.sender, _dest);
+  }
+
+  /**
    * Return number of company allocations
    * @return Length of company allocations
    */
@@ -134,72 +148,44 @@ contract ExyToken is ERC223MintableToken {
    */
   function getCompanyAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
     address recipientAddress = companyTokensAllocation.allocationAddressList(nr);
-    uint tokensPerPeriod;
-    address proposalAddress;
-    uint claimedPeriods;
-    SplitTypes.SplitState splitState;
-    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(recipientAddress);
+    var (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(recipientAddress);
     return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, recipientAddress);
   }
 
   /**
-   * Given the index of the company allocation in allocationAddressList
-   * we find its reciepent address and return struct with informations
-   * about this allocation
-   *
-   * @return Information about company alloction
+   * Adds a proposition of a partner token split to companyTokensAllocation
+   */
+  function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    partnerTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
+  }
+
+  /**
+   * Approves a proposition of a partner token split
+   */
+  function approvePartnerSplit(address _dest) public onlySignaturer {
+    partnerTokensAllocation.approveSplit(msg.sender, _dest);
+  }
+
+  /**
+   * Return number of partner allocations
+   * @return Length of parnters allocations array
    */
   function getPartnerAllocationListLength() public view returns (uint) {
     return partnerTokensAllocation.getAllocationLength();
   }
 
-
   /**
-   * Adds a proposition of a company token split to companyTokensAllocation
+   * Given the index of the partner allocation in allocationAddressList
+   * we find its reciepent address and return struct with informations
+   * about this allocation
+   *
+   * @param nr Index of allocation in allocationAddressList
+   * @return Information about partner alloction
    */
-  function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    companyTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
-  }
-
-  /**
-   * Approves a proposition of a company token split
-   */
-  function approveCompanySplit(address _dest) public onlySignaturer {
-    companyTokensAllocation.approveSplit(msg.sender, _dest);
-  }
-
-
   function getPartnerAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
-    address _address = partnerTokensAllocation.allocationAddressList(nr);
-    uint tokensPerPeriod;
-    address proposalAddress;
-    uint claimedPeriods;
-    SplitTypes.SplitState splitState;
-    (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = partnerTokensAllocation.splitOf(_address);
-    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, _address);
-  }
-
-  function getBountyAllocationListLength() public view returns (uint) {
-    return bountyTokensAllocation.getAllocationLength();
-  }
-
-  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
-    uint amount;
-    address proposalAddress;
-    SplitTypes.BountyState bountyState;
-
-    address _address = partnerTokensAllocation.allocationAddressList(nr);
-    (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(_address);
-
-    return (amount, proposalAddress, bountyState, _address);
-  }
-
-  function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    partnerTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
-  }
-
-  function approvePartnerSplit(address _dest) public onlySignaturer {
-    partnerTokensAllocation.approveSplit(msg.sender, _dest);
+    address recipientAddress = partnerTokensAllocation.allocationAddressList(nr);
+    var (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = partnerTokensAllocation.splitOf(recipientAddress);
+    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, recipientAddress);
   }
 
   function proposeBountyTransfer(address _dest, uint _amount) public onlySignaturer {
@@ -208,6 +194,15 @@ contract ExyToken is ERC223MintableToken {
 
   function approveBountyTransfer(address _dest) public onlySignaturer {
     bountyTokensAllocation.approveBountyTransfer(_dest);
+  }
+  function getBountyAllocationListLength() public view returns (uint) {
+    return bountyTokensAllocation.getAllocationLength();
+  }
+
+  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
+    address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
+    var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
+    return (amount, proposalAddress, bountyState, recipientAddress);
   }
 
   function mintMeTokens() public {
