@@ -115,25 +115,25 @@ contract('ExyToken', accounts => {
   it('should decrease remaining company tokens per period after proposal', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
 
-    assert.equal(await exy.getRemainingCompanyTokensAllocation.call(), 100, 'Should be 100 allocation at begining');
+    let initVal = await exy.getRemainingCompanyTokensAllocation.call();
     await exy.proposeCompanySplit.sendTransaction(address3, 1);
-    assert.equal(await exy.getRemainingCompanyTokensAllocation.call(), 99, 'Should be 99 allocation left');
+    assert.equal(initVal - await exy.getRemainingCompanyTokensAllocation.call(), 1, 'Should be 1 token less left for allocation');
   });
 
   it('should decrease remaining partner tokens per period after proposal', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
 
-    assert.equal(await exy.getRemainingPartnerTokensAllocation.call(), 100, 'Should be 100 allocation at begining');
+    let initVal = await exy.getRemainingPartnerTokensAllocation.call();
     await exy.proposePartnerSplit.sendTransaction(address3, 1);
-    assert.equal(await exy.getRemainingPartnerTokensAllocation.call(), 99, 'Should be 99 allocation left');
+    assert.equal(initVal - await exy.getRemainingPartnerTokensAllocation.call(), 1, 'Should be 1 token less left for allocation');
   });
 
   it('should decrease remaining bounty tokens after proposal', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
 
-    assert.equal(await exy.getRemainingBountyTokens.call(), 1000, 'Should be 1000 tokens at begining');
+    let initVal = await exy.getRemainingBountyTokens.call();
     await exy.proposeBountyTransfer.sendTransaction(address3, 1);
-    assert.equal(await exy.getRemainingBountyTokens.call(), 999, 'Should be 999 tokens left');
+    assert.equal(initVal - await exy.getRemainingBountyTokens.call(), 1, 'Should be 1 token less left for tokens');
   });
 
 });
