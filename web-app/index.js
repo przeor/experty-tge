@@ -91,54 +91,48 @@ fetch('contracts/ExyToken.json')
           data: BYTECODE,
           arguments: [SIGNATURER_1, SIGNATURER_2, SIGNATURER_3],
           gas: 1190000 * 2
-        }, function (err, res) {
-          console.log(err);
+        }, handleError(function (res) {
           console.log(res);
-        })
+        }))
     } else {
       const exyTokenInstance = ExyTokenContract.at(ADDRESS);
 
-      //if (true) {
-       // web3.eth.estimateGas({ data: BYTECODE }, (err, gas) => {
-        //  console.log('estimateGas propose bounty:' + gas);
-          if (false) {
-            exyTokenInstance.proposeBountyTransfer.sendTransaction("0x2", 111, {gas: 6063751}, function (err, res) {
-              console.log('Runnig callback afeter adding bount proposal:')
-              console.log(err);
-              console.log(res);
-            });
-          }
-
-       // });
-      //}
-
+      // code used for testing
       if (false) {
-        exyTokenInstance.getBountyTransfersListLength(function (err, res) {
-          console.log('Runnig allocation:')
-          console.log(err);
+        exyTokenInstance.proposeBountyTransfer.sendTransaction("0x2", 111, {gas: 6063751}, handleError(function (res) {
+          console.log('Runnig callback afeter adding bount proposal:')
           console.log(res);
-        });
+        }));
       }
+
+      // code used for testing
       if (false) {
-        exyTokenInstance.getBountyTransfers(0, function (err, res) {
+        exyTokenInstance.getBountyTransfersListLength(handleError(function (res) {
           console.log('Runnig allocation:')
-          console.log(err);
           console.log(res);
-        });
+        }));
+      }
+
+      // code used for testing
+      if (false) {
+        exyTokenInstance.getBountyTransfers(0, handleError(function (res) {
+          console.log('Runnig allocation:')
+          console.log(res);
+        }));
       }
 
 
       function getAndFullfillSplitable(lengthGetter, allocationGetter, remainingGetter, sectionId, fulfillFunction) {
         let tableId = document.getElementsByClassName(sectionId)[0].getElementsByTagName('tbody')[0].id;
 
-        lengthGetter.call((err, res) => {
+        lengthGetter.call(handleError((res) => {
           const companyListLength = res;
           const promises = [];
           function createPromise(id) {
             return new Promise(function (resolve, reject) {
-              allocationGetter.call(id, (err, res) => {
+              allocationGetter.call(id, handleError((res) => {
                 resolve(res);
-              })
+              }))
             });
           }
           for (let i = 0; i < companyListLength; ++i) {
@@ -152,7 +146,7 @@ fetch('contracts/ExyToken.json')
             let section = document.getElementsByClassName(sectionId)[0];
             section.getElementsByClassName('remaining-allocation')[0].innerHTML = res.toNumber();
           }));
-        });
+        }));
       }
 
       getAndFullfillSplitable(
