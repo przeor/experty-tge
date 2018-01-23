@@ -13,5 +13,5 @@ truffle deploy
 Run server:
 ```
 cd web-app
-./run-server
+./run.server
 ```
