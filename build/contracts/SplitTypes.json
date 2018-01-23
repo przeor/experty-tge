@@ -1,0 +1,356 @@
+{
+  "contractName": "SplitTypes",
+  "abi": [],
+  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a7230582092057f6baaca592563607072819ed865d899fd7a8c6b29d5b3acc26848647d1b0029",
+  "deployedBytecode": "0x6060604052600080fd00a165627a7a7230582092057f6baaca592563607072819ed865d899fd7a8c6b29d5b3acc26848647d1b0029",
+  "sourceMap": "26:961:10:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "26:961:10:-;;;;;",
+  "source": "pragma solidity ^0.4.11;\n\ncontract SplitTypes {\n\n  // Possible split states: Proposed, Approved, Rejected\n  // Proposed is the initial state.\n  // Both Approved and Rejected are final states.\n  // The only possible transitions are:\n  // Proposed => Approved\n  // Proposed => Rejected\n  enum SplitState {\n    Proposed,\n    Approved,\n    Rejected\n  }\n\n  struct SplitT {\n    // How many tokens per period we want to pass\n    uint tokensPerPeriod;\n    // By whom was this split proposed. Another signaturer must approve too\n    address proposerAddress;\n    // How many times did we released tokens\n    uint claimedPeriods;\n    // State of actual split.\n    SplitState splitState;\n  }\n\n   enum BountyState {\n    Proposed, // 0\n    Approved, // 1\n    Rejected  // 2\n  }\n\n  struct BountyAllocationT {\n    // How many tokens send him or her\n    uint amount;\n    // By whom was this allocation proposed\n    address proposalAddress;\n    // State of actual split.\n    BountyState bountyState;\n  }\n}",
+  "sourcePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/SplitTypes.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/SplitTypes.sol",
+      "exportedSymbols": {
+        "SplitTypes": [
+          1077
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".11"
+          ]
+        },
+        "id": 1052,
+        "name": "PragmaDirective",
+        "src": "0:24:10"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            1077
+          ],
+          "name": "SplitTypes",
+          "scope": 1078
+        },
+        "children": [
+          {
+            "attributes": {
+              "canonicalName": "SplitTypes.SplitState",
+              "name": "SplitState"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "Proposed"
+                },
+                "id": 1053,
+                "name": "EnumValue",
+                "src": "308:8:10"
+              },
+              {
+                "attributes": {
+                  "name": "Approved"
+                },
+                "id": 1054,
+                "name": "EnumValue",
+                "src": "322:8:10"
+              },
+              {
+                "attributes": {
+                  "name": "Rejected"
+                },
+                "id": 1055,
+                "name": "EnumValue",
+                "src": "336:8:10"
+              }
+            ],
+            "id": 1056,
+            "name": "EnumDefinition",
+            "src": "286:62:10"
+          },
+          {
+            "attributes": {
+              "canonicalName": "SplitTypes.SplitT",
+              "name": "SplitT",
+              "scope": 1077,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "tokensPerPeriod",
+                  "scope": 1065,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1057,
+                    "name": "ElementaryTypeName",
+                    "src": "422:4:10"
+                  }
+                ],
+                "id": 1058,
+                "name": "VariableDeclaration",
+                "src": "422:20:10"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "proposerAddress",
+                  "scope": 1065,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1059,
+                    "name": "ElementaryTypeName",
+                    "src": "524:7:10"
+                  }
+                ],
+                "id": 1060,
+                "name": "VariableDeclaration",
+                "src": "524:23:10"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "claimedPeriods",
+                  "scope": 1065,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1061,
+                    "name": "ElementaryTypeName",
+                    "src": "598:4:10"
+                  }
+                ],
+                "id": 1062,
+                "name": "VariableDeclaration",
+                "src": "598:19:10"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "splitState",
+                  "scope": 1065,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "enum SplitTypes.SplitState",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "SplitState",
+                      "referencedDeclaration": 1056,
+                      "type": "enum SplitTypes.SplitState"
+                    },
+                    "id": 1063,
+                    "name": "UserDefinedTypeName",
+                    "src": "653:10:10"
+                  }
+                ],
+                "id": 1064,
+                "name": "VariableDeclaration",
+                "src": "653:21:10"
+              }
+            ],
+            "id": 1065,
+            "name": "StructDefinition",
+            "src": "352:327:10"
+          },
+          {
+            "attributes": {
+              "canonicalName": "SplitTypes.BountyState",
+              "name": "BountyState"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "Proposed"
+                },
+                "id": 1066,
+                "name": "EnumValue",
+                "src": "707:8:10"
+              },
+              {
+                "attributes": {
+                  "name": "Approved"
+                },
+                "id": 1067,
+                "name": "EnumValue",
+                "src": "726:8:10"
+              },
+              {
+                "attributes": {
+                  "name": "Rejected"
+                },
+                "id": 1068,
+                "name": "EnumValue",
+                "src": "745:8:10"
+              }
+            ],
+            "id": 1069,
+            "name": "EnumDefinition",
+            "src": "684:79:10"
+          },
+          {
+            "attributes": {
+              "canonicalName": "SplitTypes.BountyAllocationT",
+              "name": "BountyAllocationT",
+              "scope": 1077,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "amount",
+                  "scope": 1076,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1070,
+                    "name": "ElementaryTypeName",
+                    "src": "837:4:10"
+                  }
+                ],
+                "id": 1071,
+                "name": "VariableDeclaration",
+                "src": "837:11:10"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "proposalAddress",
+                  "scope": 1076,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1072,
+                    "name": "ElementaryTypeName",
+                    "src": "898:7:10"
+                  }
+                ],
+                "id": 1073,
+                "name": "VariableDeclaration",
+                "src": "898:23:10"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "bountyState",
+                  "scope": 1076,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "enum SplitTypes.BountyState",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "BountyState",
+                      "referencedDeclaration": 1069,
+                      "type": "enum SplitTypes.BountyState"
+                    },
+                    "id": 1074,
+                    "name": "UserDefinedTypeName",
+                    "src": "957:11:10"
+                  }
+                ],
+                "id": 1075,
+                "name": "VariableDeclaration",
+                "src": "957:23:10"
+              }
+            ],
+            "id": 1076,
+            "name": "StructDefinition",
+            "src": "767:218:10"
+          }
+        ],
+        "id": 1077,
+        "name": "ContractDefinition",
+        "src": "26:961:10"
+      }
+    ],
+    "id": 1078,
+    "name": "SourceUnit",
+    "src": "0:987:10"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {
+    "1516694819694": {
+      "events": {},
+      "links": {},
+      "address": "0x88952d0ce2afb491502684ace32e2f48c1a2d6eb"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-23T09:27:20.057Z"
+}

@@ -1,0 +1,2346 @@
+{
+  "contractName": "BountyTokenAllocation",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_dest",
+          "type": "address"
+        }
+      ],
+      "name": "approveBountyTransfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAllocationLength",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "allocationAddressList",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_dest",
+          "type": "address"
+        },
+        {
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "proposeBountyTransfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "remainingBountyTokens",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "bountyOf",
+      "outputs": [
+        {
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "name": "proposalAddress",
+          "type": "address"
+        },
+        {
+          "name": "bountyState",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_dest",
+          "type": "address"
+        }
+      ],
+      "name": "rejectBountyTransfer",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_remainingBountyTokens",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "bytecode": "0x606060405233600460006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550341561005057600080fd5b604051602080610a7783398101604052808051906020019091905050336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561010757600080fd5b80600281905550506109598061011e6000396000f30060606040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063257ef522146100935780633f352bc0146100cc5780634f22bcf8146100f5578063639bd0bf1461015857806378f8eea81461019a5780638da5cb5b146101c35780639441294314610218578063be0f27cf146102ad575b600080fd5b341561009e57600080fd5b6100ca600480803573ffffffffffffffffffffffffffffffffffffffff169060200190919050506102e6565b005b34156100d757600080fd5b6100df61041c565b6040518082815260200191505060405180910390f35b341561010057600080fd5b6101166004808035906020019091905050610429565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561016357600080fd5b610198600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091908035906020019091905050610468565b005b34156101a557600080fd5b6101ad6106d6565b6040518082815260200191505060405180910390f35b34156101ce57600080fd5b6101d66106dc565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561022357600080fd5b61024f600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610702565b604051808481526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182600281111561029757fe5b60ff168152602001935050505060405180910390f35b34156102b857600080fd5b6102e4600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610759565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561034157600080fd5b6000600281111561034e57fe5b600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160149054906101000a900460ff1660028111156103a957fe5b1415156103b557600080fd5b6001600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160146101000a81548160ff0219169083600281111561041457fe5b021790555050565b6000600180549050905090565b60018181548110151561043857fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156104c357600080fd5b6000811115156104d257600080fd5b60025481111515156104e357600080fd5b6000600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614151561056a57600080fd5b6060604051908101604052808281526020013373ffffffffffffffffffffffffffffffffffffffff168152602001600060028111156105a557fe5b815250600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000820151816000015560208201518160010160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060408201518160010160146101000a81548160ff0219169083600281111561065c57fe5b02179055509050506001805480600101828161067891906108dc565b9160005260206000209001600084909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505080600254036002819055505050565b60025481565b600460009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60036020528060005260406000206000915090508060000154908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160149054906101000a900460ff16905083565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156107b457600080fd5b600060028111156107c157fe5b600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160149054906101000a900460ff16600281111561081c57fe5b14151561082857600080fd5b6002600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160146101000a81548160ff0219169083600281111561088757fe5b0217905550600360008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600001546002540160028190555050565b815481835581811511610903578183600052602060002091820191016109029190610908565b5b505050565b61092a91905b8082111561092657600081600090555060010161090e565b5090565b905600a165627a7a7230582046ed86c36c8b871c664ad101a974135453be861c86bdaa81264c9710ed6ef7c90029",
+  "deployedBytecode": "0x60606040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063257ef522146100935780633f352bc0146100cc5780634f22bcf8146100f5578063639bd0bf1461015857806378f8eea81461019a5780638da5cb5b146101c35780639441294314610218578063be0f27cf146102ad575b600080fd5b341561009e57600080fd5b6100ca600480803573ffffffffffffffffffffffffffffffffffffffff169060200190919050506102e6565b005b34156100d757600080fd5b6100df61041c565b6040518082815260200191505060405180910390f35b341561010057600080fd5b6101166004808035906020019091905050610429565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561016357600080fd5b610198600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091908035906020019091905050610468565b005b34156101a557600080fd5b6101ad6106d6565b6040518082815260200191505060405180910390f35b34156101ce57600080fd5b6101d66106dc565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561022357600080fd5b61024f600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610702565b604051808481526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200182600281111561029757fe5b60ff168152602001935050505060405180910390f35b34156102b857600080fd5b6102e4600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610759565b005b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561034157600080fd5b6000600281111561034e57fe5b600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160149054906101000a900460ff1660028111156103a957fe5b1415156103b557600080fd5b6001600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160146101000a81548160ff0219169083600281111561041457fe5b021790555050565b6000600180549050905090565b60018181548110151561043857fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156104c357600080fd5b6000811115156104d257600080fd5b60025481111515156104e357600080fd5b6000600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614151561056a57600080fd5b6060604051908101604052808281526020013373ffffffffffffffffffffffffffffffffffffffff168152602001600060028111156105a557fe5b815250600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000206000820151816000015560208201518160010160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060408201518160010160146101000a81548160ff0219169083600281111561065c57fe5b02179055509050506001805480600101828161067891906108dc565b9160005260206000209001600084909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505080600254036002819055505050565b60025481565b600460009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60036020528060005260406000206000915090508060000154908060010160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010160149054906101000a900460ff16905083565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156107b457600080fd5b600060028111156107c157fe5b600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160149054906101000a900460ff16600281111561081c57fe5b14151561082857600080fd5b6002600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160146101000a81548160ff0219169083600281111561088757fe5b0217905550600360008273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600001546002540160028190555050565b815481835581811511610903578183600052602060002091820191016109029190610908565b5b505050565b61092a91905b8082111561092657600081600090555060010161090e565b5090565b905600a165627a7a7230582046ed86c36c8b871c664ad101a974135453be861c86bdaa81264c9710ed6ef7c90029",
+  "sourceMap": "115:1885:1:-;;;814:10;791:33;;;;;;;;;;;;;;;;;;;;829:134;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;226:10:7;218:5;;:18;;;;;;;;;;;;;;;;;;370:5;;;;;;;;;;;356:19;;:10;:19;;;348:28;;;;;;;;936:22:1;912:21;:46;;;;829:134;115:1885;;;;;;",
+  "deployedSourceMap": "115:1885:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1492:213;;;;;;;;;;;;;;;;;;;;;;;;;;;;104:104:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;61:38;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;969:519:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;446:33;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;791;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;721:65;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1709:288;;;;;;;;;;;;;;;;;;;;;;;;;;;;1492:213;370:5:7;;;;;;;;;;;356:19;;:10;:19;;;348:28;;;;;;;;1600:31:1;1569:62;;;;;;;;:8;:15;1578:5;1569:15;;;;;;;;;;;;;;;:27;;;;;;;;;;;;:62;;;;;;;;;1561:71;;;;;;;;1669:31;1639:8;:15;1648:5;1639:15;;;;;;;;;;;;;;;:27;;;:61;;;;;;;;;;;;;;;;;;;;;;;;1492:213;:::o;104:104:0:-;156:4;175:21;:28;;;;168:35;;104:104;:::o;61:38::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;969:519:1:-;370:5:7;;;;;;;;;;;356:19;;:10;:19;;;348:28;;;;;;;;1070:1:1;1060:7;:11;1052:20;;;;;;;;1097:21;;1086:7;:32;;1078:41;;;;;;;;1168:3;1133:8;:15;1142:5;1133:15;;;;;;;;;;;;;;;:31;;;;;;;;;;;;:38;;;1125:47;;;;;;;;1237:146;;;;;;;;;1282:7;1237:146;;;;1314:10;1237:146;;;;;;1345:31;1237:146;;;;;;;;;;;1219:8;:15;1228:5;1219:15;;;;;;;;;;;;;;;:164;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1389:21;:33;;;;;;;;;;;:::i;:::-;;;;;;;;;;1416:5;1389:33;;;;;;;;;;;;;;;;;;;;;;;1476:7;1452:21;;:31;1428:21;:55;;;;969:519;;:::o;446:33::-;;;;:::o;791:::-;;;;;;;;;;;;;:::o;721:65::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;1709:288::-;370:5:7;;;;;;;;;;;356:19;;:10;:19;;;348:28;;;;;;;;1816:31:1;1785:62;;;;;;;;:8;:15;1794:5;1785:15;;;;;;;;;;;;;;;:27;;;;;;;;;;;;:62;;;;;;;;;1777:71;;;;;;;;1885:31;1855:8;:15;1864:5;1855:15;;;;;;;;;;;;;;;:27;;;:61;;;;;;;;;;;;;;;;;;;;;;;;1970:8;:15;1979:5;1970:15;;;;;;;;;;;;;;;:22;;;1946:21;;:46;1922:21;:70;;;;1709:288;:::o;115:1885::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.4;\n\nimport \"./Ownable.sol\";\nimport \"./AllocationAddressList.sol\";\nimport \"./SplitTypes.sol\";\n\ncontract BountyTokenAllocation is Ownable, AllocationAddressList {\n\n  // This contract describes how the bounty tokens are allocated.\n  // After a bounty allocation was proposed by a signaturer, another\n  // signaturer must accept this allocation. And then it can be sent\n\n  // Total amount of remaining tokens to be distributed\n  uint public remainingBountyTokens;\n\n  // Possible split states: Proposed, Approved, Rejected\n  // Proposed is the initial state.\n  // Both Approved and Rejected are final states.\n  // The only possible transitions are:\n  // Proposed => Approved\n  // Proposed => Rejected\n\n\n  mapping (address => SplitTypes.BountyAllocationT) public bountyOf;\n\n  address public owner = msg.sender;\n\n  function BountyTokenAllocation(uint _remainingBountyTokens) onlyOwner public {\n    remainingBountyTokens = _remainingBountyTokens;\n  }\n\n\n\n  function proposeBountyTransfer(address _dest, uint _amount) public onlyOwner {\n    require(_amount > 0);\n    require(_amount <= remainingBountyTokens);\n    require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal\n\n    bountyOf[_dest] = SplitTypes.BountyAllocationT({\n      amount: _amount,\n      proposalAddress: msg.sender,\n      bountyState: SplitTypes.BountyState.Proposed\n    });\n    allocationAddressList.push(_dest);\n    remainingBountyTokens = remainingBountyTokens - _amount;\n  }\n\n  function approveBountyTransfer(address _dest) public onlyOwner {\n    require(bountyOf[_dest].bountyState == SplitTypes.BountyState.Proposed);\n\n    bountyOf[_dest].bountyState = SplitTypes.BountyState.Approved;\n  }\n\n  function rejectBountyTransfer(address _dest) public onlyOwner {\n    require(bountyOf[_dest].bountyState == SplitTypes.BountyState.Proposed);\n\n    bountyOf[_dest].bountyState = SplitTypes.BountyState.Rejected;\n    remainingBountyTokens = remainingBountyTokens + bountyOf[_dest].amount;\n  }\n\n}\n",
+  "sourcePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/BountyTokenAllocation.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/BountyTokenAllocation.sol",
+      "exportedSymbols": {
+        "BountyTokenAllocation": [
+          168
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".4"
+          ]
+        },
+        "id": 16,
+        "name": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 951,
+          "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/Ownable.sol",
+          "file": "./Ownable.sol",
+          "scope": 169,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 17,
+        "name": "ImportDirective",
+        "src": "25:23:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 15,
+          "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/AllocationAddressList.sol",
+          "file": "./AllocationAddressList.sol",
+          "scope": 169,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 18,
+        "name": "ImportDirective",
+        "src": "49:37:1"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1078,
+          "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/SplitTypes.sol",
+          "file": "./SplitTypes.sol",
+          "scope": 169,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 19,
+        "name": "ImportDirective",
+        "src": "87:26:1"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            14,
+            950
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            168,
+            14,
+            950
+          ],
+          "name": "BountyTokenAllocation",
+          "scope": 169
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Ownable",
+                  "referencedDeclaration": 950,
+                  "type": "contract Ownable"
+                },
+                "id": 20,
+                "name": "UserDefinedTypeName",
+                "src": "149:7:1"
+              }
+            ],
+            "id": 21,
+            "name": "InheritanceSpecifier",
+            "src": "149:7:1"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "AllocationAddressList",
+                  "referencedDeclaration": 14,
+                  "type": "contract AllocationAddressList"
+                },
+                "id": 22,
+                "name": "UserDefinedTypeName",
+                "src": "158:21:1"
+              }
+            ],
+            "id": 23,
+            "name": "InheritanceSpecifier",
+            "src": "158:21:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "remainingBountyTokens",
+              "scope": 168,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "uint256",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "uint",
+                  "type": "uint256"
+                },
+                "id": 24,
+                "name": "ElementaryTypeName",
+                "src": "446:4:1"
+              }
+            ],
+            "id": 25,
+            "name": "VariableDeclaration",
+            "src": "446:33:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "bountyOf",
+              "scope": 168,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 26,
+                    "name": "ElementaryTypeName",
+                    "src": "730:7:1"
+                  },
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "SplitTypes.BountyAllocationT",
+                      "referencedDeclaration": 1076,
+                      "type": "struct SplitTypes.BountyAllocationT storage pointer"
+                    },
+                    "id": 27,
+                    "name": "UserDefinedTypeName",
+                    "src": "741:28:1"
+                  }
+                ],
+                "id": 28,
+                "name": "Mapping",
+                "src": "721:49:1"
+              }
+            ],
+            "id": 29,
+            "name": "VariableDeclaration",
+            "src": "721:65:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "owner",
+              "scope": 168,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "type": "address"
+                },
+                "id": 30,
+                "name": "ElementaryTypeName",
+                "src": "791:7:1"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": false,
+                  "lValueRequested": false,
+                  "member_name": "sender",
+                  "referencedDeclaration": null,
+                  "type": "address"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 1390,
+                      "type": "msg",
+                      "value": "msg"
+                    },
+                    "id": 31,
+                    "name": "Identifier",
+                    "src": "814:3:1"
+                  }
+                ],
+                "id": 32,
+                "name": "MemberAccess",
+                "src": "814:10:1"
+              }
+            ],
+            "id": 33,
+            "name": "VariableDeclaration",
+            "src": "791:33:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "name": "BountyTokenAllocation",
+              "payable": false,
+              "scope": 168,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_remainingBountyTokens",
+                      "scope": 45,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 34,
+                        "name": "ElementaryTypeName",
+                        "src": "860:4:1"
+                      }
+                    ],
+                    "id": 35,
+                    "name": "VariableDeclaration",
+                    "src": "860:27:1"
+                  }
+                ],
+                "id": 36,
+                "name": "ParameterList",
+                "src": "859:29:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 39,
+                "name": "ParameterList",
+                "src": "906:0:1"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 949,
+                      "type": "modifier ()",
+                      "value": "onlyOwner"
+                    },
+                    "id": 37,
+                    "name": "Identifier",
+                    "src": "889:9:1"
+                  }
+                ],
+                "id": 38,
+                "name": "ModifierInvocation",
+                "src": "889:9:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 25,
+                              "type": "uint256",
+                              "value": "remainingBountyTokens"
+                            },
+                            "id": 40,
+                            "name": "Identifier",
+                            "src": "912:21:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 35,
+                              "type": "uint256",
+                              "value": "_remainingBountyTokens"
+                            },
+                            "id": 41,
+                            "name": "Identifier",
+                            "src": "936:22:1"
+                          }
+                        ],
+                        "id": 42,
+                        "name": "Assignment",
+                        "src": "912:46:1"
+                      }
+                    ],
+                    "id": 43,
+                    "name": "ExpressionStatement",
+                    "src": "912:46:1"
+                  }
+                ],
+                "id": 44,
+                "name": "Block",
+                "src": "906:57:1"
+              }
+            ],
+            "id": 45,
+            "name": "FunctionDefinition",
+            "src": "829:134:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "proposeBountyTransfer",
+              "payable": false,
+              "scope": 168,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_dest",
+                      "scope": 102,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 46,
+                        "name": "ElementaryTypeName",
+                        "src": "1000:7:1"
+                      }
+                    ],
+                    "id": 47,
+                    "name": "VariableDeclaration",
+                    "src": "1000:13:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_amount",
+                      "scope": 102,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 48,
+                        "name": "ElementaryTypeName",
+                        "src": "1015:4:1"
+                      }
+                    ],
+                    "id": 49,
+                    "name": "VariableDeclaration",
+                    "src": "1015:12:1"
+                  }
+                ],
+                "id": 50,
+                "name": "ParameterList",
+                "src": "999:29:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 53,
+                "name": "ParameterList",
+                "src": "1046:0:1"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 949,
+                      "type": "modifier ()",
+                      "value": "onlyOwner"
+                    },
+                    "id": 51,
+                    "name": "Identifier",
+                    "src": "1036:9:1"
+                  }
+                ],
+                "id": 52,
+                "name": "ModifierInvocation",
+                "src": "1036:9:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1393,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 54,
+                            "name": "Identifier",
+                            "src": "1052:7:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": ">",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 49,
+                                  "type": "uint256",
+                                  "value": "_amount"
+                                },
+                                "id": 55,
+                                "name": "Identifier",
+                                "src": "1060:7:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "30",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "int_const 0",
+                                  "value": "0"
+                                },
+                                "id": 56,
+                                "name": "Literal",
+                                "src": "1070:1:1"
+                              }
+                            ],
+                            "id": 57,
+                            "name": "BinaryOperation",
+                            "src": "1060:11:1"
+                          }
+                        ],
+                        "id": 58,
+                        "name": "FunctionCall",
+                        "src": "1052:20:1"
+                      }
+                    ],
+                    "id": 59,
+                    "name": "ExpressionStatement",
+                    "src": "1052:20:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1393,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 60,
+                            "name": "Identifier",
+                            "src": "1078:7:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "<=",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 49,
+                                  "type": "uint256",
+                                  "value": "_amount"
+                                },
+                                "id": 61,
+                                "name": "Identifier",
+                                "src": "1086:7:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 25,
+                                  "type": "uint256",
+                                  "value": "remainingBountyTokens"
+                                },
+                                "id": 62,
+                                "name": "Identifier",
+                                "src": "1097:21:1"
+                              }
+                            ],
+                            "id": 63,
+                            "name": "BinaryOperation",
+                            "src": "1086:32:1"
+                          }
+                        ],
+                        "id": 64,
+                        "name": "FunctionCall",
+                        "src": "1078:41:1"
+                      }
+                    ],
+                    "id": 65,
+                    "name": "ExpressionStatement",
+                    "src": "1078:41:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1393,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 66,
+                            "name": "Identifier",
+                            "src": "1125:7:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "proposalAddress",
+                                  "referencedDeclaration": 1073,
+                                  "type": "address"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": true,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 29,
+                                          "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                          "value": "bountyOf"
+                                        },
+                                        "id": 67,
+                                        "name": "Identifier",
+                                        "src": "1133:8:1"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 47,
+                                          "type": "address",
+                                          "value": "_dest"
+                                        },
+                                        "id": 68,
+                                        "name": "Identifier",
+                                        "src": "1142:5:1"
+                                      }
+                                    ],
+                                    "id": 69,
+                                    "name": "IndexAccess",
+                                    "src": "1133:15:1"
+                                  }
+                                ],
+                                "id": 70,
+                                "name": "MemberAccess",
+                                "src": "1133:31:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "hexvalue": "307830",
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "subdenomination": null,
+                                  "token": "number",
+                                  "type": "int_const 0",
+                                  "value": "0x0"
+                                },
+                                "id": 71,
+                                "name": "Literal",
+                                "src": "1168:3:1"
+                              }
+                            ],
+                            "id": 72,
+                            "name": "BinaryOperation",
+                            "src": "1133:38:1"
+                          }
+                        ],
+                        "id": 73,
+                        "name": "FunctionCall",
+                        "src": "1125:47:1"
+                      }
+                    ],
+                    "id": 74,
+                    "name": "ExpressionStatement",
+                    "src": "1125:47:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "struct SplitTypes.BountyAllocationT storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "struct SplitTypes.BountyAllocationT storage ref"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 29,
+                                  "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                  "value": "bountyOf"
+                                },
+                                "id": 75,
+                                "name": "Identifier",
+                                "src": "1219:8:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 47,
+                                  "type": "address",
+                                  "value": "_dest"
+                                },
+                                "id": 76,
+                                "name": "Identifier",
+                                "src": "1228:5:1"
+                              }
+                            ],
+                            "id": 77,
+                            "name": "IndexAccess",
+                            "src": "1219:15:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": true,
+                              "lValueRequested": false,
+                              "names": [
+                                "amount",
+                                "proposalAddress",
+                                "bountyState"
+                              ],
+                              "type": "struct SplitTypes.BountyAllocationT memory",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "BountyAllocationT",
+                                  "referencedDeclaration": 1076,
+                                  "type": "type(struct SplitTypes.BountyAllocationT storage pointer)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1077,
+                                      "type": "type(contract SplitTypes)",
+                                      "value": "SplitTypes"
+                                    },
+                                    "id": 78,
+                                    "name": "Identifier",
+                                    "src": "1237:10:1"
+                                  }
+                                ],
+                                "id": 79,
+                                "name": "MemberAccess",
+                                "src": "1237:28:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 49,
+                                  "type": "uint256",
+                                  "value": "_amount"
+                                },
+                                "id": 80,
+                                "name": "Identifier",
+                                "src": "1282:7:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "sender",
+                                  "referencedDeclaration": null,
+                                  "type": "address"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1390,
+                                      "type": "msg",
+                                      "value": "msg"
+                                    },
+                                    "id": 81,
+                                    "name": "Identifier",
+                                    "src": "1314:3:1"
+                                  }
+                                ],
+                                "id": 82,
+                                "name": "MemberAccess",
+                                "src": "1314:10:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "member_name": "Proposed",
+                                  "referencedDeclaration": null,
+                                  "type": "enum SplitTypes.BountyState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "BountyState",
+                                      "referencedDeclaration": 1069,
+                                      "type": "type(enum SplitTypes.BountyState)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1077,
+                                          "type": "type(contract SplitTypes)",
+                                          "value": "SplitTypes"
+                                        },
+                                        "id": 83,
+                                        "name": "Identifier",
+                                        "src": "1345:10:1"
+                                      }
+                                    ],
+                                    "id": 84,
+                                    "name": "MemberAccess",
+                                    "src": "1345:22:1"
+                                  }
+                                ],
+                                "id": 85,
+                                "name": "MemberAccess",
+                                "src": "1345:31:1"
+                              }
+                            ],
+                            "id": 86,
+                            "name": "FunctionCall",
+                            "src": "1237:146:1"
+                          }
+                        ],
+                        "id": 87,
+                        "name": "Assignment",
+                        "src": "1219:164:1"
+                      }
+                    ],
+                    "id": 88,
+                    "name": "ExpressionStatement",
+                    "src": "1219:164:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "push",
+                              "referencedDeclaration": null,
+                              "type": "function (address) returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 4,
+                                  "type": "address[] storage ref",
+                                  "value": "allocationAddressList"
+                                },
+                                "id": 89,
+                                "name": "Identifier",
+                                "src": "1389:21:1"
+                              }
+                            ],
+                            "id": 91,
+                            "name": "MemberAccess",
+                            "src": "1389:26:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 47,
+                              "type": "address",
+                              "value": "_dest"
+                            },
+                            "id": 92,
+                            "name": "Identifier",
+                            "src": "1416:5:1"
+                          }
+                        ],
+                        "id": 93,
+                        "name": "FunctionCall",
+                        "src": "1389:33:1"
+                      }
+                    ],
+                    "id": 94,
+                    "name": "ExpressionStatement",
+                    "src": "1389:33:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 25,
+                              "type": "uint256",
+                              "value": "remainingBountyTokens"
+                            },
+                            "id": 95,
+                            "name": "Identifier",
+                            "src": "1428:21:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "-",
+                              "type": "uint256"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 25,
+                                  "type": "uint256",
+                                  "value": "remainingBountyTokens"
+                                },
+                                "id": 96,
+                                "name": "Identifier",
+                                "src": "1452:21:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 49,
+                                  "type": "uint256",
+                                  "value": "_amount"
+                                },
+                                "id": 97,
+                                "name": "Identifier",
+                                "src": "1476:7:1"
+                              }
+                            ],
+                            "id": 98,
+                            "name": "BinaryOperation",
+                            "src": "1452:31:1"
+                          }
+                        ],
+                        "id": 99,
+                        "name": "Assignment",
+                        "src": "1428:55:1"
+                      }
+                    ],
+                    "id": 100,
+                    "name": "ExpressionStatement",
+                    "src": "1428:55:1"
+                  }
+                ],
+                "id": 101,
+                "name": "Block",
+                "src": "1046:442:1"
+              }
+            ],
+            "id": 102,
+            "name": "FunctionDefinition",
+            "src": "969:519:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "approveBountyTransfer",
+              "payable": false,
+              "scope": 168,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_dest",
+                      "scope": 130,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 103,
+                        "name": "ElementaryTypeName",
+                        "src": "1523:7:1"
+                      }
+                    ],
+                    "id": 104,
+                    "name": "VariableDeclaration",
+                    "src": "1523:13:1"
+                  }
+                ],
+                "id": 105,
+                "name": "ParameterList",
+                "src": "1522:15:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 108,
+                "name": "ParameterList",
+                "src": "1555:0:1"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 949,
+                      "type": "modifier ()",
+                      "value": "onlyOwner"
+                    },
+                    "id": 106,
+                    "name": "Identifier",
+                    "src": "1545:9:1"
+                  }
+                ],
+                "id": 107,
+                "name": "ModifierInvocation",
+                "src": "1545:9:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1393,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 109,
+                            "name": "Identifier",
+                            "src": "1561:7:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_enum$_BountyState_$1069",
+                                "typeString": "enum SplitTypes.BountyState"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "bountyState",
+                                  "referencedDeclaration": 1075,
+                                  "type": "enum SplitTypes.BountyState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": true,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 29,
+                                          "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                          "value": "bountyOf"
+                                        },
+                                        "id": 110,
+                                        "name": "Identifier",
+                                        "src": "1569:8:1"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 104,
+                                          "type": "address",
+                                          "value": "_dest"
+                                        },
+                                        "id": 111,
+                                        "name": "Identifier",
+                                        "src": "1578:5:1"
+                                      }
+                                    ],
+                                    "id": 112,
+                                    "name": "IndexAccess",
+                                    "src": "1569:15:1"
+                                  }
+                                ],
+                                "id": 113,
+                                "name": "MemberAccess",
+                                "src": "1569:27:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "member_name": "Proposed",
+                                  "referencedDeclaration": null,
+                                  "type": "enum SplitTypes.BountyState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "BountyState",
+                                      "referencedDeclaration": 1069,
+                                      "type": "type(enum SplitTypes.BountyState)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1077,
+                                          "type": "type(contract SplitTypes)",
+                                          "value": "SplitTypes"
+                                        },
+                                        "id": 114,
+                                        "name": "Identifier",
+                                        "src": "1600:10:1"
+                                      }
+                                    ],
+                                    "id": 115,
+                                    "name": "MemberAccess",
+                                    "src": "1600:22:1"
+                                  }
+                                ],
+                                "id": 116,
+                                "name": "MemberAccess",
+                                "src": "1600:31:1"
+                              }
+                            ],
+                            "id": 117,
+                            "name": "BinaryOperation",
+                            "src": "1569:62:1"
+                          }
+                        ],
+                        "id": 118,
+                        "name": "FunctionCall",
+                        "src": "1561:71:1"
+                      }
+                    ],
+                    "id": 119,
+                    "name": "ExpressionStatement",
+                    "src": "1561:71:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "enum SplitTypes.BountyState"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "member_name": "bountyState",
+                              "referencedDeclaration": 1075,
+                              "type": "enum SplitTypes.BountyState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 29,
+                                      "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                      "value": "bountyOf"
+                                    },
+                                    "id": 120,
+                                    "name": "Identifier",
+                                    "src": "1639:8:1"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 104,
+                                      "type": "address",
+                                      "value": "_dest"
+                                    },
+                                    "id": 121,
+                                    "name": "Identifier",
+                                    "src": "1648:5:1"
+                                  }
+                                ],
+                                "id": 122,
+                                "name": "IndexAccess",
+                                "src": "1639:15:1"
+                              }
+                            ],
+                            "id": 123,
+                            "name": "MemberAccess",
+                            "src": "1639:27:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "member_name": "Approved",
+                              "referencedDeclaration": null,
+                              "type": "enum SplitTypes.BountyState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "BountyState",
+                                  "referencedDeclaration": 1069,
+                                  "type": "type(enum SplitTypes.BountyState)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1077,
+                                      "type": "type(contract SplitTypes)",
+                                      "value": "SplitTypes"
+                                    },
+                                    "id": 124,
+                                    "name": "Identifier",
+                                    "src": "1669:10:1"
+                                  }
+                                ],
+                                "id": 125,
+                                "name": "MemberAccess",
+                                "src": "1669:22:1"
+                              }
+                            ],
+                            "id": 126,
+                            "name": "MemberAccess",
+                            "src": "1669:31:1"
+                          }
+                        ],
+                        "id": 127,
+                        "name": "Assignment",
+                        "src": "1639:61:1"
+                      }
+                    ],
+                    "id": 128,
+                    "name": "ExpressionStatement",
+                    "src": "1639:61:1"
+                  }
+                ],
+                "id": 129,
+                "name": "Block",
+                "src": "1555:150:1"
+              }
+            ],
+            "id": 130,
+            "name": "FunctionDefinition",
+            "src": "1492:213:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "name": "rejectBountyTransfer",
+              "payable": false,
+              "scope": 168,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_dest",
+                      "scope": 167,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 131,
+                        "name": "ElementaryTypeName",
+                        "src": "1739:7:1"
+                      }
+                    ],
+                    "id": 132,
+                    "name": "VariableDeclaration",
+                    "src": "1739:13:1"
+                  }
+                ],
+                "id": 133,
+                "name": "ParameterList",
+                "src": "1738:15:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 136,
+                "name": "ParameterList",
+                "src": "1771:0:1"
+              },
+              {
+                "attributes": {
+                  "arguments": [
+                    null
+                  ]
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 949,
+                      "type": "modifier ()",
+                      "value": "onlyOwner"
+                    },
+                    "id": 134,
+                    "name": "Identifier",
+                    "src": "1761:9:1"
+                  }
+                ],
+                "id": 135,
+                "name": "ModifierInvocation",
+                "src": "1761:9:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1393,
+                              "type": "function (bool) pure",
+                              "value": "require"
+                            },
+                            "id": 137,
+                            "name": "Identifier",
+                            "src": "1777:7:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_enum$_BountyState_$1069",
+                                "typeString": "enum SplitTypes.BountyState"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "==",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "bountyState",
+                                  "referencedDeclaration": 1075,
+                                  "type": "enum SplitTypes.BountyState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": true,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 29,
+                                          "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                          "value": "bountyOf"
+                                        },
+                                        "id": 138,
+                                        "name": "Identifier",
+                                        "src": "1785:8:1"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 132,
+                                          "type": "address",
+                                          "value": "_dest"
+                                        },
+                                        "id": 139,
+                                        "name": "Identifier",
+                                        "src": "1794:5:1"
+                                      }
+                                    ],
+                                    "id": 140,
+                                    "name": "IndexAccess",
+                                    "src": "1785:15:1"
+                                  }
+                                ],
+                                "id": 141,
+                                "name": "MemberAccess",
+                                "src": "1785:27:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "member_name": "Proposed",
+                                  "referencedDeclaration": null,
+                                  "type": "enum SplitTypes.BountyState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "BountyState",
+                                      "referencedDeclaration": 1069,
+                                      "type": "type(enum SplitTypes.BountyState)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 1077,
+                                          "type": "type(contract SplitTypes)",
+                                          "value": "SplitTypes"
+                                        },
+                                        "id": 142,
+                                        "name": "Identifier",
+                                        "src": "1816:10:1"
+                                      }
+                                    ],
+                                    "id": 143,
+                                    "name": "MemberAccess",
+                                    "src": "1816:22:1"
+                                  }
+                                ],
+                                "id": 144,
+                                "name": "MemberAccess",
+                                "src": "1816:31:1"
+                              }
+                            ],
+                            "id": 145,
+                            "name": "BinaryOperation",
+                            "src": "1785:62:1"
+                          }
+                        ],
+                        "id": 146,
+                        "name": "FunctionCall",
+                        "src": "1777:71:1"
+                      }
+                    ],
+                    "id": 147,
+                    "name": "ExpressionStatement",
+                    "src": "1777:71:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "enum SplitTypes.BountyState"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "member_name": "bountyState",
+                              "referencedDeclaration": 1075,
+                              "type": "enum SplitTypes.BountyState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 29,
+                                      "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                      "value": "bountyOf"
+                                    },
+                                    "id": 148,
+                                    "name": "Identifier",
+                                    "src": "1855:8:1"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 132,
+                                      "type": "address",
+                                      "value": "_dest"
+                                    },
+                                    "id": 149,
+                                    "name": "Identifier",
+                                    "src": "1864:5:1"
+                                  }
+                                ],
+                                "id": 150,
+                                "name": "IndexAccess",
+                                "src": "1855:15:1"
+                              }
+                            ],
+                            "id": 151,
+                            "name": "MemberAccess",
+                            "src": "1855:27:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "member_name": "Rejected",
+                              "referencedDeclaration": null,
+                              "type": "enum SplitTypes.BountyState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "BountyState",
+                                  "referencedDeclaration": 1069,
+                                  "type": "type(enum SplitTypes.BountyState)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 1077,
+                                      "type": "type(contract SplitTypes)",
+                                      "value": "SplitTypes"
+                                    },
+                                    "id": 152,
+                                    "name": "Identifier",
+                                    "src": "1885:10:1"
+                                  }
+                                ],
+                                "id": 153,
+                                "name": "MemberAccess",
+                                "src": "1885:22:1"
+                              }
+                            ],
+                            "id": 154,
+                            "name": "MemberAccess",
+                            "src": "1885:31:1"
+                          }
+                        ],
+                        "id": 155,
+                        "name": "Assignment",
+                        "src": "1855:61:1"
+                      }
+                    ],
+                    "id": 156,
+                    "name": "ExpressionStatement",
+                    "src": "1855:61:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 25,
+                              "type": "uint256",
+                              "value": "remainingBountyTokens"
+                            },
+                            "id": 157,
+                            "name": "Identifier",
+                            "src": "1922:21:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "+",
+                              "type": "uint256"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 25,
+                                  "type": "uint256",
+                                  "value": "remainingBountyTokens"
+                                },
+                                "id": 158,
+                                "name": "Identifier",
+                                "src": "1946:21:1"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "amount",
+                                  "referencedDeclaration": 1071,
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": true,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "type": "struct SplitTypes.BountyAllocationT storage ref"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 29,
+                                          "type": "mapping(address => struct SplitTypes.BountyAllocationT storage ref)",
+                                          "value": "bountyOf"
+                                        },
+                                        "id": 159,
+                                        "name": "Identifier",
+                                        "src": "1970:8:1"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 132,
+                                          "type": "address",
+                                          "value": "_dest"
+                                        },
+                                        "id": 160,
+                                        "name": "Identifier",
+                                        "src": "1979:5:1"
+                                      }
+                                    ],
+                                    "id": 161,
+                                    "name": "IndexAccess",
+                                    "src": "1970:15:1"
+                                  }
+                                ],
+                                "id": 162,
+                                "name": "MemberAccess",
+                                "src": "1970:22:1"
+                              }
+                            ],
+                            "id": 163,
+                            "name": "BinaryOperation",
+                            "src": "1946:46:1"
+                          }
+                        ],
+                        "id": 164,
+                        "name": "Assignment",
+                        "src": "1922:70:1"
+                      }
+                    ],
+                    "id": 165,
+                    "name": "ExpressionStatement",
+                    "src": "1922:70:1"
+                  }
+                ],
+                "id": 166,
+                "name": "Block",
+                "src": "1771:226:1"
+              }
+            ],
+            "id": 167,
+            "name": "FunctionDefinition",
+            "src": "1709:288:1"
+          }
+        ],
+        "id": 168,
+        "name": "ContractDefinition",
+        "src": "115:1885:1"
+      }
+    ],
+    "id": 169,
+    "name": "SourceUnit",
+    "src": "0:2001:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {
+    "1516694819694": {
+      "events": {},
+      "links": {},
+      "address": "0x35d36f61a618c859e12987d73f2fcb3647168954"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-23T09:27:20.059Z"
+}

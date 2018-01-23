@@ -10,9 +10,6 @@
 .DS_Store
 Thumbs.db
 
-# build
-build/*
-
 # node packages
 node_modules
 web-app/contracts

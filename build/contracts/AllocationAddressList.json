@@ -1,0 +1,258 @@
+{
+  "contractName": "AllocationAddressList",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAllocationLength",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "allocationAddressList",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b6101548061001e6000396000f30060606040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633f352bc0146100515780634f22bcf81461007a575b600080fd5b341561005c57600080fd5b6100646100dd565b6040518082815260200191505060405180910390f35b341561008557600080fd5b61009b60048080359060200190919050506100e9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008080549050905090565b6000818154811015156100f857fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582003c2fb2a18735f69baca7a203988d775a52ce7c974468ad7d0cd08aaab35637b0029",
+  "deployedBytecode": "0x60606040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633f352bc0146100515780634f22bcf81461007a575b600080fd5b341561005c57600080fd5b6100646100dd565b6040518082815260200191505060405180910390f35b341561008557600080fd5b61009b60048080359060200190919050506100e9565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008080549050905090565b6000818154811015156100f857fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582003c2fb2a18735f69baca7a203988d775a52ce7c974468ad7d0cd08aaab35637b0029",
+  "sourceMap": "25:185:0:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "25:185:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;104:104;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;61:38;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;104:104;156:4;175:21;:28;;;;168:35;;104:104;:::o;61:38::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.4;\n\ncontract AllocationAddressList {\n\n  address[] public allocationAddressList;\n\n  function getAllocationLength() public view returns (uint) {\n    return allocationAddressList.length;\n  }\n}\n",
+  "sourcePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/AllocationAddressList.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/albertbalinski/crypto/experty/experty-tge/contracts/AllocationAddressList.sol",
+      "exportedSymbols": {
+        "AllocationAddressList": [
+          14
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".4"
+          ]
+        },
+        "id": 1,
+        "name": "PragmaDirective",
+        "src": "0:23:0"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            14
+          ],
+          "name": "AllocationAddressList",
+          "scope": 15
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "allocationAddressList",
+              "scope": 14,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address[] storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "address[] storage pointer"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 2,
+                    "name": "ElementaryTypeName",
+                    "src": "61:7:0"
+                  }
+                ],
+                "id": 3,
+                "name": "ArrayTypeName",
+                "src": "61:9:0"
+              }
+            ],
+            "id": 4,
+            "name": "VariableDeclaration",
+            "src": "61:38:0"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getAllocationLength",
+              "payable": false,
+              "scope": 14,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 5,
+                "name": "ParameterList",
+                "src": "132:2:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 13,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 6,
+                        "name": "ElementaryTypeName",
+                        "src": "156:4:0"
+                      }
+                    ],
+                    "id": 7,
+                    "name": "VariableDeclaration",
+                    "src": "156:4:0"
+                  }
+                ],
+                "id": 8,
+                "name": "ParameterList",
+                "src": "155:6:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 8
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "member_name": "length",
+                          "referencedDeclaration": null,
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 4,
+                              "type": "address[] storage ref",
+                              "value": "allocationAddressList"
+                            },
+                            "id": 9,
+                            "name": "Identifier",
+                            "src": "175:21:0"
+                          }
+                        ],
+                        "id": 10,
+                        "name": "MemberAccess",
+                        "src": "175:28:0"
+                      }
+                    ],
+                    "id": 11,
+                    "name": "Return",
+                    "src": "168:35:0"
+                  }
+                ],
+                "id": 12,
+                "name": "Block",
+                "src": "162:46:0"
+              }
+            ],
+            "id": 13,
+            "name": "FunctionDefinition",
+            "src": "104:104:0"
+          }
+        ],
+        "id": 14,
+        "name": "ContractDefinition",
+        "src": "25:185:0"
+      }
+    ],
+    "id": 15,
+    "name": "SourceUnit",
+    "src": "0:211:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {
+    "1516694819694": {
+      "events": {},
+      "links": {},
+      "address": "0xcd5e54dd31acc4fedcbdd0e6e0a60eb23dd4bb1b"
+    }
+  },
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-23T09:27:20.058Z"
+}
