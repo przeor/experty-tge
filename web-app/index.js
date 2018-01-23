@@ -70,7 +70,7 @@ fetch('contracts/ExyToken.json')
     // console.log(JSON.stringify(BYTECODE));
 
     const PROVIDER = 'http://localhost:8545';
-    const ADDRESS = '0x691c84d23be2301815a9F1dD81ea9568293fD64d';
+    const ADDRESS = '0x78ed88f1d9351ca94b3b784d997883e1ee83f184';
     if (typeof web3 !== 'undefined') {
       web3 = new Web3(web3.currentProvider);
     } else {
