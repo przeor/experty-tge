@@ -87,6 +87,7 @@ contract ExyToken is ERC223MintableToken {
    * address signaturer2 = 0x2;
    */
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
+  // ExyToken constructor for manual deploying with hardcoded signatures  
   // function ExyToken() public {
   //   address signaturer0 = 0xe029b7b51b8c5B71E6C6f3DC66a11DF3CaB6E3B5;
   //   address signaturer1 = 0xBEE9b5e75383f56eb103DdC1a4343dcA6124Dfa3;
