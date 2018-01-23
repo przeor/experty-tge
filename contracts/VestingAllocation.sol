@@ -3,7 +3,7 @@ pragma solidity ^0.4.4;
 import "./SafeMath.sol";
 import "./Ownable.sol";
 import "./AllocationAddressList.sol";
-import "./AllocationTypes.sol";
+import "./Types.sol";
 
 contract VestingAllocation is Ownable, AllocationAddressList {
 
@@ -22,7 +22,7 @@ contract VestingAllocation is Ownable, AllocationAddressList {
 
   // For each address we can add exactly one possible split.
   // If we try to add another proposal on existing address it will be rejected
-  mapping (address => AllocationTypes.AllocationType) public allocationOf;
+  mapping (address => Types.StructVestingAllocation) public allocationOf;
 
   /**
    * VestingAllocation contructor.
@@ -51,9 +51,9 @@ contract VestingAllocation is Ownable, AllocationAddressList {
     // We can't overwrite existing proposal, so we are checking if it is the default value (0x0)
     require(allocationOf[_dest].proposerAddress == 0x0);
 
-    allocationOf[_dest] = AllocationTypes.AllocationType({
+    allocationOf[_dest] = Types.StructVestingAllocation({
       tokensPerPeriod: _tokensPerPeriod,
-      allocationState: AllocationTypes.AllocationState.Proposed,
+      allocationState: Types.AllocationState.Proposed,
       proposerAddress: _proposerAddress,
       claimedPeriods: 0
     });
@@ -68,9 +68,9 @@ contract VestingAllocation is Ownable, AllocationAddressList {
    * @param _address - address for the split
    */
   function approveAllocation(address _approverAddress, address _address) public onlyOwner {
-    require(allocationOf[_address].allocationState == AllocationTypes.AllocationState.Proposed);
+    require(allocationOf[_address].allocationState == Types.AllocationState.Proposed);
     require(allocationOf[_address].proposerAddress != _approverAddress);
-    allocationOf[_address].allocationState = AllocationTypes.AllocationState.Approved;
+    allocationOf[_address].allocationState = Types.AllocationState.Approved;
   }
 
  /**
@@ -79,8 +79,8 @@ contract VestingAllocation is Ownable, AllocationAddressList {
    * @param _address - address for the split to be rejected
    */
   function rejectSplit(address _address) public onlyOwner {
-    require(allocationOf[_address].allocationState == AllocationTypes.AllocationState.Proposed);
-    allocationOf[_address].allocationState = AllocationTypes.AllocationState.Rejected;
+    require(allocationOf[_address].allocationState == Types.AllocationState.Proposed);
+    allocationOf[_address].allocationState = Types.AllocationState.Rejected;
     remainingTokensPerPeriod = remainingTokensPerPeriod + allocationOf[_address].tokensPerPeriod;
   }
 
@@ -90,8 +90,8 @@ contract VestingAllocation is Ownable, AllocationAddressList {
    * @param _address - address for whom we are counting tokens
    */
   function tokensToMint(address _address) public view returns (uint) {
-    AllocationTypes.AllocationType storage split = allocationOf[_address];
-    if (split.allocationState == AllocationTypes.AllocationState.Approved) {
+    Types.StructVestingAllocation storage split = allocationOf[_address];
+    if (split.allocationState == Types.AllocationState.Approved) {
       return _tokensToMint(split);
     }
     return 0;
@@ -104,7 +104,7 @@ contract VestingAllocation is Ownable, AllocationAddressList {
    *  We calculate numberOfPeriods number from (0..periods) and then multiply it
    *  by the number of tokens per period
    */
-  function _tokensToMint(AllocationTypes.AllocationType storage split) private view returns (uint) {
+  function _tokensToMint(Types.StructVestingAllocation storage split) private view returns (uint) {
     // I use math min cause when elapsed periods count is higher than periods
     // declareted for one split we have to use subtraction from declarated periods.
     uint numberOfPeriods = SafeMath.min(_periodsElapsed(), periods);

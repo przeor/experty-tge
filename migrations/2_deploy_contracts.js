@@ -1,4 +1,4 @@
-const AllocationTypes = artifacts.require('./AllocationTypes.sol');
+const Types = artifacts.require('./Types.sol');
 const AllocationAddressList = artifacts.require('./AllocationAddressList.sol');
 const BountyTokenAllocation = artifacts.require('./BountyTokenAllocation.sol');
 const ERC223MintableToken = artifacts.require('./ERC223MintableToken.sol');
@@ -19,15 +19,15 @@ module.exports = function (deployer) {
   deployer.deploy(Ownable);
   deployer.deploy(SafeMath);
   deployer.deploy(Signatures);
-  deployer.deploy(AllocationTypes);
+  deployer.deploy(Types);
 
   deployer.link(SafeMath, VestingAllocation);
   deployer.link(Ownable, VestingAllocation);
   deployer.link(AllocationAddressList, VestingAllocation);
-  deployer.link(AllocationTypes, VestingAllocation);
+  deployer.link(Types, VestingAllocation);
 
   deployer.deploy(VestingAllocation);
-  deployer.link(AllocationTypes, ExyToken);
+  deployer.link(Types, ExyToken);
   deployer.link(AllocationAddressList, ExyToken);
   deployer.link(BountyTokenAllocation, ExyToken);
   deployer.link(ERC223MintableToken, ExyToken);

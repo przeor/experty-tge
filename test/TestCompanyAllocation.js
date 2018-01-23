@@ -3,7 +3,7 @@ const VestingAllocation = artifacts.require('VestingAllocation');
 
 /*
  * Fields of the splitT structs:
- * struct AllocationType {
+ * struct StructVestingAllocation {
  *   uint tokensPerPeriod;
  *   address proposalAddress;
  *   uint claimedPeriods;

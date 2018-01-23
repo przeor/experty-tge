@@ -1,8 +1,8 @@
 const BountyTokenAllocation = artifacts.require('BountyTokenAllocation');
 
 /*
- * Fields of the BountyAllocationType:
- * struct AllocationType {
+ * Fields of the StructBountyAllocation:
+ * struct StructVestingAllocation {
  *   address dest;
  *   int amount;
  *   address proposalAddress;

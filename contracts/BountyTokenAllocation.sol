@@ -2,7 +2,7 @@ pragma solidity ^0.4.4;
 
 import "./Ownable.sol";
 import "./AllocationAddressList.sol";
-import "./AllocationTypes.sol";
+import "./Types.sol";
 
 contract BountyTokenAllocation is Ownable, AllocationAddressList {
 
@@ -21,7 +21,7 @@ contract BountyTokenAllocation is Ownable, AllocationAddressList {
   // Proposed => Rejected
 
 
-  mapping (address => AllocationTypes.BountyAllocationT) public bountyOf;
+  mapping (address => Types.StructBountyAllocation) public bountyOf;
 
   address public owner = msg.sender;
 
@@ -36,25 +36,25 @@ contract BountyTokenAllocation is Ownable, AllocationAddressList {
     require(_amount <= remainingBountyTokens);
     require(bountyOf[_dest].proposalAddress == 0x0); // we can't overwrite existing proposal
 
-    bountyOf[_dest] = AllocationTypes.BountyAllocationT({
+    bountyOf[_dest] = Types.StructBountyAllocation({
       amount: _amount,
       proposalAddress: msg.sender,
-      bountyState: AllocationTypes.BountyState.Proposed
+      bountyState: Types.BountyState.Proposed
     });
     allocationAddressList.push(_dest);
     remainingBountyTokens = remainingBountyTokens - _amount;
   }
 
   function approveBountyTransfer(address _dest) public onlyOwner {
-    require(bountyOf[_dest].bountyState == AllocationTypes.BountyState.Proposed);
+    require(bountyOf[_dest].bountyState == Types.BountyState.Proposed);
 
-    bountyOf[_dest].bountyState = AllocationTypes.BountyState.Approved;
+    bountyOf[_dest].bountyState = Types.BountyState.Approved;
   }
 
   function rejectBountyTransfer(address _dest) public onlyOwner {
-    require(bountyOf[_dest].bountyState == AllocationTypes.BountyState.Proposed);
+    require(bountyOf[_dest].bountyState == Types.BountyState.Proposed);
 
-    bountyOf[_dest].bountyState = AllocationTypes.BountyState.Rejected;
+    bountyOf[_dest].bountyState = Types.BountyState.Rejected;
     remainingBountyTokens = remainingBountyTokens + bountyOf[_dest].amount;
   }
 

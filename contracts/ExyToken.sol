@@ -3,7 +3,7 @@ pragma solidity ^0.4.11;
 import "./VestingAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
-import "./AllocationTypes.sol";
+import "./Types.sol";
 import "./BountyTokenAllocation.sol";
 
 contract ExyToken is ERC223MintableToken {
@@ -93,13 +93,13 @@ contract ExyToken is ERC223MintableToken {
 
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
-    partnerTokensAllocation = new VestingAllocation(
+    companyTokensAllocation = new VestingAllocation(
       COMPANY_TOKENS_PER_PERIOD,
       COMPANY_PERIODS,
       MINUTES_IN_COMPANY_PERIOD,
       initDate);
 
-    companyTokensAllocation = new VestingAllocation(
+    partnerTokensAllocation = new VestingAllocation(
       PARTNER_TOKENS_PER_PERIOD,
       PARTNER_PERIODS,
       MINUTES_IN_PARTNER_PERIOD,
@@ -146,7 +146,7 @@ contract ExyToken is ERC223MintableToken {
    * @param nr Index of allocation in allocationAddressList
    * @return Information about company alloction
    */
-  function getCompanyAllocation(uint nr) public view returns (uint, address, uint, AllocationTypes.allocationState, address) {
+  function getCompanyAllocation(uint nr) public view returns (uint, address, uint, Types.AllocationState, address) {
     address recipientAddress = companyTokensAllocation.allocationAddressList(nr);
     var (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState) = companyTokensAllocation.allocationOf(recipientAddress);
     return (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState, recipientAddress);
@@ -182,7 +182,7 @@ contract ExyToken is ERC223MintableToken {
    * @param nr Index of allocation in allocationAddressList
    * @return Information about partner alloction
    */
-  function getPartnerAllocation(uint nr) public view returns (uint, address, uint, AllocationTypes.allocationState, address) {
+  function getPartnerAllocation(uint nr) public view returns (uint, address, uint, Types.AllocationState, address) {
     address recipientAddress = partnerTokensAllocation.allocationAddressList(nr);
     var (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState) = partnerTokensAllocation.allocationOf(recipientAddress);
     return (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState, recipientAddress);
@@ -199,7 +199,7 @@ contract ExyToken is ERC223MintableToken {
     return bountyTokensAllocation.getAllocationLength();
   }
 
-  function getBountyAllocation(uint nr) public view returns (uint, address, AllocationTypes.BountyState, address) {
+  function getBountyAllocation(uint nr) public view returns (uint, address, Types.BountyState, address) {
     address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
     var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
     return (amount, proposalAddress, bountyState, recipientAddress);
