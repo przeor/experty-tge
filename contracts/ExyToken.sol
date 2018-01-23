@@ -192,28 +192,37 @@ contract ExyToken is ERC223MintableToken {
     bountyTokensAllocation.proposeBountyTransfer(_dest, _amount);
   }
 
+  /**
+   * Approves a bounty transfer and mint tokens
+   *
+   * @param _dest Address of the bounty reciepent to whom we should mint token
+   */
   function approveBountyTransfer(address _dest) public onlySignaturer {
-    bountyTokensAllocation.approveBountyTransfer(_dest);
+    uint tokensToMint = bountyTokensAllocation.approveBountyTransfer(_dest);
+    mint(_dest, tokensToMint);
   }
-  function getBountyAllocationListLength() public view returns (uint) {
+
+  function getBountyTransfersListLength() public view returns (uint) {
     return bountyTokensAllocation.getAllocationLength();
   }
 
-  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
+  function getBountyTransfers(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
     address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
     var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
     return (amount, proposalAddress, bountyState, recipientAddress);
   }
 
-  function mintMeTokens() public {
+  function claimTokens() public returns (uint) {
     uint tokensToMint = 0;
     uint parnterTokensToMint = partnerTokensAllocation.tokensToMint(msg.sender);
     if (parnterTokensToMint > 0) {
-      tokensToMint = tokensToMint + partnerTokensAllocation.mint(msg.sender);
+      partnerTokensAllocation.updateClaimedPeriods(msg.sender);
+      tokensToMint = tokensToMint + parnterTokensToMint;
     }
     uint compnyTokensToMint = companyTokensAllocation.tokensToMint(msg.sender);
     if (compnyTokensToMint > 0) {
-      tokensToMint = tokensToMint + companyTokensAllocation.mint(msg.sender);
+      companyTokensAllocation.updateClaimedPeriods(msg.sender);
+      tokensToMint = tokensToMint + compnyTokensToMint;
     }
     if (tokensToMint > 0) {
       mint(msg.sender, tokensToMint);

@@ -10,6 +10,7 @@ const SplitState = {
 
 contract('ExyToken', accounts => {
   let exy;
+  let fromAddress0 = { from: accounts[0] };
   let fromAddress1 = { from: accounts[1] };
   const address0 = accounts[0];
   const address1 = accounts[1];
@@ -22,7 +23,7 @@ contract('ExyToken', accounts => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
     assert.equal(await exy.getPartnerAllocationListLength.call(), 0, 'should be mocked value');
     assert.equal(await exy.getCompanyAllocationListLength.call(), 0, 'should be mocked value');
-    assert.equal(await exy.getBountyAllocationListLength.call(), 0, 'should be mocked value');
+    assert.equal(await exy.getBountyTransfersListLength.call(), 0, 'should be mocked value');
   });
 
   it('should propose company allocation', async () => {
@@ -105,11 +106,32 @@ contract('ExyToken', accounts => {
     assert.equal(await exy.getPartnerAllocationListLength.call(), 1, "We should have one element");
   });
 
-  it('should update bounty allocation list', async () => {
+  it('should update bounty transfer list', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    assert.equal(await exy.getBountyAllocationListLength.call(), 0, "List should be empty");
+    assert.equal(await exy.getBountyTransfersListLength.call(), 0, "List should be empty");
     await exy.proposeBountyTransfer.sendTransaction(accounts[0], 50);
-    assert.equal(await exy.getBountyAllocationListLength.call(), 1, "We should have one element");
+    assert.equal(await exy.getBountyTransfersListLength.call(), 1, "We should have one element");
+  });
+
+  it('should approve bounty transfer and mint tokens', async () => {
+    exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
+    await exy.proposeBountyTransfer.sendTransaction(accounts[0], 50);
+    assert.equal(await exy.balanceOf(accounts[0]), 0, "We should have 0 tokens at the beginning");
+    await exy.approveBountyTransfer.sendTransaction(accounts[0], fromAddress1);
+    assert.equal(await exy.getBountyTransfersListLength.call(), 1, "We should have one element");
+    assert.equal(await exy.balanceOf(accounts[0]), 50, "We should have approved tokens");
+  });
+
+  it('should approve company and partner aloocations', async () => {
+    exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
+    assert.equal(await exy.balanceOf(accounts[0]), 0, "We should have 0 tokens at the beginning");
+
+    await exy.proposeCompanySplit.sendTransaction(accounts[0], 1);
+    await exy.approveCompanySplit.sendTransaction(accounts[0], fromAddress1);
+    await exy.proposePartnerSplit.sendTransaction(accounts[0], 2);
+    await exy.approvePartnerSplit.sendTransaction(accounts[0], fromAddress1);
+    await exy.claimTokens.sendTransaction();
+    assert.equal(await exy.balanceOf(accounts[0]), 0, "We should still have no tokens because 0 periods have elapsed");
   });
 
 });
