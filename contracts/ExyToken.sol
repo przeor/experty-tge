@@ -76,9 +76,9 @@ contract ExyToken is ERC223MintableToken {
    * - companyTokensAllocation
    * - bountyTokensAllocation
    *
-   * @param signaturer0 Address of first signaturer.
-   * @param signaturer1 Address of second signaturer.
-   * @param signaturer2 Address of third signaturer.
+   * param signaturer0 Address of first signaturer.
+   * param signaturer1 Address of second signaturer.
+   * param signaturer2 Address of third signaturer.
    *
    * Arguments in constructor are only for testing. When deploying
    * on main net, please hardcode them inside:
@@ -87,6 +87,11 @@ contract ExyToken is ERC223MintableToken {
    * address signaturer2 = 0x2;
    */
   function ExyToken(address signaturer0, address signaturer1, address signaturer2) public {
+  // function ExyToken() public {
+  //   address signaturer0 = 0xe029b7b51b8c5B71E6C6f3DC66a11DF3CaB6E3B5;
+  //   address signaturer1 = 0xBEE9b5e75383f56eb103DdC1a4343dcA6124Dfa3;
+  //   address signaturer2 = 0xcdD1Db16E83AA757a5B3E6d03482bBC9A27e8D49;
+
     name = "Experty Token";
     symbol = "EXY";
     decimals = 18;
@@ -139,6 +144,14 @@ contract ExyToken is ERC223MintableToken {
   }
 
   /**
+   * Return number of remaining company tokens allocations
+   * @return Length of company allocations
+   */
+  function getRemainingCompanyTokensAllocation() public view returns (uint) {
+    return companyTokensAllocation.remainingTokensPerPeriod();
+  }
+
+  /**
    * Given the index of the company allocation in allocationAddressList
    * we find its reciepent address and return struct with informations
    * about this allocation
@@ -175,6 +188,14 @@ contract ExyToken is ERC223MintableToken {
   }
 
   /**
+   * Return number of remaining partner tokens allocations
+   * @return Length of company allocations
+   */
+  function getRemainingPartnerTokensAllocation() public view returns (uint) {
+    return partnerTokensAllocation.remainingTokensPerPeriod();
+  }
+
+  /**
    * Given the index of the partner allocation in allocationAddressList
    * we find its reciepent address and return struct with informations
    * about this allocation
@@ -195,14 +216,25 @@ contract ExyToken is ERC223MintableToken {
   function approveBountyTransfer(address _dest) public onlySignaturer {
     bountyTokensAllocation.approveBountyTransfer(_dest);
   }
-  function getBountyAllocationListLength() public view returns (uint) {
-    return bountyTokensAllocation.getAllocationLength();
-  }
 
+  // getBountyTransfers
   function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
     address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
     var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
     return (amount, proposalAddress, bountyState, recipientAddress);
+  }
+
+  // getBountyTransfersListLength
+  function getBountyAllocationListLength() public view returns (uint) {
+    return bountyTokensAllocation.getAllocationLength();
+  }
+
+  /**
+   * Return number of remaining bounty tokens allocations
+   * @return Length of company allocations
+   */
+  function getRemainingBountyTokens() public view returns (uint) {
+    return bountyTokensAllocation.remainingBountyTokens();
   }
 
   function mintMeTokens() public {

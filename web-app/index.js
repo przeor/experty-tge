@@ -64,13 +64,13 @@ fetch('contracts/ExyToken.json')
     const ABI = res.abi;
     const BYTECODE = res.bytecode;
 
-    console.log('[Deploy] ABI:');
-    console.log(JSON.stringify(ABI));
-    console.log('[Deploy] BYTECODE:');
-    console.log(JSON.stringify(BYTECODE));
+    // console.log('[Deploy] ABI:');
+    // console.log(JSON.stringify(ABI));
+    // console.log('[Deploy] BYTECODE:');
+    // console.log(JSON.stringify(BYTECODE));
 
     const PROVIDER = 'http://localhost:8545';
-    const ADDRESS = '0xb59f426ee6d5267e20bd31d105108dd80deac2e9';
+    const ADDRESS = '0x691c84d23be2301815a9F1dD81ea9568293fD64d';
     if (typeof web3 !== 'undefined') {
       web3 = new Web3(web3.currentProvider);
     } else {
@@ -98,9 +98,41 @@ fetch('contracts/ExyToken.json')
     } else {
       const exyTokenInstance = ExyTokenContract.at(ADDRESS);
 
-      function getAndFullfillSplitable(lengthGetter, allocationGetter, tableId, fulfillFunction) {
+      //if (true) {
+       // web3.eth.estimateGas({ data: BYTECODE }, (err, gas) => {
+        //  console.log('estimateGas propose bounty:' + gas);
+          if (false) {
+            exyTokenInstance.proposeBountyTransfer.sendTransaction("0x2", 111, {gas: 6063751}, function (err, res) {
+              console.log('Runnig callback afeter adding bount proposal:')
+              console.log(err);
+              console.log(res);
+            });
+          }
+
+       // });
+      //}
+
+      if (false) {
+        exyTokenInstance.getBountyAllocationListLength(function (err, res) {
+          console.log('Runnig allocation:')
+          console.log(err);
+          console.log(res);
+        });
+      }
+      if (false) {
+        exyTokenInstance.getBountyAllocation(0, function (err, res) {
+          console.log('Runnig allocation:')
+          console.log(err);
+          console.log(res);
+        });
+      }
+
+
+      function getAndFullfillSplitable(lengthGetter, allocationGetter, remainingGetter, sectionId, fulfillFunction) {
+        let tableId = document.getElementsByClassName(sectionId)[0].getElementsByTagName('tbody')[0].id;
+
         lengthGetter.call((err, res) => {
-          const companyListLength = res.toNumber();
+          const companyListLength = res;
           const promises = [];
           function createPromise(id) {
             return new Promise(function (resolve, reject) {
@@ -115,22 +147,41 @@ fetch('contracts/ExyToken.json')
           Promise.all(promises).then(res =>
             fulfillFunction(tableId, res)
           );
+
+          remainingGetter.call(handleError(res => {
+            let section = document.getElementsByClassName(sectionId)[0];
+            section.getElementsByClassName('remaining-allocation')[0].innerHTML = res.toNumber();
+          }));
         });
       }
+
       getAndFullfillSplitable(
         exyTokenInstance.getCompanyAllocationListLength,
         exyTokenInstance.getCompanyAllocation,
-        'tkn-company-allocation-tbody',
+        exyTokenInstance.getRemainingPartnerTokensAllocation,
+        'tkn-company-table',
         fullFillSplittableTable);
       getAndFullfillSplitable(
         exyTokenInstance.getPartnerAllocationListLength,
         exyTokenInstance.getPartnerAllocation,
-        'tkn-partner-allocation-tbody',
+        exyTokenInstance.getRemainingPartnerTokensAllocation,
+        'tkn-partner-table',
         fullFillSplittableTable);
       getAndFullfillSplitable(
         exyTokenInstance.getBountyAllocationListLength,
         exyTokenInstance.getBountyAllocation,
-        'tkn-bounty-allocation-tbody',
+        exyTokenInstance.getRemainingBountyTokens,
+        'tkn-bounty-table',
         fullFillBountyTable);
     }
   });
+
+function handleError(fn) {
+  return (err, res) => {
+    if (err) {
+      alert(err);
+    } else {
+      fn(res);
+    }
+  };
+}
