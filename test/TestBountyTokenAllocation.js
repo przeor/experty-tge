@@ -2,7 +2,7 @@ const BountyTokenAllocation = artifacts.require('BountyTokenAllocation');
 
 /*
  * Fields of the BountyAllocationType:
- * struct SplitT {
+ * struct AllocationType {
  *   address dest;
  *   int amount;
  *   address proposalAddress;

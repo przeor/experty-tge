@@ -2,7 +2,7 @@ const ExyToken = artifacts.require('ExyToken');
 
 const TOKENS_PER_PERIOD = 0;
 
-const SplitState = {
+const AllocationState = {
   proposed: 0,
   approved: 1,
   rejected: 2
@@ -27,15 +27,15 @@ contract('ExyToken', accounts => {
 
   it('should propose company allocation', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    await exy.proposeCompanySplit.sendTransaction(accounts[3], 100, { from: accounts[0] });
-    await exy.approveCompanySplit.sendTransaction(accounts[3], fromAddress1);
+    await exy.proposeCompanyAllocation.sendTransaction(accounts[3], 100, { from: accounts[0] });
+    await exy.approveCompanyAllocation.sendTransaction(accounts[3], fromAddress1);
 
     let allocation = await exy.getCompanyAllocation.call(0);
 
     assert.equal(allocation[TOKENS_PER_PERIOD], 100, 'Allocation should be set to 100');
     assert.equal(allocation[1], accounts[0], 'Proposal address should be set to accounts[0]');
     assert.equal(allocation[2], 0, 'claimedPeriods should be 0');
-    assert.equal(allocation[3], SplitState.approved, 'SplitState should be approved');
+    assert.equal(allocation[3], AllocationState.approved, 'AllocationState should be approved');
     assert.equal(allocation[4], accounts[3], 'Destinantion address shuld be equal accounts[3]');
   });
 
@@ -44,7 +44,7 @@ contract('ExyToken', accounts => {
     // Testing if an error appears
     let err = null
     try {
-      await exy.proposeCompanySplit.sendTransaction(address3, 100, { from: address4 });
+      await exy.proposeCompanyAllocation.sendTransaction(address3, 100, { from: address4 });
     } catch (error) {
       err = error
     }
@@ -53,11 +53,11 @@ contract('ExyToken', accounts => {
 
   it('should not invoke company approval because I am not a signaturer', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    await exy.proposeCompanySplit.sendTransaction(address3, 100);
+    await exy.proposeCompanyAllocation.sendTransaction(address3, 100);
     // Testing if an error appears
     let err = null
     try {
-      await exy.approveCompanySplit.sendTransaction(address5, { from: address3 });
+      await exy.approveCompanyAllocation.sendTransaction(address5, { from: address3 });
     } catch (error) {
       err = error
     }
@@ -79,12 +79,12 @@ contract('ExyToken', accounts => {
   it('should not allow to allocate more tokens than company allocation', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
 
-    await exy.proposeCompanySplit.sendTransaction(accounts[3], 50);
-    await exy.proposeCompanySplit.sendTransaction(accounts[4], 20);
+    await exy.proposeCompanyAllocation.sendTransaction(accounts[3], 50);
+    await exy.proposeCompanyAllocation.sendTransaction(accounts[4], 20);
 
     let err = null
     try {
-      await exy.proposeCompanySplit.sendTransaction(accounts[5], 31);
+      await exy.proposeCompanyAllocation.sendTransaction(accounts[5], 31);
     } catch (error) {
       err = error
     }
@@ -94,14 +94,14 @@ contract('ExyToken', accounts => {
   it('should update company allocation list', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
     assert.equal(await exy.getCompanyAllocationListLength.call(), 0, "List should be empty");
-    await exy.proposeCompanySplit.sendTransaction(accounts[0], 50);
+    await exy.proposeCompanyAllocation.sendTransaction(accounts[0], 50);
     assert.equal(await exy.getCompanyAllocationListLength.call(), 1, "We should have one element");
   });
 
   it('should update partner allocation list', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
     assert.equal(await exy.getPartnerAllocationListLength.call(), 0, "List should be empty");
-    await exy.proposePartnerSplit.sendTransaction(accounts[0], 50);
+    await exy.proposePartnerAllocation.sendTransaction(accounts[0], 50);
     assert.equal(await exy.getPartnerAllocationListLength.call(), 1, "We should have one element");
   });
 

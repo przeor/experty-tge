@@ -1,6 +1,6 @@
 pragma solidity ^0.4.11;
 
-contract SplitTypes {
+contract AllocationTypes {
 
   // Possible split states: Proposed, Approved, Rejected
   // Proposed is the initial state.
@@ -8,13 +8,13 @@ contract SplitTypes {
   // The only possible transitions are:
   // Proposed => Approved
   // Proposed => Rejected
-  enum SplitState {
+  enum AllocationState {
     Proposed,
     Approved,
     Rejected
   }
 
-  struct SplitT {
+  struct AllocationType {
     // How many tokens per period we want to pass
     uint tokensPerPeriod;
     // By whom was this split proposed. Another signaturer must approve too
@@ -22,7 +22,7 @@ contract SplitTypes {
     // How many times did we released tokens
     uint claimedPeriods;
     // State of actual split.
-    SplitState splitState;
+    AllocationState allocationState;
   }
 
    enum BountyState {

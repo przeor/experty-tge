@@ -1,17 +1,17 @@
 pragma solidity ^0.4.11;
 
-import "./SplittableTokenAllocation.sol";
+import "./VestingAllocation.sol";
 import "./ERC223MintableToken.sol";
 import "./Signatures.sol";
-import "./SplitTypes.sol";
+import "./AllocationTypes.sol";
 import "./BountyTokenAllocation.sol";
 
 contract ExyToken is ERC223MintableToken {
   uint public circulatingSupply;
 
   Signatures private signatures;
-  SplittableTokenAllocation private partnerTokensAllocation;
-  SplittableTokenAllocation private companyTokensAllocation;
+  VestingAllocation private partnerTokensAllocation;
+  VestingAllocation private companyTokensAllocation;
   BountyTokenAllocation private bountyTokensAllocation;
 
   /*
@@ -93,13 +93,13 @@ contract ExyToken is ERC223MintableToken {
 
     initDate = block.timestamp;
     signatures = new Signatures(signaturer0, signaturer1, signaturer2);
-    partnerTokensAllocation = new SplittableTokenAllocation(
+    partnerTokensAllocation = new VestingAllocation(
       COMPANY_TOKENS_PER_PERIOD,
       COMPANY_PERIODS,
       MINUTES_IN_COMPANY_PERIOD,
       initDate);
 
-    companyTokensAllocation = new SplittableTokenAllocation(
+    companyTokensAllocation = new VestingAllocation(
       PARTNER_TOKENS_PER_PERIOD,
       PARTNER_PERIODS,
       MINUTES_IN_PARTNER_PERIOD,
@@ -119,15 +119,15 @@ contract ExyToken is ERC223MintableToken {
   /**
    * Adds a proposition of a company token split to companyTokensAllocation
    */
-  function proposeCompanySplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    companyTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
+  function proposeCompanyAllocation(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    companyTokensAllocation.proposeAllocation(msg.sender, _dest, _tokensPerPeriod);
   }
 
   /**
    * Approves a proposition of a company token split
    */
-  function approveCompanySplit(address _dest) public onlySignaturer {
-    companyTokensAllocation.approveSplit(msg.sender, _dest);
+  function approveCompanyAllocation(address _dest) public onlySignaturer {
+    companyTokensAllocation.approveAllocation(msg.sender, _dest);
   }
 
   /**
@@ -146,24 +146,24 @@ contract ExyToken is ERC223MintableToken {
    * @param nr Index of allocation in allocationAddressList
    * @return Information about company alloction
    */
-  function getCompanyAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
+  function getCompanyAllocation(uint nr) public view returns (uint, address, uint, AllocationTypes.allocationState, address) {
     address recipientAddress = companyTokensAllocation.allocationAddressList(nr);
-    var (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = companyTokensAllocation.splitOf(recipientAddress);
-    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, recipientAddress);
+    var (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState) = companyTokensAllocation.allocationOf(recipientAddress);
+    return (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState, recipientAddress);
   }
 
   /**
    * Adds a proposition of a partner token split to companyTokensAllocation
    */
-  function proposePartnerSplit(address _dest, uint _tokensPerPeriod) public onlySignaturer {
-    partnerTokensAllocation.proposeSplit(msg.sender, _dest, _tokensPerPeriod);
+  function proposePartnerAllocation(address _dest, uint _tokensPerPeriod) public onlySignaturer {
+    partnerTokensAllocation.proposeAllocation(msg.sender, _dest, _tokensPerPeriod);
   }
 
   /**
    * Approves a proposition of a partner token split
    */
-  function approvePartnerSplit(address _dest) public onlySignaturer {
-    partnerTokensAllocation.approveSplit(msg.sender, _dest);
+  function approvePartnerAllocation(address _dest) public onlySignaturer {
+    partnerTokensAllocation.approveAllocation(msg.sender, _dest);
   }
 
   /**
@@ -182,10 +182,10 @@ contract ExyToken is ERC223MintableToken {
    * @param nr Index of allocation in allocationAddressList
    * @return Information about partner alloction
    */
-  function getPartnerAllocation(uint nr) public view returns (uint, address, uint, SplitTypes.SplitState, address) {
+  function getPartnerAllocation(uint nr) public view returns (uint, address, uint, AllocationTypes.allocationState, address) {
     address recipientAddress = partnerTokensAllocation.allocationAddressList(nr);
-    var (tokensPerPeriod, proposalAddress, claimedPeriods, splitState) = partnerTokensAllocation.splitOf(recipientAddress);
-    return (tokensPerPeriod, proposalAddress, claimedPeriods, splitState, recipientAddress);
+    var (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState) = partnerTokensAllocation.allocationOf(recipientAddress);
+    return (tokensPerPeriod, proposalAddress, claimedPeriods, allocationState, recipientAddress);
   }
 
   function proposeBountyTransfer(address _dest, uint _amount) public onlySignaturer {
@@ -199,7 +199,7 @@ contract ExyToken is ERC223MintableToken {
     return bountyTokensAllocation.getAllocationLength();
   }
 
-  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
+  function getBountyAllocation(uint nr) public view returns (uint, address, AllocationTypes.BountyState, address) {
     address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
     var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
     return (amount, proposalAddress, bountyState, recipientAddress);
