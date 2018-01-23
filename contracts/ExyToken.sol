@@ -146,7 +146,7 @@ contract ExyToken is ERC223MintableToken {
 
   /**
    * Return number of remaining company tokens allocations
-   * @return Length of company allocations
+   * @return Length of company allocations per period
    */
   function getRemainingCompanyTokensAllocation() public view returns (uint) {
     return companyTokensAllocation.remainingTokensPerPeriod();
@@ -190,7 +190,7 @@ contract ExyToken is ERC223MintableToken {
 
   /**
    * Return number of remaining partner tokens allocations
-   * @return Length of company allocations
+   * @return Length of partner allocations per period
    */
   function getRemainingPartnerTokensAllocation() public view returns (uint) {
     return partnerTokensAllocation.remainingTokensPerPeriod();
@@ -218,15 +218,13 @@ contract ExyToken is ERC223MintableToken {
     bountyTokensAllocation.approveBountyTransfer(_dest);
   }
 
-  // getBountyTransfers
-  function getBountyAllocation(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
+  function getBountyTransfers(uint nr) public view returns (uint, address, SplitTypes.BountyState, address) {
     address recipientAddress = bountyTokensAllocation.allocationAddressList(nr);
     var (amount, proposalAddress, bountyState) = bountyTokensAllocation.bountyOf(recipientAddress);
     return (amount, proposalAddress, bountyState, recipientAddress);
   }
 
-  // getBountyTransfersListLength
-  function getBountyAllocationListLength() public view returns (uint) {
+  function getBountyTransfersListLength() public view returns (uint) {
     return bountyTokensAllocation.getAllocationLength();
   }
 

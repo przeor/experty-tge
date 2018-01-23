@@ -22,7 +22,7 @@ contract('ExyToken', accounts => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
     assert.equal(await exy.getPartnerAllocationListLength.call(), 0, 'should be mocked value');
     assert.equal(await exy.getCompanyAllocationListLength.call(), 0, 'should be mocked value');
-    assert.equal(await exy.getBountyAllocationListLength.call(), 0, 'should be mocked value');
+    assert.equal(await exy.getBountyTransfersListLength.call(), 0, 'should be mocked value');
   });
 
   it('should propose company allocation', async () => {
@@ -107,9 +107,9 @@ contract('ExyToken', accounts => {
 
   it('should update bounty allocation list', async () => {
     exy = await ExyToken.new(accounts[0], accounts[1], accounts[2]);
-    assert.equal(await exy.getBountyAllocationListLength.call(), 0, "List should be empty");
+    assert.equal(await exy.getBountyTransfersListLength.call(), 0, "List should be empty");
     await exy.proposeBountyTransfer.sendTransaction(accounts[0], 50);
-    assert.equal(await exy.getBountyAllocationListLength.call(), 1, "We should have one element");
+    assert.equal(await exy.getBountyTransfersListLength.call(), 1, "We should have one element");
   });
 
   it('should decrease remaining company tokens per period after proposal', async () => {

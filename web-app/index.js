@@ -113,14 +113,14 @@ fetch('contracts/ExyToken.json')
       //}
 
       if (false) {
-        exyTokenInstance.getBountyAllocationListLength(function (err, res) {
+        exyTokenInstance.getBountyTransfersListLength(function (err, res) {
           console.log('Runnig allocation:')
           console.log(err);
           console.log(res);
         });
       }
       if (false) {
-        exyTokenInstance.getBountyAllocation(0, function (err, res) {
+        exyTokenInstance.getBountyTransfers(0, function (err, res) {
           console.log('Runnig allocation:')
           console.log(err);
           console.log(res);
@@ -168,8 +168,8 @@ fetch('contracts/ExyToken.json')
         'tkn-partner-table',
         fullFillSplittableTable);
       getAndFullfillSplitable(
-        exyTokenInstance.getBountyAllocationListLength,
-        exyTokenInstance.getBountyAllocation,
+        exyTokenInstance.getBountyTransfersListLength,
+        exyTokenInstance.getBountyTransfers,
         exyTokenInstance.getRemainingBountyTokens,
         'tkn-bounty-table',
         fullFillBountyTable);
